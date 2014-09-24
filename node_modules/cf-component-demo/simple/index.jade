@@ -1,0 +1,26 @@
+!!! 5
+html
+	head
+		meta(charset = 'utf-8')
+		meta('http-equiv' = 'X-UA-Compatible', content = 'IE=edge')
+		title=templateData.title
+		meta(name="viewport", content="width=device-width,initial-scale=1.0")
+		link(rel = 'stylesheet', type = 'text/css', href = 'static/demo/demo.css')
+		link(rel = 'stylesheet', type = 'text/css', href = document.relativeSource)
+	body
+		ul.demo-component-list
+			each component in document.components
+				if(component.family == templateData.family && !component.eof)
+					li.demo-component-list_item(id=component.slug)
+						h2=component.name
+						if(component.patterns)
+							ul.demo-pattern-list
+								each pattern in component.patterns
+									li.demo-pattern-list_item(id=pattern.slug)
+										div.demo-pattern-list_header
+											if(pattern.name)
+												h3=pattern.name
+										if(pattern.markup)
+											div!=pattern.markup
+		if(templateData.jsBody)
+			script(src=templateData.jsBody)

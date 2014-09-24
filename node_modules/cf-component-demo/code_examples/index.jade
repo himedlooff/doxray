@@ -1,0 +1,61 @@
+!!! 5
+html
+	head
+		meta(charset = 'utf-8')
+		meta('http-equiv' = 'X-UA-Compatible', content = 'IE=edge')
+		title=templateData.title
+		meta(name="viewport", content="width=device-width,initial-scale=1.0")
+		link(rel = 'stylesheet', type = 'text/css', href = 'static/demo/demo.css')
+		link(rel = 'stylesheet', type = 'text/css', href = document.relativeSource)
+		link(rel = 'stylesheet', type = 'text/css', href = 'static/demo/brackets.css')
+	body
+		.demo-wrapper
+			header.demo_header
+				h1.h5=templateData.title
+			ul.demo-component-list
+				each component in document.components
+					if(component.family == templateData.family && !component.eof)
+						li.demo-component-list_item.demo-wrapper(id=component.slug)
+							h1.demo-component-list_header=component.name
+							if(component.codenotes)
+								ul.demo_codenotes
+									each note in component.codenotes
+										li
+											pre.code
+												code=note.trim()
+							if(component.notes)
+								ul.demo_notes
+									each note in component.notes
+										li=note
+							if(component.patterns)
+								ul.demo-pattern-list
+									each pattern in component.patterns
+										li.demo-pattern-list_item(id=pattern.slug)
+											header.demo-pattern-list_header
+												if(pattern.name)
+													h3=pattern.name
+												if(pattern.codenotes)
+													ul.demo_codenotes
+														each note in pattern.codenotes
+															li
+																pre.code
+																	code=note.trim()
+												if(pattern.notes)
+													ul.demo_notes
+														each note in pattern.notes
+															li=note
+											if(pattern.markup)
+												section!=pattern.markup
+												footer.demo-pattern-list_footer
+													pre.html
+														code(data-language="html")=pattern.markup.trim()
+							if(component.css)
+								div.demo-pattern-css
+									pre.css
+										code(data-language="css")=component.css
+			footer.wrapper-footer
+				h4
+					a(href=templateData.repo) View the repository
+		script(src="static/demo/main.min.js")
+		if(templateData.jsBody)
+			script(src=templateData.jsBody)

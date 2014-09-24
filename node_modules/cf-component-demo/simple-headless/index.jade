@@ -1,0 +1,16 @@
+ul.demo-component-list
+	each component in document.components
+		if(component.family == templateData.family && !component.eof)
+			li.demo-component-list_item(id=component.slug)
+				h2=component.name
+				if(component.patterns)
+					ul.demo-pattern-list
+						each pattern in component.patterns
+							li.demo-pattern-list_item(id=pattern.slug)
+								div.demo-pattern-list_header
+									if(pattern.name)
+										h3=pattern.name
+								if(pattern.markup)
+									div!=pattern.markup
+if(templateData.jsBody)
+	script(src=templateData.jsBody)

@@ -1,0 +1,25 @@
+/* ==========================================================================
+   Comment
+   ========================================================================== */
+
+/* topdoc
+    name: Empty
+    name: Empty / name
+    name: Empty * person
+*/
+
+/* topdoc
+    name: First
+*/
+
+.first {
+  content: "First";
+}
+
+/* topdoc
+    name: Second
+*/
+
+.second {
+  content: "Second";
+}

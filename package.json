@@ -1,0 +1,10 @@
+{
+  "devDependencies": {
+    "cf-component-demo": "git://github.com/cfpb/cf-component-demo.git#0.8.2",
+    "fs-extra": "~0.6.1",
+    "grunt": "~0.4.4",
+    "grunt-concurrent": "~1.0.0",
+    "load-grunt-tasks": "~0.6.0",
+    "time-grunt": "~1.0.0"
+  }
+}
