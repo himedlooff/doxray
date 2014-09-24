@@ -30,10 +30,16 @@ module.exports = function(grunt) {
 
       grunt.verbose.writeln( 'parseFile(): Parsing', file );
 
-      regex = /\/\*\s*topdoc[^*]*\*+(?:[^/*][^*]*\*+)*\//g;
-      data = getData( file, regex );
-      docs = parseOutDocs( data, regex );
-      code = parseOutCode( data, regex );
+      regex = {
+        css: {
+          opening: /\/\*\s*topdoc[^\n]*\n/,
+          closing: /\*\//,
+          comment: /\/\*\s*topdoc[^*]*\*+(?:[^/*][^*]*\*+)*\//g
+        }
+      };
+      data = getData( file, regex.css );
+      docs = parseOutDocs( data, regex.css );
+      code = parseOutCode( data, regex.css );
 
       if ( parsingIsValid( docs, code ) ) {
         grunt.log.ok('Parsing was validated.');
@@ -63,21 +69,31 @@ module.exports = function(grunt) {
       data = fs.readFileSync( file, 'utf-8' );
       // Trim everything before the first regex because it's not associated with
       // any comment.
-      data = data.slice( data.search(regex) );
+      data = data.slice( data.search(regex.comment) );
       return data;
     }
 
     function parseOutDocs( data, regex ) {
       var docs;
       // "docs" are anything that matches the regex.
-      docs = data.match( regex );
+      docs = data.match( regex.comment );
+      // Clean each item in the array.
+      // NEEDS REFACTORING to fix the second thisArg argument.
+      // It probably shouldn't be `regex`? Not sure.
+      docs.forEach( scrubDocComments, regex );
       return docs;
+    }
+
+    function scrubDocComments( element, index, array ) {
+      // Remove the opening and closing comments.
+      array[index] = array[index].replace( this.opening, '' );
+      array[index] = array[index].replace( this.closing, '' );
     }
 
     function parseOutCode( data, regex ) {
       var code;
       // The "code" is everything betwixt the regex.
-      code = data.split( regex );
+      code = data.split( regex.comment );
       // Removes the first item in the array since it will always be empty.
       code.shift();
       // Clean each item in the array.
