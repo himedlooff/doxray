@@ -10,26 +10,33 @@ module.exports = function(grunt) {
 
   grunt.initConfig(config);
 
-  grunt.registerTask('docs', 'A new documentation generator.', function( file ){
+  grunt.registerTask( 'docs', 'A new documentation generator.', function(src, dest){
     
-    var fs, yaml;
+    var fs, yaml, asyncDone, convertedSrc;
+    fs = require('fs-extra');
+    yaml = require('js-yaml');
+    asyncDone = this.async();
 
     if ( argsAreValid(arguments, this.name) ) {
-      init();
-      parseFile( file );
+      convertedSrc = parseSrc( src );
+      writeDest( dest, convertedSrc );
     }
 
-    function init() {
-      grunt.verbose.writeln('init(): Setting up vars.');
-
-      fs = require('fs-extra');
-      yaml = require('js-yaml');
+    function writeDest( dest, convertedDocs ) {
+      fs.writeFile( dest, JSON.stringify(convertedDocs, null, '\t'), function(err){
+        if ( err ) {
+          grunt.log.error( 'Error writing', dest+'.' );
+          asyncDone( false );
+        }
+        grunt.log.ok( dest, ' was created.' );
+        asyncDone();
+      });
     }
 
-    function parseFile( file ) {
+    function parseSrc( src ) {
       var data, regex, docs, code, convertedDocs;
 
-      grunt.verbose.writeln( 'parseFile(): Parsing', file );
+      grunt.verbose.writeln( 'parseSrc(): Parsing', src );
 
       regex = {
         css: {
@@ -38,19 +45,19 @@ module.exports = function(grunt) {
           comment: /\/\*\s*topdoc[^*]*\*+(?:[^/*][^*]*\*+)*\//g
         }
       };
-      data = getData( file, regex.css );
+      data = getData( src, regex.css );
       docs = parseOutDocs( data, regex.css );
       code = parseOutCode( data, regex.css );
-
-      if ( parsingIsValid( docs, code ) ) {
-        grunt.log.ok('Parsing was validated.');
+      // Validate the parsing before
+      if ( parsingIsValid(docs, code) ) {
+        grunt.log.ok('Parsing was successful.');
         grunt.verbose.writeln( 'docs:\n', docs );
         grunt.verbose.writeln( 'code:\n', code );
 
         // Join the docs and code back together as structured objects.
         convertedDocs = joinDocsAndCode( docs, code );
       }
-
+      return convertedDocs;
     }
 
     function joinDocsAndCode( docs, code ) {
@@ -65,11 +72,11 @@ module.exports = function(grunt) {
       for ( i; i < docs.length; i++ ) {
         // Add the converted docs and the code to the same object.
         convertedDocs.push({
-          docs: convertYaml( docs[ i ], i ),
+          docs: convertYaml( docs[i], i ),
           code: code[i]
         });
 
-        grunt.verbose.writeln( 'convertedDocs['+i+']:\n', convertedDocs[ i ] );
+        grunt.verbose.writeln( 'convertedDocs['+i+']:\n', convertedDocs[i] );
       }
       return convertedDocs;
     }
@@ -81,6 +88,7 @@ module.exports = function(grunt) {
         convertedYaml = yaml.safeLoad( yamlString );
       } catch ( e ) {
         grunt.log.error('Error converting comment #'+(index+1)+' to YAML. Please check for formatting errors.');
+        asyncDone( false );
       }
       return convertedYaml;
     }
@@ -93,16 +101,17 @@ module.exports = function(grunt) {
       grunt.verbose.writeln( '\tcode.length:', code.length );
       if ( docs.length !== code.length ) {
         grunt.log.error('Parsing failed because the parsed docs did not match the parsed code.');
+        asyncDone( false );
         return false;
       } else {
         return true;
       }
     }
 
-    function getData( file, regex ) {
+    function getData( src, regex ) {
       var data;
-      // Read the file.
-      data = fs.readFileSync( file, 'utf-8' );
+      // Read the src.
+      data = fs.readFileSync( src, 'utf-8' );
       // Trim everything before the first regex because it's not associated with
       // any comment.
       data = data.slice( data.search(regex.comment) );
@@ -142,12 +151,13 @@ module.exports = function(grunt) {
     }
 
     function argsAreValid( args, name ) {
-      // Check to see if we have the required file argument.
-      if ( args.length === 0 ) {
-        grunt.log.error('Please provide a file as the first argument.');
-        return false;
-      } else {
+      // Check to see if we have the required arguments.
+      if ( args.length === 2 ) {
         return true;
+      } else {
+        grunt.log.error('Please provide a file as the first argument and a destination as the second.');
+        asyncDone( false );
+        return false;
       }
     }
 
