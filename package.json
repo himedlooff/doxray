@@ -4,6 +4,7 @@
     "fs-extra": "~0.6.1",
     "grunt": "~0.4.4",
     "grunt-concurrent": "~1.0.0",
+    "js-yaml": "~3.2.2",
     "load-grunt-tasks": "~0.6.0",
     "time-grunt": "~1.0.0"
   }

@@ -10,11 +10,11 @@ module.exports = function(grunt) {
 
   grunt.initConfig(config);
 
-  grunt.registerTask('docs', 'A new documentation generator.', function( file ) {
+  grunt.registerTask('docs', 'A new documentation generator.', function( file ){
     
-    var fs;
+    var fs, yaml;
 
-    if ( argsAreValid( arguments, this.name ) ) {
+    if ( argsAreValid(arguments, this.name) ) {
       init();
       parseFile( file );
     }
@@ -23,6 +23,7 @@ module.exports = function(grunt) {
       grunt.verbose.writeln('init(): Setting up vars.');
 
       fs = require('fs-extra');
+      yaml = require('js-yaml');
     }
 
     function parseFile( file ) {
@@ -56,7 +57,7 @@ module.exports = function(grunt) {
       grunt.verbose.writeln( '\tdocs.length:', docs.length );
       grunt.verbose.writeln( '\tcode.length:', code.length );
       if ( docs.length !== code.length ) {
-        grunt.log.error( 'Parsing failed because the parsed docs did not match the parsed code.' );
+        grunt.log.error('Parsing failed because the parsed docs did not match the parsed code.');
         return false;
       } else {
         return true;
@@ -86,8 +87,8 @@ module.exports = function(grunt) {
 
     function scrubDocComments( element, index, array ) {
       // Remove the opening and closing comments.
-      array[index] = array[index].replace( this.opening, '' );
-      array[index] = array[index].replace( this.closing, '' );
+      array[ index ] = array[ index ].replace( this.opening, '' );
+      array[ index ] = array[ index ].replace( this.closing, '' );
     }
 
     function parseOutCode( data, regex ) {
@@ -102,13 +103,13 @@ module.exports = function(grunt) {
     }
 
     function trimArrayElement( element, index, array ) {
-      array[index] = array[index].trim();
+      array[ index ] = array[ index ].trim();
     }
 
     function argsAreValid( args, name ) {
       // Check to see if we have the required file argument.
       if ( args.length === 0 ) {
-        grunt.log.error( 'Please provide a file as the first argument.' );
+        grunt.log.error('Please provide a file as the first argument.');
         return false;
       } else {
         return true;
