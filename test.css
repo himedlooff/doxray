@@ -3,13 +3,13 @@
    ========================================================================== */
 
 /* topdoc
-    name: Empty
-    name: Empty / name
-    name: Empty * person
+    prop1: Empty
+    prop2: Empty / name
+    prop3: Empty * person
 */
 
 /* topdoc
-    name: First
+    prop1: First
 */
 
 .first {
@@ -17,7 +17,7 @@
 }
 
 /* topdoc
-    name: Second
+    prop1: Second
 */
 
 .second {

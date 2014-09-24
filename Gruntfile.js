@@ -27,7 +27,7 @@ module.exports = function(grunt) {
     }
 
     function parseFile( file ) {
-      var data, regex, docs, code;
+      var data, regex, docs, code, convertedDocs;
 
       grunt.verbose.writeln( 'parseFile(): Parsing', file );
 
@@ -46,8 +46,43 @@ module.exports = function(grunt) {
         grunt.log.ok('Parsing was validated.');
         grunt.verbose.writeln( 'docs:\n', docs );
         grunt.verbose.writeln( 'code:\n', code );
+
+        // Join the docs and code back together as structured objects.
+        convertedDocs = joinDocsAndCode( docs, code );
       }
 
+    }
+
+    function joinDocsAndCode( docs, code ) {
+      var convertedDocs, i;
+      convertedDocs = [];
+      i = 0;
+      // Loop through each doc and:
+      // 1. Convert the YAML into a structured object.
+      // 2. Add the converted doc and the code to an object so they can be
+      //    accessed together.
+      // 3. Return all of the new objects.
+      for ( i; i < docs.length; i++ ) {
+        // Add the converted docs and the code to the same object.
+        convertedDocs.push({
+          docs: convertYaml( docs[ i ], i ),
+          code: code[i]
+        });
+
+        grunt.verbose.writeln( 'convertedDocs['+i+']:\n', convertedDocs[ i ] );
+      }
+      return convertedDocs;
+    }
+
+    function convertYaml( yamlString, index ) {
+      var convertedYaml;
+      // Try converting the doc to YAML and warn if it fails.
+      try {
+        convertedYaml = yaml.safeLoad( yamlString );
+      } catch ( e ) {
+        grunt.log.error('Error converting comment #'+(index+1)+' to YAML. Please check for formatting errors.');
+      }
+      return convertedYaml;
     }
 
     function parsingIsValid( docs, code ) {
