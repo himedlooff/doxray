@@ -24,11 +24,11 @@
                         $('#code').empty();
                         $('#markup').empty();
                         $.each(families[key], function(index, item){
+                            var componentName = item.docs.name;
                             $('#code').append(item.code);
-                            $('#markup').append('<h1 class="h1">'+item.docs.name+'</h1>');
                             $.each(item.docs.patterns, function(index, item){
                                 if ( item.markup !== undefined ) {
-                                    $('#markup').append('<h1 class="h3">'+item.name+'</h1><br>');
+                                    $('#markup').append('<h1 class="h2">'+componentName+': '+item.name+'</h1><br>');
                                     $('#markup').append(item.markup);
                                     $('#markup').append('<pre><code id="pattern-markup" class="language-markup">'+$('<div>').text(item.markup).html()+'</code></pre>');
                                     $('#markup').append('<br><br>');
