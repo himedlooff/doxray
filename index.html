@@ -8,13 +8,13 @@
     <script>
     var html = $();
     var families = {};
-    $.getJSON("meta.json", function(json) {
+    $.getJSON("main.json", function(json) {
         var data = json;
         $.each(json, function(index, item){
             if ( item.docs.family !== undefined ) {
                 if ( families[item.docs.family] === undefined ) {
                     families[item.docs.family] = [];
-                    var $button = $('<button class="btn btn__link"></button>');
+                    var $button = $('<button class="btn btn__grouped"></button>');
                     $button.text(item.docs.family);
                     $button.data('family-key', item.docs.family);
                     $button.data('index', index);
@@ -25,13 +25,13 @@
                         $('#markup').empty();
                         $.each(families[key], function(index, item){
                             var componentName = item.docs.name;
-                            $('#code').append(item.code);
+                            $('#code').append($('<div>').text(item.code).html());
                             $.each(item.docs.patterns, function(index, item){
                                 if ( item.markup !== undefined ) {
-                                    $('#markup').append('<h1 class="h2">'+componentName+': '+item.name+'</h1><br>');
+                                    $('#markup').append('<div class="content_bar"></div><br><h1 class="h2">'+componentName+': '+item.name+'</h1><br>');
                                     $('#markup').append(item.markup);
                                     $('#markup').append('<pre><code id="pattern-markup" class="language-markup">'+$('<div>').text(item.markup).html()+'</code></pre>');
-                                    $('#markup').append('<br><br>');
+                                    $('#markup').append('<br>');
                                 }
                             });
                             console.log(item);
@@ -52,27 +52,29 @@
     <link rel="stylesheet" href="prism.css">
     <script src="prism.js"></script>
     <style>
-        #pattern-markup,
-        #code {
-            font-size: 10px;
+        .language-markup {
+            margin-top: 2em !important;
+        }
+        #nav .btn {
+            margin-bottom: 1px;
         }
     </style>
 </head>
-<body style="padding:2em;">
-    <div class="content content__1-3">
-        <div class="content_sidebar">
-            <ul class="list list__unstyled"
-                id="nav">
-            </ul>
+<body>
+    <div class="content-l_col content-l_col-1">
+        <div class="content-l">
+            <div class="content-l_col content-l_col-1">
+                <ul class="list list__horizontal"
+                    id="nav">
+                </ul>
+            </div>
         </div>
-        <div class="content_main">
-            <div class="content-l">
-                <div class="content-l_col content-l_col-1-2">
-                    <div id="markup"></div>
-                </div>
-                <div class="content-l_col content-l_col-1-2">
-                    <pre><code id="code" class="language-css"></code></pre>
-                </div>
+        <div class="content-l">
+            <div class="content-l_col content-l_col-1-2">
+                <div id="markup"></div>
+            </div>
+            <div class="content-l_col content-l_col-1-2">
+                <pre><code id="code" class="language-css"></code></pre>
             </div>
         </div>
     </div>

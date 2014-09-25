@@ -12,7 +12,8 @@ module.exports = function(grunt) {
 
   grunt.registerTask( 'docs', 'A new documentation generator.', function(src, dest){
     
-    var fs, yaml, asyncDone, convertedSrc;
+    var path, fs, yaml, asyncDone, convertedSrc;
+    path = require('path');
     fs = require('fs-extra');
     yaml = require('js-yaml');
     asyncDone = this.async();
@@ -34,20 +35,27 @@ module.exports = function(grunt) {
     }
 
     function parseSrc( src ) {
-      var data, regex, docs, code, convertedDocs;
+      var data, regex, docs, code, convertedDocs, ext;
 
       grunt.verbose.writeln( 'parseSrc(): Parsing', src );
 
+      // Get the file extension for src so we know which regex to use.
+      ext = getExt( src );
       regex = {
+        html: {
+          opening: /<!--\s*topdoc[^\n]*\n/,
+          closing: /-->/,
+          comment: /<!--\s*topdoc(?:[^-]|[\r\n]|-[^-])*-->/g
+        },
         css: {
           opening: /\/\*\s*topdoc[^\n]*\n/,
           closing: /\*\//,
           comment: /\/\*\s*topdoc[^*]*\*+(?:[^/*][^*]*\*+)*\//g
         }
       };
-      data = getData( src, regex.css );
-      docs = parseOutDocs( data, regex.css );
-      code = parseOutCode( data, regex.css );
+      data = getData( src, regex[ ext ] );
+      docs = parseOutDocs( data, regex[ ext ] );
+      code = parseOutCode( data, regex[ ext ] );
       // Validate the parsing before
       if ( parsingIsValid(docs, code) ) {
         grunt.log.ok('Parsing was successful.');
@@ -159,6 +167,23 @@ module.exports = function(grunt) {
         asyncDone( false );
         return false;
       }
+    }
+
+    function getExt( src ) {
+      var ext;
+      ext = path.extname( src ).substring(1);
+      switch ( ext ) {
+        case 'css':
+        case 'less':
+          ext = 'css';
+          break;
+        case 'html':
+          ext = 'html';
+          break;
+        default:
+          ext = 'css';
+      }
+      return ext;
     }
 
   });

@@ -1,0 +1,34 @@
+[
+	{
+		"docs": {
+			"name": "list",
+			"family": "test-html",
+			"patterns": [
+				{
+					"name": "simple list",
+					"markup": "..."
+				}
+			]
+		},
+		"code": "<ul>\n        <li>list item</li>\n    </ul>"
+	},
+	{
+		"docs": {
+			"name": "figure",
+			"family": "test-html2",
+			"patterns": [
+				{
+					"name": "simple figure",
+					"markup": "..."
+				}
+			]
+		},
+		"code": "<figure>figure</figure>"
+	},
+	{
+		"docs": {
+			"ignore": true
+		},
+		"code": "</body>\n</html>"
+	}
+]
