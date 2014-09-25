@@ -8,7 +8,7 @@
     <script>
     var html = $();
     var families = {};
-    $.getJSON("main.json", function(json) {
+    $.getJSON("meta.json", function(json) {
         var data = json;
         $.each(json, function(index, item){
             if ( item.docs.family !== undefined ) {
@@ -21,10 +21,19 @@
                     $button.on('focus', function(){
                         var key = $(this).data('family-key');
                         var index = $(this).data('index');
-                        $('#temp').empty();
+                        $('#code').empty();
+                        $('#markup').empty();
                         $.each(families[key], function(index, item){
-                            $('#temp').append(item.code);
-                            console.log(item.docs.name);
+                            $('#code').append(item.code);
+                            $.each(item.docs.patterns, function(index, item){
+                                if ( item.markup !== undefined ) {
+                                    $('#markup').append('<h1 class="h3">'+item.name+'</h1>');
+                                    $('#markup').append(item.markup);
+                                    $('#markup').append('<pre><code id="pattern-markup" class="language-markup">'+$('<div>').text(item.markup).html()+'</code></pre>');
+                                }
+                            });
+                            console.log(item);
+                            Prism.highlightAll();
                         });
                         console.log('=============');
                     });
@@ -34,15 +43,18 @@
                     families[item.docs.family].push(item);
                 }
             }
-            if ( item.docs.patterns ) {
-                $.each(item.docs.patterns, function(index, item){
-                    // html += item.markup ? item.markup : '';
-                });
-            }
         });
         $('#nav').append(html);
     });
     </script>
+    <link rel="stylesheet" href="prism.css">
+    <script src="prism.js"></script>
+    <style>
+        #pattern-markup,
+        #code {
+            font-size: 10px;
+        }
+    </style>
 </head>
 <body style="padding:2em;">
     <div class="content content__1-3">
@@ -52,7 +64,14 @@
             </ul>
         </div>
         <div class="content_main">
-            <pre id="temp"></pre>
+            <div class="content-l">
+                <div class="content-l_col content-l_col-1-2">
+                    <div id="markup"></div>
+                </div>
+                <div class="content-l_col content-l_col-1-2">
+                    <pre><code id="code" class="language-css"></code></pre>
+                </div>
+            </div>
         </div>
     </div>
 </body>
