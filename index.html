@@ -2,18 +2,49 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>New docs</title>
+    <title>Test</title>
+    <link rel="stylesheet" href="main.css">
+    <script src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
     <script>
-        find all families in main.css
-            for each family
-                add to nav
-                find all components in family
-                    for each component
-                        add to nav (nested under family)
-                        make a new .html file
+    var html = $();
+    var families = {};
+    $.getJSON("main.json", function(json) {
+        var data = json;
+        $.each(json, function(index, item){
+            if ( item.docs.family !== undefined ) {
+                if ( families[item.docs.family] === undefined ) {
+                    families[item.docs.family] = [];
+                    var $button = $('<button class="btn"></button>');
+                    $button.text(item.docs.family);
+                    $button.data('family-key', item.docs.family);
+                    $button.data('index', index);
+                    $button.on('focus', function(){
+                        var key = $(this).data('family-key');
+                        var index = $(this).data('index');
+                        $.each(families[key], function(index, item){
+                            console.log(item.docs.name);
+                        });
+                        console.log('=============');
+                    });
+                    html = html.add($('<li class="list_item">').append($button));
+                    families[item.docs.family].push(item);
+                } else {
+                    families[item.docs.family].push(item);
+                }
+            }
+            if ( item.docs.patterns ) {
+                $.each(item.docs.patterns, function(index, item){
+                    // html += item.markup ? item.markup : '';
+                });
+            }
+        });
+        $('#nav').append(html);
+    });
     </script>
 </head>
-<body>
-    
+<body style="padding:2em;">
+    <ul class="list list__spaced list__horizontal"
+        id="nav">
+    </ul>
 </body>
 </html>
