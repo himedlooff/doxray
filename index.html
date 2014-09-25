@@ -14,14 +14,16 @@
             if ( item.docs.family !== undefined ) {
                 if ( families[item.docs.family] === undefined ) {
                     families[item.docs.family] = [];
-                    var $button = $('<button class="btn"></button>');
+                    var $button = $('<button class="btn btn__link"></button>');
                     $button.text(item.docs.family);
                     $button.data('family-key', item.docs.family);
                     $button.data('index', index);
                     $button.on('focus', function(){
                         var key = $(this).data('family-key');
                         var index = $(this).data('index');
+                        $('#temp').empty();
                         $.each(families[key], function(index, item){
+                            $('#temp').append(item.code);
                             console.log(item.docs.name);
                         });
                         console.log('=============');
@@ -43,8 +45,15 @@
     </script>
 </head>
 <body style="padding:2em;">
-    <ul class="list list__spaced list__horizontal"
-        id="nav">
-    </ul>
+    <div class="content content__1-3">
+        <div class="content_sidebar">
+            <ul class="list list__unstyled"
+                id="nav">
+            </ul>
+        </div>
+        <div class="content_main">
+            <pre id="temp"></pre>
+        </div>
+    </div>
 </body>
 </html>
