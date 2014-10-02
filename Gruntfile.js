@@ -85,11 +85,11 @@ module.exports = function( grunt ) {
     }
 
     function parseAllSources( sources ) {
-      // Loop through all src files, parsing each one and saving it to
-      // parsedSources.
+      // Loop through all src files specified in the task config,
+      // parsing each one and appending it to parsedSources.
       var parsedSources = [];
-      sources.forEach( function( src ) {
-        parsedSources.push( parseSource( src ) );
+      sources.forEach(function( singleSource ) {
+        parsedSources.push( parseSource( singleSource ) );
       });
       return parsedSources;
     }
