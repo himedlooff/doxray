@@ -8,9 +8,19 @@ module.exports = function(grunt) {
   var path = require('path');
   var config = {
     docs: {
-      multiTask1: {
-        src: ['test.less', 'test.css'],
-        dest: 'config-test.json'
+      test: {
+        src: ['test.css', 'test.less'],
+        dest: 'config-test.json',
+        options: {
+          mergeProp: 'prop1'
+        }
+      },
+      main: {
+        src: ['main.css', 'meta.less'],
+        dest: 'config-test-main.json',
+        options: {
+          mergeProp: 'name'
+        }
       }
     }
   };
@@ -19,21 +29,29 @@ module.exports = function(grunt) {
 
   grunt.registerMultiTask( 'docs', 'A new documentation generator.', function(){
     
-    var path, fs, yaml, asyncDone;
+    var path, fs, yaml, asyncDone, options;
     path = require('path');
     fs = require('fs-extra');
     yaml = require('js-yaml');
     asyncDone = this.async();
-
-    this.files.forEach( function(file){
-      writeDest( file.dest, convertSources(file.src) );
+    options = this.options({
+      mergeProp: false
     });
 
-    function convertSources( sources ) {
-      return mergeParsedSources( parseAllSources(sources) );
+    this.files.forEach( function(file){
+      writeDest( file.dest, convertSources(file.src, options.mergeProp) );
+    });
+
+    function convertSources( sources, mergeProp ) {
+      var parsedSources = parseAllSources( sources );
+      if ( options.mergeProp === false ) {
+        return parsedSources;
+      } else {
+        return mergeParsedSources( parsedSources, mergeProp );
+      }
     }
 
-    function mergeParsedSources( parsedSources ) {
+    function mergeParsedSources( parsedSources, mergeProp ) {
       // Save the first parsed file as the master object.
       // Subsequent parsed files will have the code property of each of its
       // items copied to the master objects items. For example:
@@ -47,12 +65,18 @@ module.exports = function(grunt) {
       // [{ docs: '', code: '', code1: '' },
       //  { docs: '', code: '', code1: '' }]
       var convertedSrc = parsedSources[0];
-      parsedSources.forEach( function(src, srcIndex){
-        if ( srcIndex > 0 ) {
-          src.forEach( function(srcItem, srcItemIndex){
-            convertedSrc[ srcItemIndex ][ 'code' + srcIndex ] = srcItem.code;
-          });
-        }
+      parsedSources.slice(1).forEach( function(src, srcIndex){
+        src.forEach( function(srcItem, srcItemIndex){
+          grunt.log.writeln( '&&& sub src', mergeProp, srcItem.docs[mergeProp] );
+          if ( srcItem.docs[mergeProp] ) {
+            parsedSources[0].forEach( function(masterSrcItem, index){
+              grunt.log.writeln( '&&& master src', mergeProp, masterSrcItem.docs[mergeProp] );
+              if ( masterSrcItem.docs[mergeProp] && masterSrcItem.docs[mergeProp] == srcItem.docs[mergeProp] ) {
+                masterSrcItem[ 'code' + (srcIndex + 1) ] = srcItem.code;
+              }
+            });
+          }
+        });
       });
       return convertedSrc;
     }

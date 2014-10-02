@@ -12,8 +12,8 @@
 		"docs": {
 			"prop1": "First"
 		},
-		"code": ".first {\n  content: \"First\";\n  & + & {\n    margin-top: 5px;\n  }\n}",
-		"code1": ".first {\n  content: \"First\";\n}"
+		"code": ".first {\n  content: \"First\";\n}",
+		"code1": ".first {\n  content: \"First\";\n  & + & {\n    margin-top: 5px;\n  }\n}"
 	},
 	{
 		"docs": {
@@ -21,5 +21,25 @@
 		},
 		"code": ".second {\n  content: \"Second\";\n}",
 		"code1": ".second {\n  content: \"Second\";\n}"
+	},
+	{
+		"docs": {
+			"prop1": "Empty of another kind",
+			"prop2": "Empty / name",
+			"prop3": "Empty * person"
+		},
+		"code": ""
+	},
+	{
+		"docs": {
+			"prop1": "First of another kind"
+		},
+		"code": ".first {\n  content: \"First\";\n}"
+	},
+	{
+		"docs": {
+			"prop1": "Second of another kind"
+		},
+		"code": ".second {\n  content: \"Second\";\n}"
 	}
 ]
