@@ -6,21 +6,21 @@
 			"prop3": "Empty * person"
 		},
 		"code": "",
-		"code1": ""
+		"code_alt": ""
 	},
 	{
 		"docs": {
 			"prop1": "First"
 		},
 		"code": ".first {\n  content: \"First\";\n}",
-		"code1": ".first {\n  content: \"First\";\n  & + & {\n    margin-top: 5px;\n  }\n}"
+		"code_alt": ".first {\n  content: \"First\";\n  & + & {\n    margin-top: 5px;\n  }\n}\n\n.first__modified {\n  content: \"First modified\";\n}"
 	},
 	{
 		"docs": {
 			"prop1": "Second"
 		},
 		"code": ".second {\n  content: \"Second\";\n}",
-		"code1": ".second {\n  content: \"Second\";\n}"
+		"code_alt": ".second {\n  content: \"Second\";\n}"
 	},
 	{
 		"docs": {

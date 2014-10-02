@@ -9,14 +9,14 @@ module.exports = function(grunt) {
   var config = {
     docs: {
       test: {
-        src: ['test.css', 'test.less'],
+        src: ['test.css', 'test.less', 'test-2.less'],
         dest: 'config-test.json',
         options: {
           mergeProp: 'prop1'
         }
       },
       main: {
-        src: ['main.css', 'meta.less'],
+        src: ['main.css', 'meta.less', 'media.less'],
         dest: 'config-test-main.json',
         options: {
           mergeProp: 'name'
@@ -53,26 +53,23 @@ module.exports = function(grunt) {
 
     function mergeParsedSources( parsedSources, mergeProp ) {
       // Save the first parsed file as the master object.
-      // Subsequent parsed files will have the code property of each of its
-      // items copied to the master objects items. For example:
-      // file1.less
-      // [{ docs: '', code: '' },
-      //  { docs: '', code: '' }]
-      // file2.less
-      // [{ docs: '', code: '' },
-      //  { docs: '', code: '' }]
-      // master
-      // [{ docs: '', code: '', code1: '' },
-      //  { docs: '', code: '', code1: '' }]
+      // Subsequent parsed files will check to see if they have matching
+      // top-level properties as specified in the `mergeProp` config option.
+      // If they have the same properties and the values match then the code
+      // property from subsequent files will be added to the `code_alt` property.
       var convertedSrc = parsedSources[0];
       parsedSources.slice(1).forEach( function(src, srcIndex){
         src.forEach( function(srcItem, srcItemIndex){
-          grunt.log.writeln( '&&& sub src', mergeProp, srcItem.docs[mergeProp] );
+          // grunt.log.writeln( '&&& sub src', mergeProp, srcItem.docs[mergeProp] );
           if ( srcItem.docs[mergeProp] ) {
             parsedSources[0].forEach( function(masterSrcItem, index){
-              grunt.log.writeln( '&&& master src', mergeProp, masterSrcItem.docs[mergeProp] );
+              // grunt.log.writeln( '&&& master src', mergeProp, masterSrcItem.docs[mergeProp] );
               if ( masterSrcItem.docs[mergeProp] && masterSrcItem.docs[mergeProp] == srcItem.docs[mergeProp] ) {
-                masterSrcItem[ 'code' + (srcIndex + 1) ] = srcItem.code;
+                if ( masterSrcItem['code_alt'] !== undefined ) {
+                  masterSrcItem['code_alt'] += '\n\n' + srcItem.code;
+                } else {
+                  masterSrcItem['code_alt'] = srcItem.code;
+                }
               }
             });
           }
