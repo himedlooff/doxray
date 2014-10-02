@@ -1,0 +1,25 @@
+[
+	{
+		"docs": {
+			"prop1": "Empty",
+			"prop2": "Empty / name",
+			"prop3": "Empty * person"
+		},
+		"code": "",
+		"code1": ""
+	},
+	{
+		"docs": {
+			"prop1": "First"
+		},
+		"code": ".first {\n  content: \"First\";\n  & + & {\n    margin-top: 5px;\n  }\n}",
+		"code1": ".first {\n  content: \"First\";\n}"
+	},
+	{
+		"docs": {
+			"prop1": "Second"
+		},
+		"code": ".second {\n  content: \"Second\";\n}",
+		"code1": ".second {\n  content: \"Second\";\n}"
+	}
+]

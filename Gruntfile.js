@@ -6,21 +6,65 @@ module.exports = function(grunt) {
   require('time-grunt')(grunt);
 
   var path = require('path');
-  var config = {};
+  var config = {
+    docs: {
+      multiTask1: {
+        src: ['test.less', 'test.css'],
+        dest: 'config-test.json'
+      }
+    }
+  };
 
   grunt.initConfig(config);
 
-  grunt.registerTask( 'docs', 'A new documentation generator.', function(src, dest){
+  grunt.registerMultiTask( 'docs', 'A new documentation generator.', function(){
     
-    var path, fs, yaml, asyncDone, convertedSrc;
+    var path, fs, yaml, asyncDone;
     path = require('path');
     fs = require('fs-extra');
     yaml = require('js-yaml');
     asyncDone = this.async();
 
-    if ( argsAreValid(arguments, this.name) ) {
-      convertedSrc = parseSrc( src );
-      writeDest( dest, convertedSrc );
+    this.files.forEach( function(file){
+      writeDest( file.dest, convertSources(file.src) );
+    });
+
+    function convertSources( sources ) {
+      return mergeParsedSources( parseAllSources(sources) );
+    }
+
+    function mergeParsedSources( parsedSources ) {
+      // Save the first parsed file as the master object.
+      // Subsequent parsed files will have the code property of each of its
+      // items copied to the master objects items. For example:
+      // file1.less
+      // [{ docs: '', code: '' },
+      //  { docs: '', code: '' }]
+      // file2.less
+      // [{ docs: '', code: '' },
+      //  { docs: '', code: '' }]
+      // master
+      // [{ docs: '', code: '', code1: '' },
+      //  { docs: '', code: '', code1: '' }]
+      var convertedSrc = parsedSources[0];
+      parsedSources.forEach( function(src, srcIndex){
+        if ( srcIndex > 0 ) {
+          src.forEach( function(srcItem, srcItemIndex){
+            convertedSrc[ srcItemIndex ][ 'code' + srcIndex ] = srcItem.code;
+          });
+        }
+      });
+      return convertedSrc;
+    }
+
+    function parseAllSources(sources) {
+      // Loop through all src files, parsing each one and saving it to
+      // parsedSources.
+      var parsedSources = [];
+      sources.forEach( function(src){
+        parsedSources.push( parseSource(src) );
+      });
+      return parsedSources;
     }
 
     function writeDest( dest, convertedDocs ) {
@@ -34,10 +78,10 @@ module.exports = function(grunt) {
       });
     }
 
-    function parseSrc( src ) {
+    function parseSource( src ) {
       var data, regex, docs, code, convertedDocs, ext;
 
-      grunt.verbose.writeln( 'parseSrc(): Parsing', src );
+      grunt.verbose.writeln( 'parseSource(): Parsing', src );
 
       // Get the file extension for src so we know which regex to use.
       ext = getExt( src );
