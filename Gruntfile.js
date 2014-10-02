@@ -60,28 +60,48 @@ module.exports = function( grunt ) {
     }
 
     function mergeParsedSources( parsedSources, mergeProp ) {
-      // Save the first parsed file as the master object.
+      // Save the first parsed file as the "master" source.
       // Subsequent parsed files will check to see if they have matching
       // top-level properties as specified in the `mergeProp` config option.
       // If they have the same properties and the values match then the code
-      // property from subsequent files will be added to the `code_alt` property.
+      // property from subsequent files will be added to the `code_alt` property
+      // of the master source.
       var convertedSource = parsedSources[ 0 ];
-      parsedSources.slice( 1 ).forEach(function( src, srcIndex ) {
-        src.forEach(function( srcItem, srcItemIndex ) {
-          if ( srcItem.docs[mergeProp] ) {
-            parsedSources[ 0 ].forEach(function( masterSrcItem, index ) {
-              if ( masterSrcItem.docs[mergeProp] && masterSrcItem.docs[mergeProp] == srcItem.docs[mergeProp] ) {
-                if ( masterSrcItem['code_alt'] !== undefined ) {
-                  masterSrcItem['code_alt'] += '\n\n' + srcItem.code;
-                } else {
-                  masterSrcItem['code_alt'] = srcItem.code;
+      // Loop through all parsed sources except for the first one which is now
+      // the "master" source.
+      parsedSources.slice( 1 ).forEach(function( source ) {
+        source.forEach(function( docSet ) {
+          // If the mergeProp property exists on the object then loop through
+          // the "master" source to see if there is a matching property with the
+          // same value.
+          checkForMergeProp( docSet, mergeProp, function( propValue ) {
+            convertedSource.forEach(function( masterDocSet ) {
+              checkForMergeProp( masterDocSet, mergeProp, function( masterPropValue ) {
+                if ( masterPropValue == propValue ) {
+                  masterDocSet = addAltCodeToDocSet( masterDocSet, docSet );
                 }
-              }
+              });
             });
-          }
+          });
         });
       });
       return convertedSource;
+    }
+
+    function addAltCodeToDocSet( docSet1, docSet2 ) {
+      if ( docSet1.code_alt !== undefined ) {
+        docSet1.code_alt += '\n\n' + docSet2.code;
+      } else {
+        docSet1.code_alt = docSet2.code;
+      }
+      return docSet1;
+    }
+
+    function checkForMergeProp( docSet, mergeProp, callback ) {
+      var propToMatch = docSet.docs[ mergeProp ];
+      if ( propToMatch !== undefined ) {
+        callback( propToMatch );
+      }
     }
 
     function parseAllSources( sources ) {
