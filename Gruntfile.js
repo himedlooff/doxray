@@ -27,6 +27,14 @@ module.exports = function( grunt ) {
 
   grunt.initConfig( config );
 
+  /* ==========================================================================
+     Todos
+     - Add an ignore property that will exclude a comment/code pair from the
+       final output.
+     - Convert into an NPM module.
+     - Define the differences between parsing and converting.
+     ========================================================================== */
+
   grunt.registerMultiTask( 'docs', 'A new documentation generator.', function() {
     
     var path, fs, yaml, asyncDone, options;
@@ -39,7 +47,7 @@ module.exports = function( grunt ) {
     });
 
     this.files.forEach( function( file ) {
-      writeDest( file.dest, convertSources(file.src, options.mergeProp) );
+      writeDest( file.dest, convertSources( file.src, options.mergeProp ) );
     });
 
     function convertSources( sources, mergeProp ) {
@@ -57,7 +65,7 @@ module.exports = function( grunt ) {
       // top-level properties as specified in the `mergeProp` config option.
       // If they have the same properties and the values match then the code
       // property from subsequent files will be added to the `code_alt` property.
-      var convertedSrc = parsedSources[ 0 ];
+      var convertedSource = parsedSources[ 0 ];
       parsedSources.slice( 1 ).forEach(function( src, srcIndex ) {
         src.forEach(function( srcItem, srcItemIndex ) {
           if ( srcItem.docs[mergeProp] ) {
@@ -73,7 +81,7 @@ module.exports = function( grunt ) {
           }
         });
       });
-      return convertedSrc;
+      return convertedSource;
     }
 
     function parseAllSources( sources ) {
