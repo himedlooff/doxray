@@ -1,9 +1,9 @@
-module.exports = function(grunt) {
+module.exports = function( grunt ) {
 
   'use strict';
 
-  require('load-grunt-tasks')(grunt);
-  require('time-grunt')(grunt);
+  require('load-grunt-tasks')( grunt );
+  require('time-grunt')( grunt );
 
   var path = require('path');
   var config = {
@@ -25,9 +25,9 @@ module.exports = function(grunt) {
     }
   };
 
-  grunt.initConfig(config);
+  grunt.initConfig( config );
 
-  grunt.registerMultiTask( 'docs', 'A new documentation generator.', function(){
+  grunt.registerMultiTask( 'docs', 'A new documentation generator.', function() {
     
     var path, fs, yaml, asyncDone, options;
     path = require('path');
@@ -38,7 +38,7 @@ module.exports = function(grunt) {
       mergeProp: false
     });
 
-    this.files.forEach( function(file){
+    this.files.forEach( function( file ) {
       writeDest( file.dest, convertSources(file.src, options.mergeProp) );
     });
 
@@ -57,13 +57,11 @@ module.exports = function(grunt) {
       // top-level properties as specified in the `mergeProp` config option.
       // If they have the same properties and the values match then the code
       // property from subsequent files will be added to the `code_alt` property.
-      var convertedSrc = parsedSources[0];
-      parsedSources.slice(1).forEach( function(src, srcIndex){
-        src.forEach( function(srcItem, srcItemIndex){
-          // grunt.log.writeln( '&&& sub src', mergeProp, srcItem.docs[mergeProp] );
+      var convertedSrc = parsedSources[ 0 ];
+      parsedSources.slice( 1 ).forEach(function( src, srcIndex ) {
+        src.forEach(function( srcItem, srcItemIndex ) {
           if ( srcItem.docs[mergeProp] ) {
-            parsedSources[0].forEach( function(masterSrcItem, index){
-              // grunt.log.writeln( '&&& master src', mergeProp, masterSrcItem.docs[mergeProp] );
+            parsedSources[ 0 ].forEach(function( masterSrcItem, index ) {
               if ( masterSrcItem.docs[mergeProp] && masterSrcItem.docs[mergeProp] == srcItem.docs[mergeProp] ) {
                 if ( masterSrcItem['code_alt'] !== undefined ) {
                   masterSrcItem['code_alt'] += '\n\n' + srcItem.code;
@@ -78,18 +76,18 @@ module.exports = function(grunt) {
       return convertedSrc;
     }
 
-    function parseAllSources(sources) {
+    function parseAllSources( sources ) {
       // Loop through all src files, parsing each one and saving it to
       // parsedSources.
       var parsedSources = [];
-      sources.forEach( function(src){
-        parsedSources.push( parseSource(src) );
+      sources.forEach( function( src ) {
+        parsedSources.push( parseSource( src ) );
       });
       return parsedSources;
     }
 
     function writeDest( dest, convertedDocs ) {
-      fs.writeFile( dest, JSON.stringify(convertedDocs, null, '\t'), function(err){
+      fs.writeFile( dest, JSON.stringify(convertedDocs, null, '\t' ), function( err ) {
         if ( err ) {
           grunt.log.error( 'Error writing', dest+'.' );
           asyncDone( false );
@@ -145,11 +143,11 @@ module.exports = function(grunt) {
       for ( i; i < docs.length; i++ ) {
         // Add the converted docs and the code to the same object.
         convertedDocs.push({
-          docs: convertYaml( docs[i], i ),
-          code: code[i]
+          docs: convertYaml( docs[ i ], i ),
+          code: code[ i ]
         });
 
-        grunt.verbose.writeln( 'convertedDocs['+i+']:\n', convertedDocs[i] );
+        grunt.verbose.writeln( 'convertedDocs['+i+']:\n', convertedDocs[ i ] );
       }
       return convertedDocs;
     }
@@ -160,7 +158,7 @@ module.exports = function(grunt) {
       try {
         convertedYaml = yaml.safeLoad( yamlString );
       } catch ( e ) {
-        grunt.log.error('Error converting comment #'+(index+1)+' to YAML. Please check for formatting errors.');
+        grunt.log.error( 'Error converting comment #'+(index+1)+' to YAML. Please check for formatting errors.' );
         asyncDone( false );
       }
       return convertedYaml;
@@ -187,7 +185,7 @@ module.exports = function(grunt) {
       data = fs.readFileSync( src, 'utf-8' );
       // Trim everything before the first regex because it's not associated with
       // any comment.
-      data = data.slice( data.search(regex.comment) );
+      data = data.slice( data.search( regex.comment ) );
       return data;
     }
 
@@ -236,7 +234,7 @@ module.exports = function(grunt) {
 
     function getExt( src ) {
       var ext;
-      ext = path.extname( src ).substring(1);
+      ext = path.extname( src ).substring( 1 );
       switch ( ext ) {
         case 'css':
         case 'less':
