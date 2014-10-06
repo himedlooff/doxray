@@ -8,6 +8,7 @@ var should = require('chai').should(),
   getTextFromDocComment = CommentDocs.prototype.getTextFromDocComment,
   parseOutDocs = CommentDocs.prototype.parseOutDocs,
   parseOutCode = CommentDocs.prototype.parseOutCode,
+  parsingIsValid = CommentDocs.prototype.parsingIsValid,
   parseSourceFile = CommentDocs.prototype.parseSourceFile;
 
 // describe('#parseSourceFile', function() {
@@ -20,6 +21,15 @@ var should = require('chai').should(),
 //   });
 // });
 
+describe('#parsingIsValid', function() {
+  it('validates that their is one code snippet (even if it\'s an empty string) for each doc comment', function() {
+    var fileContents = '/* topdoc\n    prop1: Comment one\n*/\n.test{\n    content:\"Hello\";\n}';
+    var docs = CommentDocs.prototype.parseOutDocs( fileContents, regex.css );
+    var code = CommentDocs.prototype.parseOutCode( fileContents, regex.css );
+    assert.equal( parsingIsValid( docs, code ), true );
+  });
+});
+
 describe('#parseOutCode', function() {
   it('build an array from the code after each doc comment', function() {
     assert.deepEqual(
@@ -29,20 +39,20 @@ describe('#parseOutCode', function() {
   });
 });
 
+describe('#getTextFromDocComment', function() {
+  it('removes the opening and closing comments from a doc comment', function() {
+    assert.equal(
+      getTextFromDocComment( '/* topdoc\n    prop1: Comment one\n*/\n', regex.css ),
+      '    prop1: Comment one\n\n'
+    );
+  });
+});
+
 describe('#parseOutDocs', function() {
   it('build an array from the text of each doc comment', function() {
     assert.deepEqual(
       parseOutDocs( '/* topdoc\n    prop1: Comment one\n*/\n', regex.css ),
       [ '    prop1: Comment one\n' ]
-    );
-  });
-});
-
-describe('#getTextFromDocComment', function() {
-  it('removes the opening and closing comments for a doc comment', function() {
-    assert.equal(
-      getTextFromDocComment( '/* topdoc\n    prop1: Comment one\n*/\n', regex.css ),
-      '    prop1: Comment one\n\n'
     );
   });
 });

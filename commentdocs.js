@@ -70,6 +70,18 @@ CommentDocs.prototype.parseOutDocs = function( fileContents, regex ) {
   return docs;
 };
 
+CommentDocs.prototype.parsingIsValid = function( docs, code ) {
+  // For each doc comment ther should be one correcsponding code snippet.
+  // This checks to make sure the doc and code arrays have the same length.
+  if ( docs.length !== code.length ) {
+    throw new Error('Parsing failed because the number of parsed doc comments does not match the number of parsed code snippets.');
+    // TODO: A node.js equivalent to Grunts this.async();
+    return false;
+  } else {
+    return true;
+  }
+};
+
 CommentDocs.prototype.getTextFromDocComment = function( item, regex ) {
   // Remove the opening and closing comments.
   return item.replace( regex.opening, '' ).replace( regex.closing, '' );
