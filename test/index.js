@@ -7,6 +7,7 @@ var should = require('chai').should(),
   getFileContents = CommentDocs.prototype.getFileContents,
   getTextFromDocComment = CommentDocs.prototype.getTextFromDocComment,
   parseOutDocs = CommentDocs.prototype.parseOutDocs,
+  parseOutCode = CommentDocs.prototype.parseOutCode,
   parseSourceFile = CommentDocs.prototype.parseSourceFile;
 
 // describe('#parseSourceFile', function() {
@@ -18,6 +19,15 @@ var should = require('chai').should(),
 //     );
 //   });
 // });
+
+describe('#parseOutCode', function() {
+  it('build an array from the code after each doc comment', function() {
+    assert.deepEqual(
+      parseOutCode( '/* topdoc\n    prop1: Comment one\n*/\n.test{\n    content:\"Hello\";\n}', regex.css ),
+      [ '.test{\n    content:\"Hello\";\n}' ]
+    );
+  });
+});
 
 describe('#parseOutDocs', function() {
   it('build an array from the text of each doc comment', function() {

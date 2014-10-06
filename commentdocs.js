@@ -31,9 +31,9 @@ CommentDocs.prototype.parseSourceFile = function( src ) {
   ext = CommentDocs.prototype.getCommentType( src );
   fileContents = CommentDocs.prototype.getFileContents( src, CommentDocs.regex[ ext ] );
   docs = CommentDocs.prototype.parseOutDocs( fileContents, CommentDocs.regex[ ext ] );
-  console.log( docs );
-  return docs;
-  // code = parseOutCode( fileContents, CommentDocs.regex[ ext ] );
+  code = CommentDocs.prototype.parseOutCode( fileContents, CommentDocs.regex[ ext ] );
+  console.log( code );
+  return code;
   // // Validate the parsing before
   // if ( parsingIsValid(docs, code) ) {
   //   grunt.log.ok('Parsing was successful.');
@@ -44,6 +44,19 @@ CommentDocs.prototype.parseSourceFile = function( src ) {
   //   convertedDocs = joinDocsAndCode( docs, code );
   // }
   // return convertedDocs;
+};
+
+CommentDocs.prototype.parseOutCode = function( fileContents, regex ) {
+  var code;
+  // The "code" is everything betwixt the regex.
+  code = fileContents.split( regex.comment );
+  // Removes the first item in the array since it will always be empty.
+  code.shift();
+  // Clean each item in the array.
+  code.forEach(function( item, index ){
+    code[ index ] = code[ index ].trim();
+  });
+  return code;
 };
 
 CommentDocs.prototype.parseOutDocs = function( fileContents, regex ) {
