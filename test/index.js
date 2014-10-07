@@ -13,15 +13,17 @@ var should = require('chai').should(),
   joinDocsAndCode = CommentDocs.prototype.joinDocsAndCode,
   parseSourceFile = CommentDocs.prototype.parseSourceFile;
 
-// describe('#parseSourceFile', function() {
-//   it('converts a file into an array of objects', function() {
-//     assert.deepEqual(
-//       parseSourceFile( 'test/getfilecontents.css' ),
-//       // [{ prop1: "Comment 1" }]
-//       [ '    prop1: Comment one\n' ]
-//     );
-//   });
-// });
+describe('#parseSourceFile', function() {
+  it('converts a file into an array of objects', function() {
+    assert.deepEqual(
+      parseSourceFile( 'test/getfilecontents.css' ),
+      [{
+        docs: { prop1: 'Comment one' },
+        code: ''
+      }]
+    );
+  });
+});
 
 describe('#joinDocsAndCode', function() {
   it('takes an array of doc comments and an array of code snippets and merges them into one object', function() {
