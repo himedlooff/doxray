@@ -10,6 +10,7 @@ var should = require('chai').should(),
   parseOutCode = CommentDocs.prototype.parseOutCode,
   parsingIsValid = CommentDocs.prototype.parsingIsValid,
   convertYaml = CommentDocs.prototype.convertYaml,
+  joinDocsAndCode = CommentDocs.prototype.joinDocsAndCode,
   parseSourceFile = CommentDocs.prototype.parseSourceFile;
 
 // describe('#parseSourceFile', function() {
@@ -22,17 +23,31 @@ var should = require('chai').should(),
 //   });
 // });
 
+describe('#joinDocsAndCode', function() {
+  it('takes an array of doc comments and an array of code snippets and merges them into one object, converting the docs from yaml into an object', function() {
+    var docs = [ 'prop1: Comment one' ];
+    var code = [ '.test{\n    content:\"Hello\";\n}' ];
+    assert.deepEqual(
+      joinDocsAndCode( docs, code ),
+      [{
+        docs: { prop1: 'Comment one' },
+        code: code[0]
+      }]
+    );
+  });
+});
+
 describe('#convertYaml', function() {
   it('converts a yaml string into an object and identifies the comment number if the conversion fails', function() {
     var yamlString = 'prop1: Comment one';
     assert.deepEqual( convertYaml( yamlString ), { prop1: 'Comment one' } );
     assert.throws(
-      function() { convertYaml( 'prop1: prop1:' ) },
+      function() { convertYaml( 'prop1: prop1:' ); },
       Error,
       'Error converting comment to YAML. Please check for formatting errors.'
     );
     assert.throws(
-      function() { convertYaml( 'prop1: prop1:', 0 ) },
+      function() { convertYaml( 'prop1: prop1:', 0 ); },
       Error,
       'Error converting comment #1 to YAML. Please check for formatting errors.'
     );

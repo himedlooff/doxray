@@ -32,33 +32,27 @@ CommentDocs.prototype.parseSourceFile = function( src ) {
   fileContents = CommentDocs.prototype.getFileContents( src, CommentDocs.regex[ ext ] );
   docs = CommentDocs.prototype.parseOutDocs( fileContents, CommentDocs.regex[ ext ] );
   code = CommentDocs.prototype.parseOutCode( fileContents, CommentDocs.regex[ ext ] );
-  // if ( parsingIsValid(docs, code) ) {
-  //   // Join the docs and code back together as structured objects.
-  //   convertedDocs = joinDocsAndCode( docs, code );
-  // }
-  // return convertedDocs;
+  if ( parsingIsValid(docs, code) ) {
+    // Join the docs and code back together as structured objects.
+    convertedDocs = joinDocsAndCode( docs, code );
+  }
+  return convertedDocs;
 };
 
-// CommentDocs.prototype.joinDocsAndCode = function( docs, code ) {
-//   var convertedDocs, i;
-//   convertedDocs = [];
-//   i = 0;
-//   // Loop through each doc and:
-//   // 1. Convert the YAML into a structured object.
-//   // 2. Add the converted doc and the code to an object so they can be
-//   //    accessed together.
-//   // 3. Return all of the new objects.
-//   for ( i; i < docs.length; i++ ) {
-//     // Add the converted docs and the code to the same object.
-//     convertedDocs.push({
-//       docs: convertYaml( docs[ i ], i ),
-//       code: code[ i ]
-//     });
-
-//     grunt.verbose.writeln( 'convertedDocs['+i+']:\n', convertedDocs[ i ] );
-//   }
-//   return convertedDocs;
-// };
+CommentDocs.prototype.joinDocsAndCode = function( docs, code ) {
+  var convertedDocs;
+  convertedDocs = [];
+  // Loop through each doc comment, convert it from yaml into an object, then
+  // create a new object that contains both the converted comment and the
+  // code that follows it in the source file.
+  docs.forEach(function( item, index ){
+    convertedDocs.push({
+      docs: CommentDocs.prototype.convertYaml( docs[ index ], index ),
+      code: code[ index ]
+    });
+  });
+  return convertedDocs;
+};
 
 CommentDocs.prototype.convertYaml = function( yamlString, index ) {
   var yaml, convertedYaml, yamlError;
