@@ -42,35 +42,16 @@ CommentDocs.prototype.parseSourceFile = function( src ) {
 CommentDocs.prototype.joinDocsAndCode = function( docs, code ) {
   var convertedDocs;
   convertedDocs = [];
-  // Loop through each doc comment, convert it from yaml into an object, then
-  // create a new object that contains both the converted comment and the
-  // code that follows it in the source file.
+  // Create an array of objects. Each object contains a docs and code property
+  // which represent the parsed doc comment object and the code that follows it
+  // in the source.
   docs.forEach(function( item, index ){
     convertedDocs.push({
-      docs: CommentDocs.prototype.convertYaml( docs[ index ], index ),
+      docs: docs[ index ],
       code: code[ index ]
     });
   });
   return convertedDocs;
-};
-
-CommentDocs.prototype.convertYaml = function( yamlString, index ) {
-  var yaml, convertedYaml, yamlError;
-  yaml = require('js-yaml');
-  // Try converting the doc to YAML and warn if it fails.
-  try {
-    convertedYaml = yaml.safeLoad( yamlString );
-  } catch ( e ) {
-    yamlError = 'Error converting comment # to YAML. Please check for formatting errors.';
-    if ( index !== undefined ) {
-      yamlError = yamlError.replace( '#', '#' + (index+1) );
-    } else {
-      yamlError = yamlError.replace( '# ', '' );
-    }
-    // TODO: A node.js equivalent to Grunts this.async();
-    throw new Error( yamlError );
-  }
-  return convertedYaml;
 };
 
 CommentDocs.prototype.parseOutCode = function( fileContents, regex ) {
@@ -90,11 +71,32 @@ CommentDocs.prototype.parseOutDocs = function( fileContents, regex ) {
   var docs;
   // "docs" are anything that matches the regex.
   docs = fileContents.match( regex.comment );
-  // Grab the doc text from the comments.
   docs.forEach(function( item, index ){
+    // Grab the doc text from the comments.
     docs[ index ] = CommentDocs.prototype.getTextFromDocComment( item, regex );
+    // Conver it from YAML into a JavaScript object.
+    docs[ index ] = CommentDocs.prototype.convertYaml( docs[ index ], index );
   });
   return docs;
+};
+
+CommentDocs.prototype.convertYaml = function( yamlString, index ) {
+  var yaml, convertedYaml, yamlError;
+  yaml = require('js-yaml');
+  // Try converting the doc to YAML and warn if it fails.
+  try {
+    convertedYaml = yaml.safeLoad( yamlString );
+  } catch ( e ) {
+    yamlError = 'Error converting comment # to YAML. Please check for formatting errors.';
+    if ( index !== undefined ) {
+      yamlError = yamlError.replace( '#', '#' + (index+1) );
+    } else {
+      yamlError = yamlError.replace( '# ', '' );
+    }
+    // TODO: A node.js equivalent to Grunts this.async();
+    throw new Error( yamlError );
+  }
+  return convertedYaml;
 };
 
 CommentDocs.prototype.parsingIsValid = function( docs, code ) {
