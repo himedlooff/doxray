@@ -2,17 +2,11 @@
    Parse documentation from code comments.
    ========================================================================== */
 
-var CommentDocs = function( src, dest ) {
-  try {
-    CommentDocs.prototype.verifyArgs( src, dest );
-  } catch ( e ) {
-    console.error( e );
-    return;
-  }
-  CommentDocs.prototype.parseSourceFile( src );
+var CommentDocs = function() {
+  //
 };
 
-CommentDocs.regex = {
+CommentDocs.prototype.regex = {
   html: {
     opening: /<!--\s*topdoc[^\n]*\n/,
     closing: /-->/,
@@ -25,16 +19,26 @@ CommentDocs.regex = {
   }
 };
 
+CommentDocs.prototype.parse = function( src, dest ) {
+  try {
+    CommentDocs.prototype.verifyArgs( src, dest );
+  } catch ( e ) {
+    console.error( e );
+    return;
+  }
+  CommentDocs.prototype.parseSourceFile( src );
+};
+
 CommentDocs.prototype.parseSourceFile = function( src ) {
   var fileContents, docs, code, convertedDocs, ext;
   // Get the file extension for src so we know which regex to use.
-  ext = CommentDocs.prototype.getCommentType( src );
-  fileContents = CommentDocs.prototype.getFileContents( src, CommentDocs.regex[ ext ] );
-  docs = CommentDocs.prototype.parseOutDocs( fileContents, CommentDocs.regex[ ext ] );
-  code = CommentDocs.prototype.parseOutCode( fileContents, CommentDocs.regex[ ext ] );
-  if ( CommentDocs.prototype.parsingIsValid( docs, code ) ) {
+  ext = this.getCommentType( src );
+  fileContents = this.getFileContents( src, this.regex[ ext ] );
+  docs = this.parseOutDocs( fileContents, this.regex[ ext ] );
+  code = this.parseOutCode( fileContents, this.regex[ ext ] );
+  if ( this.parsingIsValid( docs, code ) ) {
     // Join the docs and code back together as structured objects.
-    convertedDocs = CommentDocs.prototype.joinDocsAndCode( docs, code );
+    convertedDocs = this.joinDocsAndCode( docs, code );
   }
   return convertedDocs;
 };
@@ -73,10 +77,10 @@ CommentDocs.prototype.parseOutDocs = function( fileContents, regex ) {
   docs = fileContents.match( regex.comment );
   docs.forEach(function( item, index ){
     // Grab the doc text from the comments.
-    docs[ index ] = CommentDocs.prototype.getTextFromDocComment( item, regex );
+    docs[ index ] = this.getTextFromDocComment( item, regex );
     // Conver it from YAML into a JavaScript object.
-    docs[ index ] = CommentDocs.prototype.convertYaml( docs[ index ], index );
-  });
+    docs[ index ] = this.convertYaml( docs[ index ], index );
+  }, this );
   return docs;
 };
 

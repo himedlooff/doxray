@@ -1,22 +1,12 @@
 var should = require('chai').should(),
   assert = require('chai').assert,
   CommentDocs = require('../commentdocs'),
-  verifySrcArg = CommentDocs.prototype.verifySrcArg,
-  getCommentType = CommentDocs.prototype.getCommentType,
-  regex = CommentDocs.regex,
-  getFileContents = CommentDocs.prototype.getFileContents,
-  getTextFromDocComment = CommentDocs.prototype.getTextFromDocComment,
-  convertYaml = CommentDocs.prototype.convertYaml,
-  parseOutDocs = CommentDocs.prototype.parseOutDocs,
-  parseOutCode = CommentDocs.prototype.parseOutCode,
-  parsingIsValid = CommentDocs.prototype.parsingIsValid,
-  joinDocsAndCode = CommentDocs.prototype.joinDocsAndCode,
-  parseSourceFile = CommentDocs.prototype.parseSourceFile;
+  commentDocs = new CommentDocs();
 
 describe('#parseSourceFile', function() {
   it('converts a file into an array of objects', function() {
     assert.deepEqual(
-      parseSourceFile( 'test/getfilecontents.css' ),
+      commentDocs.parseSourceFile( 'test/getfilecontents.css' ),
       [{
         docs: { prop1: 'Comment one' },
         code: ''
@@ -30,7 +20,7 @@ describe('#joinDocsAndCode', function() {
     var docs = [ { prop1: 'Comment one' } ];
     var code = [ '.test{\n    content:\"Hello\";\n}' ];
     assert.deepEqual(
-      joinDocsAndCode( docs, code ),
+      commentDocs.joinDocsAndCode( docs, code ),
       [{
         docs: docs[0],
         code: code[0]
@@ -42,16 +32,19 @@ describe('#joinDocsAndCode', function() {
 describe('#parsingIsValid', function() {
   it('validates that their is one code snippet (even if it\'s an empty string) for each doc comment', function() {
     var fileContents = '/* topdoc\n    prop1: Comment one\n*/\n.test{\n    content:\"Hello\";\n}';
-    var docs = CommentDocs.prototype.parseOutDocs( fileContents, regex.css );
-    var code = CommentDocs.prototype.parseOutCode( fileContents, regex.css );
-    assert.equal( parsingIsValid( docs, code ), true );
+    var docs = commentDocs.parseOutDocs( fileContents, commentDocs.regex.css );
+    var code = commentDocs.parseOutCode( fileContents, commentDocs.regex.css );
+    assert.equal( commentDocs.parsingIsValid( docs, code ), true );
   });
 });
 
 describe('#parseOutCode', function() {
   it('build an array from the code after each doc comment', function() {
     assert.deepEqual(
-      parseOutCode( '/* topdoc\n    prop1: Comment one\n*/\n.test{\n    content:\"Hello\";\n}', regex.css ),
+      commentDocs.parseOutCode(
+        '/* topdoc\n    prop1: Comment one\n*/\n.test{\n    content:\"Hello\";\n}',
+        commentDocs.regex.css
+      ),
       [ '.test{\n    content:\"Hello\";\n}' ]
     );
   });
@@ -60,7 +53,10 @@ describe('#parseOutCode', function() {
 describe('#getTextFromDocComment', function() {
   it('removes the opening and closing comments from a doc comment', function() {
     assert.equal(
-      getTextFromDocComment( '/* topdoc\n    prop1: Comment one\n*/\n', regex.css ),
+      commentDocs.getTextFromDocComment(
+        '/* topdoc\n    prop1: Comment one\n*/\n',
+        commentDocs.regex.css
+      ),
       '    prop1: Comment one\n\n'
     );
   });
@@ -69,7 +65,10 @@ describe('#getTextFromDocComment', function() {
 describe('#parseOutDocs', function() {
   it('build an array from the text of each doc comment', function() {
     assert.deepEqual(
-      parseOutDocs( '/* topdoc\n    prop1: Comment one\n*/\n', regex.css ),
+      commentDocs.parseOutDocs(
+        '/* topdoc\n    prop1: Comment one\n*/\n',
+        commentDocs.regex.css
+      ),
       [ { prop1: 'Comment one' } ]
     );
   });
@@ -78,14 +77,14 @@ describe('#parseOutDocs', function() {
 describe('#convertYaml', function() {
   it('converts a yaml string into an object and identifies the comment number if the conversion fails', function() {
     var yamlString = 'prop1: Comment one';
-    assert.deepEqual( convertYaml( yamlString ), { prop1: 'Comment one' } );
+    assert.deepEqual( commentDocs.convertYaml( yamlString ), { prop1: 'Comment one' } );
     assert.throws(
-      function() { convertYaml( 'prop1: prop1:' ); },
+      function() { commentDocs.convertYaml( 'prop1: prop1:' ); },
       Error,
       'Error converting comment to YAML. Please check for formatting errors.'
     );
     assert.throws(
-      function() { convertYaml( 'prop1: prop1:', 0 ); },
+      function() { commentDocs.convertYaml( 'prop1: prop1:', 0 ); },
       Error,
       'Error converting comment #1 to YAML. Please check for formatting errors.'
     );
@@ -95,7 +94,7 @@ describe('#convertYaml', function() {
 describe('#getFileContents', function() {
   it('returns the contents of a file, trimming everything before the first doc comment', function() {
     assert.equal(
-      getFileContents( 'test/getfilecontents.css', regex.css ),
+      commentDocs.getFileContents( 'test/getfilecontents.css', commentDocs.regex.css ),
       '/* topdoc\n    prop1: Comment one\n*/\n'
     );
   });
@@ -103,16 +102,16 @@ describe('#getFileContents', function() {
 
 describe('#getCommentType', function() {
   it('returns the correct comment type based on the file extension', function() {
-    assert.equal( getCommentType('test.css'), 'css' );
-    assert.equal( getCommentType('test.less'), 'css' );
-    assert.equal( getCommentType('test.less'), 'css' );
-    assert.equal( getCommentType('test.html'), 'html' );
+    assert.equal( commentDocs.getCommentType('test.css'), 'css' );
+    assert.equal( commentDocs.getCommentType('test.less'), 'css' );
+    assert.equal( commentDocs.getCommentType('test.less'), 'css' );
+    assert.equal( commentDocs.getCommentType('test.html'), 'html' );
   });
 });
 
 describe('#verifySrcArg', function() {
   it('throws an error if the src or dest arguments are not defined', function() {
-    assert.throws( function(){ verifySrcArg(); }, Error );
-    assert.throws( function(){ verifySrcArg('test.css'); }, Error );
+    assert.throws( function(){ commentDocs.verifySrcArg(); }, Error );
+    assert.throws( function(){ commentDocs.verifySrcArg('test.css'); }, Error );
   });
 });
