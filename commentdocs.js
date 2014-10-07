@@ -32,9 +32,9 @@ CommentDocs.prototype.parseSourceFile = function( src ) {
   fileContents = CommentDocs.prototype.getFileContents( src, CommentDocs.regex[ ext ] );
   docs = CommentDocs.prototype.parseOutDocs( fileContents, CommentDocs.regex[ ext ] );
   code = CommentDocs.prototype.parseOutCode( fileContents, CommentDocs.regex[ ext ] );
-  if ( parsingIsValid(docs, code) ) {
+  if ( CommentDocs.prototype.parsingIsValid( docs, code ) ) {
     // Join the docs and code back together as structured objects.
-    convertedDocs = joinDocsAndCode( docs, code );
+    convertedDocs = CommentDocs.prototype.joinDocsAndCode( docs, code );
   }
   return convertedDocs;
 };

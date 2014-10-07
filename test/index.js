@@ -24,7 +24,7 @@ var should = require('chai').should(),
 // });
 
 describe('#joinDocsAndCode', function() {
-  it('takes an array of doc comments and an array of code snippets and merges them into one object, converting the docs from yaml into an object', function() {
+  it('takes an array of doc comments and an array of code snippets and merges them into one object', function() {
     var docs = [ { prop1: 'Comment one' } ];
     var code = [ '.test{\n    content:\"Hello\";\n}' ];
     assert.deepEqual(
