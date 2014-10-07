@@ -67,9 +67,12 @@ CommentDocs.prototype.convertYaml = function( yamlString, index ) {
   try {
     convertedYaml = yaml.safeLoad( yamlString );
   } catch ( e ) {
-    yamlError = 'Error converting comment' +
-                ( index !== undefined ? ' #' + (index+1) + ' ' : ' ' ) +
-                'to YAML. Please check for formatting errors.';
+    yamlError = 'Error converting comment # to YAML. Please check for formatting errors.';
+    if ( index !== undefined ) {
+      yamlError = yamlError.replace( '#', '#' + (index+1) );
+    } else {
+      yamlError = yamlError.replace( '# ', '' );
+    }
     // TODO: A node.js equivalent to Grunts this.async();
     throw new Error( yamlError );
   }
