@@ -5,8 +5,8 @@
 var CommentDocs = function( src, dest ) {
   try {
     CommentDocs.prototype.verifyArgs( src, dest );
-  } catch ( err ) {
-    console.error( err );
+  } catch ( e ) {
+    console.error( e );
     return;
   }
   CommentDocs.prototype.parseSourceFile( src );
@@ -26,24 +26,54 @@ CommentDocs.regex = {
 };
 
 CommentDocs.prototype.parseSourceFile = function( src ) {
-  var data, docs, code, convertedDocs, ext;
+  var fileContents, docs, code, convertedDocs, ext;
   // Get the file extension for src so we know which regex to use.
   ext = CommentDocs.prototype.getCommentType( src );
   fileContents = CommentDocs.prototype.getFileContents( src, CommentDocs.regex[ ext ] );
   docs = CommentDocs.prototype.parseOutDocs( fileContents, CommentDocs.regex[ ext ] );
   code = CommentDocs.prototype.parseOutCode( fileContents, CommentDocs.regex[ ext ] );
-  console.log( code );
-  return code;
-  // // Validate the parsing before
   // if ( parsingIsValid(docs, code) ) {
-  //   grunt.log.ok('Parsing was successful.');
-  //   grunt.verbose.writeln( 'docs:\n', docs );
-  //   grunt.verbose.writeln( 'code:\n', code );
-
   //   // Join the docs and code back together as structured objects.
   //   convertedDocs = joinDocsAndCode( docs, code );
   // }
   // return convertedDocs;
+};
+
+// CommentDocs.prototype.joinDocsAndCode = function( docs, code ) {
+//   var convertedDocs, i;
+//   convertedDocs = [];
+//   i = 0;
+//   // Loop through each doc and:
+//   // 1. Convert the YAML into a structured object.
+//   // 2. Add the converted doc and the code to an object so they can be
+//   //    accessed together.
+//   // 3. Return all of the new objects.
+//   for ( i; i < docs.length; i++ ) {
+//     // Add the converted docs and the code to the same object.
+//     convertedDocs.push({
+//       docs: convertYaml( docs[ i ], i ),
+//       code: code[ i ]
+//     });
+
+//     grunt.verbose.writeln( 'convertedDocs['+i+']:\n', convertedDocs[ i ] );
+//   }
+//   return convertedDocs;
+// };
+
+CommentDocs.prototype.convertYaml = function( yamlString, index ) {
+  var yaml, convertedYaml, yamlError;
+  yaml = require('js-yaml');
+  // Try converting the doc to YAML and warn if it fails.
+  try {
+    convertedYaml = yaml.safeLoad( yamlString );
+  } catch ( e ) {
+    yamlError = 'Error converting comment' +
+                ( index !== undefined ? ' #' + (index+1) + ' ' : ' ' ) +
+                'to YAML. Please check for formatting errors.';
+    // TODO: A node.js equivalent to Grunts this.async();
+    throw new Error( yamlError );
+  }
+  return convertedYaml;
 };
 
 CommentDocs.prototype.parseOutCode = function( fileContents, regex ) {
@@ -74,9 +104,8 @@ CommentDocs.prototype.parsingIsValid = function( docs, code ) {
   // For each doc comment ther should be one correcsponding code snippet.
   // This checks to make sure the doc and code arrays have the same length.
   if ( docs.length !== code.length ) {
-    throw new Error('Parsing failed because the number of parsed doc comments does not match the number of parsed code snippets.');
     // TODO: A node.js equivalent to Grunts this.async();
-    return false;
+    throw new Error('Parsing failed because the number of parsed doc comments does not match the number of parsed code snippets.');
   } else {
     return true;
   }

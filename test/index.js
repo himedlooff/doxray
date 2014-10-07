@@ -9,6 +9,7 @@ var should = require('chai').should(),
   parseOutDocs = CommentDocs.prototype.parseOutDocs,
   parseOutCode = CommentDocs.prototype.parseOutCode,
   parsingIsValid = CommentDocs.prototype.parsingIsValid,
+  convertYaml = CommentDocs.prototype.convertYaml,
   parseSourceFile = CommentDocs.prototype.parseSourceFile;
 
 // describe('#parseSourceFile', function() {
@@ -20,6 +21,23 @@ var should = require('chai').should(),
 //     );
 //   });
 // });
+
+describe('#convertYaml', function() {
+  it('converts a yaml string into an object and identifies the comment number if the conversion fails', function() {
+    var yamlString = 'prop1: Comment one';
+    assert.deepEqual( convertYaml( yamlString ), { prop1: 'Comment one' } );
+    assert.throws(
+      function() { convertYaml( 'prop1: prop1:' ) },
+      Error,
+      'Error converting comment to YAML. Please check for formatting errors.'
+    );
+    assert.throws(
+      function() { convertYaml( 'prop1: prop1:', 0 ) },
+      Error,
+      'Error converting comment #1 to YAML. Please check for formatting errors.'
+    );
+  });
+});
 
 describe('#parsingIsValid', function() {
   it('validates that their is one code snippet (even if it\'s an empty string) for each doc comment', function() {
