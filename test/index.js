@@ -97,14 +97,39 @@ describe('#joinDocsAndCode', function() {
   });
 });
 
-describe('#parseSourceFile', function() {
-  it('converts a file into an array of objects', function() {
+describe('#parseOneFile', function() {
+  it('parses a single file into an array of objects', function() {
     assert.deepEqual(
-      commentDocs.parseSourceFile( 'test/getfilecontents.css' ),
+      commentDocs.parseOneFile( 'test/getfilecontents.css' ),
       [{
         docs: { prop1: 'Comment one' },
         code: ''
       }]
+    );
+  });
+});
+
+describe('#parse', function() {
+  it('parses a file or an array of files', function() {
+    assert.deepEqual(
+      commentDocs.parseOneFile( 'test/getfilecontents.css' ),
+      [{
+        docs: { prop1: 'Comment one' },
+        code: ''
+      }]
+    );
+    assert.deepEqual(
+      commentDocs.parse( [ 'test/getfilecontents.css', 'test/getfilecontents.css' ] ),
+      [
+        [{
+          docs: { prop1: 'Comment one' },
+          code: ''
+        }],
+        [{
+          docs: { prop1: 'Comment one' },
+          code: ''
+        }]
+      ]
     );
   });
 });

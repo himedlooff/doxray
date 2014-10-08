@@ -19,7 +19,19 @@ CommentDocs.prototype.regex = {
   }
 };
 
-CommentDocs.prototype.parseSourceFile = function( src ) {
+CommentDocs.prototype.parse = function( src ) {
+  if ( typeof src == 'string' ) {
+    return this.parseOneFile( src );
+  } else if ( Array.isArray( src ) ) {
+    var parsed = [];
+    src.forEach(function( singleSrc ) {
+      parsed.push( this.parseOneFile( singleSrc ) );
+    }, this);
+    return parsed;
+  }
+};
+
+CommentDocs.prototype.parseOneFile = function( src ) {
   var fileContents, docs, code, convertedDocs, ext;
   // Get the file extension for src so we know which regex to use.
   ext = this.getCommentType( src );
