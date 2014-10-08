@@ -19,6 +19,13 @@ CommentDocs.prototype.regex = {
   }
 };
 
+CommentDocs.prototype.ifPropertyMatches = function( obj, property, callback ) {
+  var propToMatch = obj[ property ];
+  if ( propToMatch !== undefined ) {
+    callback( propToMatch );
+  }
+};
+
 CommentDocs.prototype.parse = function( src ) {
   if ( typeof src == 'string' ) {
     return this.parseOneFile( src );

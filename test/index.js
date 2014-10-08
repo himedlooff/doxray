@@ -133,3 +133,17 @@ describe('#parse', function() {
     );
   });
 });
+
+describe('#ifPropertyMatches', function() {
+  it('...', function() {
+    var returnValue1, returnValue2;
+    commentDocs.ifPropertyMatches( { foo: 'bar' }, 'foo', function( value ) {
+      returnValue1 = value;
+    }),
+    commentDocs.ifPropertyMatches( { foo: 'bar' }, 'bar', function( value ) {
+      returnValue2 = value;
+    }),
+    assert.equal( returnValue1, 'bar' );
+    assert.equal( returnValue2, undefined );
+  });
+});
