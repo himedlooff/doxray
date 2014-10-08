@@ -38,18 +38,6 @@ describe('#convertYaml', function() {
   });
 });
 
-describe('#parseOutDocs', function() {
-  it('build an array from the text of each doc comment', function() {
-    assert.deepEqual(
-      commentDocs.parseOutDocs(
-        '/* topdoc\n    prop1: Comment one\n*/\n',
-        commentDocs.regex.css
-      ),
-      [ { prop1: 'Comment one' } ]
-    );
-  });
-});
-
 describe('#getTextFromDocComment', function() {
   it('removes the opening and closing comments from a doc comment', function() {
     assert.equal(
@@ -58,6 +46,18 @@ describe('#getTextFromDocComment', function() {
         commentDocs.regex.css
       ),
       '    prop1: Comment one\n\n'
+    );
+  });
+});
+
+describe('#parseOutDocs', function() {
+  it('build an array from the text of each doc comment', function() {
+    assert.deepEqual(
+      commentDocs.parseOutDocs(
+        '/* topdoc\n    prop1: Comment one\n*/\n',
+        commentDocs.regex.css
+      ),
+      [ { prop1: 'Comment one' } ]
     );
   });
 });
