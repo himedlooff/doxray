@@ -19,16 +19,6 @@ CommentDocs.prototype.regex = {
   }
 };
 
-CommentDocs.prototype.parse = function( src, dest ) {
-  try {
-    CommentDocs.prototype.verifyArgs( src, dest );
-  } catch ( e ) {
-    console.error( e );
-    return;
-  }
-  CommentDocs.prototype.parseSourceFile( src );
-};
-
 CommentDocs.prototype.parseSourceFile = function( src ) {
   var fileContents, docs, code, convertedDocs, ext;
   // Get the file extension for src so we know which regex to use.
@@ -145,12 +135,6 @@ CommentDocs.prototype.getCommentType = function( src ) {
       ext = 'css';
   }
   return ext;
-};
-
-CommentDocs.prototype.verifyArgs = function( src, dest ) {
-  if ( src === undefined || dest === undefined ) {
-    throw new Error('The src and dest arguments are required.');
-  }
 };
 
 module.exports = CommentDocs;

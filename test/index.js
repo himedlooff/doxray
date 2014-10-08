@@ -108,10 +108,3 @@ describe('#getCommentType', function() {
     assert.equal( commentDocs.getCommentType('test.html'), 'html' );
   });
 });
-
-describe('#verifySrcArg', function() {
-  it('throws an error if the src or dest arguments are not defined', function() {
-    assert.throws( function(){ commentDocs.verifySrcArg(); }, Error );
-    assert.throws( function(){ commentDocs.verifySrcArg('test.css'); }, Error );
-  });
-});
