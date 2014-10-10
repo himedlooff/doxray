@@ -134,13 +134,13 @@ describe('#parse', function() {
   });
 });
 
-describe('#ifPropertyMatches', function() {
-  it('...', function() {
+describe('#ifHasProperty', function() {
+  it('if an object has the specificed property a callback function will be called passing the property value as the first parameter', function() {
     var returnValue1, returnValue2;
-    commentDocs.ifPropertyMatches( { foo: 'bar' }, 'foo', function( value ) {
+    commentDocs.ifHasProperty( { foo: 'bar' }, 'foo', function( value ) {
       returnValue1 = value;
     });
-    commentDocs.ifPropertyMatches( { foo: 'bar' }, 'bar', function( value ) {
+    commentDocs.ifHasProperty( { foo: 'bar' }, 'bar', function( value ) {
       returnValue2 = value;
     });
     assert.equal( returnValue1, 'bar' );

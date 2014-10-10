@@ -19,7 +19,7 @@ CommentDocs.prototype.regex = {
   }
 };
 
-CommentDocs.prototype.ifPropertyMatches = function( obj, property, callback ) {
+CommentDocs.prototype.ifHasProperty = function( obj, property, callback ) {
   var propToMatch = obj[ property ];
   if ( propToMatch !== undefined ) {
     callback( propToMatch );
