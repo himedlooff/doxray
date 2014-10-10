@@ -19,6 +19,15 @@ CommentDocs.prototype.regex = {
   }
 };
 
+CommentDocs.prototype.addAltCodeToDocSet = function( docSet1, docSet2 ) {
+  if ( docSet1.code_alt !== undefined ) {
+    docSet1.code_alt += '\n\n' + docSet2.code;
+  } else {
+    docSet1.code_alt = docSet2.code;
+  }
+  return docSet1;
+};
+
 CommentDocs.prototype.ifHasProperty = function( obj, property, callback ) {
   var propToMatch = obj[ property ];
   if ( propToMatch !== undefined ) {

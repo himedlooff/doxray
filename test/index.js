@@ -147,3 +147,22 @@ describe('#ifHasProperty', function() {
     assert.equal( returnValue2, undefined );
   });
 });
+
+describe('#addAltCodeToDocSet', function() {
+  it('when given two objects, take the code property from the second object and add or append it to the code_alt property of the first object', function() {
+    assert.deepEqual(
+      commentDocs.addAltCodeToDocSet(
+        { code: 'first obj code' },
+        { code: 'second obj code' }
+      ),
+      { code: 'first obj code', code_alt: 'second obj code' }
+    );
+    assert.deepEqual(
+      commentDocs.addAltCodeToDocSet(
+        { code: 'first obj code', code_alt: 'existing alt_code' },
+        { code: 'additional alt_code' }
+      ),
+      { code: 'first obj code', code_alt: 'existing alt_code\n\nadditional alt_code' }
+    );
+  });
+});
