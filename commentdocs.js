@@ -28,8 +28,8 @@ CommentDocs.prototype.mergeParsedSources = function( parsedSources, mergeProp ) 
   var convertedSource = parsedSources[ 0 ];
   // Loop through all parsed sources except for the first one which is now the
   // "master" source.
-  var checkConvertedSource = function( propValue, docSet ) {
-    convertedSource.forEach(function( masterDocSet ) {
+  var compareToConvertedSrc = function( propValue, docSet ) {
+    convertedSource.forEach( function( masterDocSet ) {
       var that = this;
       this.ifHasProperty( masterDocSet.docs, mergeProp, function( masterPropValue ) {
         if ( masterPropValue == propValue ) {
@@ -38,14 +38,14 @@ CommentDocs.prototype.mergeParsedSources = function( parsedSources, mergeProp ) 
       });
     }, this );
   };
-  parsedSources.slice( 1 ).forEach(function( src ) {
+  parsedSources.slice( 1 ).forEach( function( src ) {
     src.forEach(function( docSet ) {
       // If the mergeProp property exists on the object then loop through the
       // "master" source to see if there is a matching property with the same
       // value.
       var that = this;
       this.ifHasProperty( docSet.docs, mergeProp, function( propValue ) {
-        checkConvertedSource.bind( that, propValue, docSet )();
+        compareToConvertedSrc.bind( that, propValue, docSet )();
       });
     }, this );
   }, this );
