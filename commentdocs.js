@@ -19,6 +19,39 @@ CommentDocs.prototype.regex = {
   }
 };
 
+CommentDocs.prototype.mergeParsedSources = function( parsedSources, mergeProp ) {
+  // Save the first parsed file as the "master" source. Subsequent parsed files
+  // will check to see if they have matching top-level properties that match
+  // mergeProp. If they have the same properties and the values match then the
+  // code property from subsequent files will be added to the `code_alt`
+  // property of the master source.
+  var convertedSource = parsedSources[ 0 ];
+  // Loop through all parsed sources except for the first one which is now the
+  // "master" source.
+  var checkConvertedSource = function( propValue, docSet ) {
+    convertedSource.forEach(function( masterDocSet ) {
+      var that = this;
+      this.ifHasProperty( masterDocSet.docs, mergeProp, function( masterPropValue ) {
+        if ( masterPropValue == propValue ) {
+          masterDocSet = that.addAltCodeToDocSet( masterDocSet, docSet );
+        }
+      });
+    }, this );
+  };
+  parsedSources.slice( 1 ).forEach(function( src ) {
+    src.forEach(function( docSet ) {
+      // If the mergeProp property exists on the object then loop through the
+      // "master" source to see if there is a matching property with the same
+      // value.
+      var that = this;
+      this.ifHasProperty( docSet.docs, mergeProp, function( propValue ) {
+        checkConvertedSource.bind( that, propValue, docSet )();
+      });
+    }, this );
+  }, this );
+  return convertedSource;
+};
+
 CommentDocs.prototype.addAltCodeToDocSet = function( docSet1, docSet2 ) {
   if ( docSet1.code_alt !== undefined ) {
     docSet1.code_alt += '\n\n' + docSet2.code;

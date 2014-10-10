@@ -166,3 +166,28 @@ describe('#addAltCodeToDocSet', function() {
     );
   });
 });
+
+describe('#mergeParsedSources', function() {
+  it('...', function() {
+    assert.deepEqual(
+      commentDocs.mergeParsedSources(
+        [
+          [
+            { docs: { name: 'pattern name' }, code: 'first obj code' }
+          ],
+          [
+            { docs: { name: 'pattern name' }, code: 'second obj code' }
+          ]
+        ],
+        'name'
+      ),
+      [
+        {
+          docs: { name: 'pattern name' },
+          code: 'first obj code',
+          code_alt: 'second obj code'
+        }
+      ]
+    );
+  });
+});
