@@ -19,37 +19,27 @@ CommentDocs.prototype.regex = {
   }
 };
 
-CommentDocs.prototype.mergeParsedSources = function( parsedSources, mergeProp ) {
-  // Save the first parsed file as the "master" source. Subsequent parsed files
-  // will check to see if they have matching top-level properties that match
-  // mergeProp. If they have the same properties and the values match then the
-  // code property from subsequent files will be added to the `code_alt`
-  // property of the master source.
-  var convertedSource = parsedSources[ 0 ];
-  // Loop through all parsed sources except for the first one which is now the
-  // "master" source.
-  var compareToConvertedSrc = function( propValue, docSet ) {
-    convertedSource.forEach( function( masterDocSet ) {
-      var that = this;
-      this.ifHasProperty( masterDocSet.docs, mergeProp, function( masterPropValue ) {
-        if ( masterPropValue == propValue ) {
-          masterDocSet = that.addAltCodeToDocSet( masterDocSet, docSet );
+CommentDocs.prototype.mergeParsedSources = function( sources, mergeProp ) {
+  var first, theRest;
+  // The first parsed source will be our "master" source.
+  first = sources[ 0 ];
+  // The rest of the sources are saved to their own array.
+  theRest = sources.slice( 1 );
+  // Compare each doc set from the master source to the doc sets of the rest of
+  // the sources. If they both have the mergeProp property and their values
+  // match then merge them together. "Merging" is done by taking the code from
+  // the second doc set and adding to the `code_alt` property of the master doc
+  // set. The rest of the second doc set is discarded.
+  first.forEach( function( firstDocSet ) {
+    theRest.forEach( function( src ) {
+      src.forEach( function( secondDocSet ) {
+        if ( this.hasMatchingValues( firstDocSet.docs, secondDocSet.docs, mergeProp ) ) {
+          firstDocSet = this.addAltCodeToDocSet( firstDocSet, secondDocSet );
         }
-      });
-    }, this );
-  };
-  parsedSources.slice( 1 ).forEach( function( src ) {
-    src.forEach(function( docSet ) {
-      // If the mergeProp property exists on the object then loop through the
-      // "master" source to see if there is a matching property with the same
-      // value.
-      var that = this;
-      this.ifHasProperty( docSet.docs, mergeProp, function( propValue ) {
-        compareToConvertedSrc.bind( that, propValue, docSet )();
-      });
+      }, this );
     }, this );
   }, this );
-  return convertedSource;
+  return first;
 };
 
 CommentDocs.prototype.addAltCodeToDocSet = function( docSet1, docSet2 ) {
@@ -61,7 +51,7 @@ CommentDocs.prototype.addAltCodeToDocSet = function( docSet1, docSet2 ) {
   return docSet1;
 };
 
-CommentDocs.prototype.ifValuesMatch = function( obj1, obj2, key, value ) {
+CommentDocs.prototype.hasMatchingValues = function( obj1, obj2, key ) {
   // First check to see if the keys even exist
   if ( obj1[ key ] !== undefined && obj1[ key ] !== undefined ) {
     if ( obj1[ key ] === obj2[ key ] ) {
@@ -71,14 +61,7 @@ CommentDocs.prototype.ifValuesMatch = function( obj1, obj2, key, value ) {
   return false;
 };
 
-CommentDocs.prototype.ifHasProperty = function( obj, property, callback ) {
-  var propToMatch = obj[ property ];
-  if ( propToMatch !== undefined ) {
-    callback( propToMatch );
-  }
-};
-
-CommentDocs.prototype.parse = function( src ) {
+CommentDocs.prototype.parse = function( src, mergeProp ) {
   if ( typeof src == 'string' ) {
     return this.parseOneFile( src );
   } else if ( Array.isArray( src ) ) {
@@ -86,7 +69,11 @@ CommentDocs.prototype.parse = function( src ) {
     src.forEach(function( singleSrc ) {
       parsed.push( this.parseOneFile( singleSrc ) );
     }, this);
-    return parsed;
+    if ( mergeProp !== undefined ) {
+      return this.mergeParsedSources( parsed, mergeProp );
+    } else {
+      return parsed;
+    }
   }
 };
 

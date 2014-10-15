@@ -134,24 +134,10 @@ describe('#parse', function() {
   });
 });
 
-describe('#ifHasProperty', function() {
-  it('if an object has the specificed property a callback function will be called passing the property value as the first parameter', function() {
-    var returnValue1, returnValue2;
-    commentDocs.ifHasProperty( { foo: 'bar' }, 'foo', function( value ) {
-      returnValue1 = value;
-    });
-    commentDocs.ifHasProperty( { foo: 'bar' }, 'bar', function( value ) {
-      returnValue2 = value;
-    });
-    assert.equal( returnValue1, 'bar' );
-    assert.equal( returnValue2, undefined );
-  });
-});
-
-describe('#ifValuesMatch', function() {
+describe('#hasMatchingValues', function() {
   it('...', function() {
     assert.equal(
-      commentDocs.ifValuesMatch(
+      commentDocs.hasMatchingValues(
         { foo: 'bar' },
         { foo: 'bar' },
         'foo',
@@ -160,7 +146,7 @@ describe('#ifValuesMatch', function() {
       true
     );
     assert.equal(
-      commentDocs.ifValuesMatch(
+      commentDocs.hasMatchingValues(
         { foo: 'bar' },
         { baz: 'bar' },
         'foo',
@@ -169,7 +155,7 @@ describe('#ifValuesMatch', function() {
       false
     );
     assert.equal(
-      commentDocs.ifValuesMatch(
+      commentDocs.hasMatchingValues(
         { foo: 'bar' },
         { foo: 'baz' },
         'foo',
@@ -200,7 +186,7 @@ describe('#addAltCodeToDocSet', function() {
 });
 
 describe('#mergeParsedSources', function() {
-  it('...', function() {
+  it('merges two objects if their docs share the same property and value', function() {
     assert.deepEqual(
       commentDocs.mergeParsedSources(
         [

@@ -11,4 +11,4 @@ var docs = new CommentDocs;
 //   { mergeProp: 'prop1' }
 // ));
 
-console.log(docs.parse(['test/getfilecontents.css']));
+console.log(docs.parse(['test.css', 'test.less', 'test-2.less'], 'prop1'));
