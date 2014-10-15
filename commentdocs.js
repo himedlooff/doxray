@@ -61,6 +61,16 @@ CommentDocs.prototype.addAltCodeToDocSet = function( docSet1, docSet2 ) {
   return docSet1;
 };
 
+CommentDocs.prototype.ifValuesMatch = function( obj1, obj2, key, value ) {
+  // First check to see if the keys even exist
+  if ( obj1[ key ] !== undefined && obj1[ key ] !== undefined ) {
+    if ( obj1[ key ] === obj2[ key ] ) {
+      return true;
+    }
+  }
+  return false;
+};
+
 CommentDocs.prototype.ifHasProperty = function( obj, property, callback ) {
   var propToMatch = obj[ property ];
   if ( propToMatch !== undefined ) {

@@ -148,6 +148,38 @@ describe('#ifHasProperty', function() {
   });
 });
 
+describe('#ifValuesMatch', function() {
+  it('...', function() {
+    assert.equal(
+      commentDocs.ifValuesMatch(
+        { foo: 'bar' },
+        { foo: 'bar' },
+        'foo',
+        'bar'
+      ),
+      true
+    );
+    assert.equal(
+      commentDocs.ifValuesMatch(
+        { foo: 'bar' },
+        { baz: 'bar' },
+        'foo',
+        'bar'
+      ),
+      false
+    );
+    assert.equal(
+      commentDocs.ifValuesMatch(
+        { foo: 'bar' },
+        { foo: 'baz' },
+        'foo',
+        'bar'
+      ),
+      false
+    );
+  });
+});
+
 describe('#addAltCodeToDocSet', function() {
   it('when given two objects, take the code property from the second object and add or append it to the code_alt property of the first object', function() {
     assert.deepEqual(
