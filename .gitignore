@@ -38,22 +38,11 @@ Icon?
 ehthumbs.db
 Thumbs.db
 
+# Tests #
+#########
+test/test.json
+
 # Grunt.js #
 ############
 node_modules/
 .grunt/
-
-# Bower packages #
-##################
-bower_components/
-/vendor
-
-# Sheer stuff #
-###############
-*.swp
-*.pyc
-.env
-
-# Floobits stuff #
-##################
-.floo*
