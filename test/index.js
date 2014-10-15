@@ -4,7 +4,7 @@ chai = require('chai');
 assert = chai.assert;
 chai.use( require('chai-fs') );
 
-CommentDocs = require('../commentdocs');
+CommentDocs = require('../index');
 commentDocs = new CommentDocs();
 
 describe('#getCommentType', function() {
