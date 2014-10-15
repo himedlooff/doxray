@@ -21,7 +21,7 @@ CommentDocs.prototype.regex = {
 
 CommentDocs.prototype.writeJSON = function( convertedDocs, dest ) {
   var fs;
-  fs = require('fs-extra');
+  fs = require('fs');
   fs.writeFile( dest, JSON.stringify( convertedDocs, null, '\t' ), function( err ) {
     if ( err ) {
       throw err;
@@ -182,7 +182,7 @@ CommentDocs.prototype.getTextFromDocComment = function( item, regex ) {
 
 CommentDocs.prototype.getFileContents = function( src, regex ) {
   var fs, data;
-  fs = require('fs-extra');
+  fs = require('fs');
   data = fs.readFileSync( src, 'utf-8' );
   // Trim everything before the first regex because it's not associated with
   // any comment.
