@@ -19,6 +19,19 @@ CommentDocs.prototype.regex = {
   }
 };
 
+CommentDocs.prototype.writeJSON = function( convertedDocs, dest ) {
+  var fs;
+  fs = require('fs-extra');
+  fs.writeFile( dest, JSON.stringify( convertedDocs, null, '\t' ), function( err ) {
+    if ( err ) {
+      throw err;
+      // TODO: A node.js equivalent to Grunts this.async( err );
+    }
+    console.log( dest, ' was created.' );
+    // TODO: A node.js equivalent to Grunts this.async();
+  });
+};
+
 CommentDocs.prototype.mergeParsedSources = function( sources, mergeProp ) {
   var first, theRest;
   // The first parsed source will be our "master" source.
@@ -138,7 +151,7 @@ CommentDocs.prototype.convertYaml = function( yamlString, index ) {
   // Try converting the doc to YAML and warn if it fails.
   try {
     convertedYaml = yaml.safeLoad( yamlString );
-  } catch ( e ) {
+  } catch ( err ) {
     yamlError = 'Error converting comment # to YAML. Please check for formatting errors.';
     if ( index !== undefined ) {
       yamlError = yamlError.replace( '#', '#' + (index+1) );

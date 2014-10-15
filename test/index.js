@@ -1,7 +1,11 @@
-var should = require('chai').should(),
-  assert = require('chai').assert,
-  CommentDocs = require('../commentdocs'),
-  commentDocs = new CommentDocs();
+var chai, assert, CommentDocs, commentDocs;
+
+chai = require('chai');
+assert = chai.assert;
+chai.use( require('chai-fs') );
+
+CommentDocs = require('../commentdocs');
+commentDocs = new CommentDocs();
 
 describe('#getCommentType', function() {
   it('returns the correct comment type based on the file extension', function() {
@@ -207,5 +211,21 @@ describe('#mergeParsedSources', function() {
         }
       ]
     );
+  });
+});
+
+describe('#writeJSON', function() {
+  it('creates a .json file out of an object', function() {
+    commentDocs.writeJSON(
+      [
+        {
+          docs: { name: 'pattern name' },
+          code: 'first obj code',
+          code_alt: 'second obj code'
+        }
+      ],
+      'test/writeJSON-test.json'
+    );
+    assert.isFile( 'test/writeJSON-test.json' );
   });
 });

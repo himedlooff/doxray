@@ -8,7 +8,8 @@
     "load-grunt-tasks": "~0.6.0",
     "time-grunt": "~1.0.0",
     "mocha": "^1.21.4",
-    "chai": "^1.9.2"
+    "chai": "^1.9.2",
+    "chai-fs": "~0.1.0"
   },
   "name": "comment-docs",
   "version": "0.1.0",
