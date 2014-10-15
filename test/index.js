@@ -19,7 +19,7 @@ describe('#getCommentType', function() {
 describe('#getFileContents', function() {
   it('returns the contents of a file, trimming everything before the first doc comment', function() {
     assert.equal(
-      commentDocs.getFileContents( 'test/getfilecontents.css', commentDocs.regex.css ),
+      commentDocs.getFileContents( 'test/test.css', commentDocs.regex.css ),
       '/* topdoc\n    prop1: Comment one\n*/\n'
     );
   });
@@ -104,7 +104,7 @@ describe('#joinDocsAndCode', function() {
 describe('#parseOneFile', function() {
   it('parses a single file into an array of objects', function() {
     assert.deepEqual(
-      commentDocs.parseOneFile( 'test/getfilecontents.css' ),
+      commentDocs.parseOneFile( 'test/test.css' ),
       [{
         docs: { prop1: 'Comment one' },
         code: ''
@@ -116,14 +116,14 @@ describe('#parseOneFile', function() {
 describe('#parse', function() {
   it('parses a file or an array of files', function() {
     assert.deepEqual(
-      commentDocs.parseOneFile( 'test/getfilecontents.css' ),
+      commentDocs.parseOneFile( 'test/test.css' ),
       [{
         docs: { prop1: 'Comment one' },
         code: ''
       }]
     );
     assert.deepEqual(
-      commentDocs.parse( [ 'test/getfilecontents.css', 'test/getfilecontents.css' ] ),
+      commentDocs.parse( [ 'test/test.css', 'test/test.css' ] ),
       [
         [{
           docs: { prop1: 'Comment one' },
@@ -224,8 +224,8 @@ describe('#writeJSON', function() {
           code_alt: 'second obj code'
         }
       ],
-      'test/writeJSON-test.json'
+      'test/test.json'
     );
-    assert.isFile( 'test/writeJSON-test.json' );
+    assert.isFile( 'test/test.json' );
   });
 });
