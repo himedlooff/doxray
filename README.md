@@ -19,11 +19,24 @@ npm install https://github.com/cfpb/comment-docs/archive/0.1.0.tar.gz
 
 ### Usage
 
+_Example files to come shortly._
+
 ```js
+// Create an instance of CommentDocs.
 var CommentDocs = require('comment-docs');
 var docMaker = new CommentDocs();
+
+// Parse a file and get back an array of document/code pairs.
 var docs = docMaker.parse( 'styles.css' );
+
+// Write it to a JSON file.
 docMaker.writeJSON( docs, 'styles.json' );
+
+// You can "merge" files as well. This is handy when you have a source file like
+// a Less file that gets compiled into a CSS file and you want access to both
+// the Less and CSS for your documentation. The second parameter is the
+// top-level property to match in the YAML comments.
+var docs = docMaker.parse( ['styles.css', 'styles.less'], 'name' );
 ```
 
 ## Getting involved
