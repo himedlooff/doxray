@@ -12,7 +12,7 @@ Note that this project is currently in Beta.
 ## Getting started
 
 ```bash
-npm install https://github.com/cfpb/comment-docs/0.1.0
+npm install https://github.com/cfpb/comment-docs/archive/0.1.0.tar.gz
 ```
 
 
@@ -20,6 +20,13 @@ npm install https://github.com/cfpb/comment-docs/0.1.0
 
 We welcome your feedback and contributions.
 Please see [CONTRIBUTING](CONTRIBUTING.md).
+
+When submitting a pull request that changes or adds functionality please update
+the tests and run:
+
+```bash
+npm test
+```
 
 To file a bug please us this handy [template](https://github.com/cfpb/comment-docs/issues/new?body=%23%23%20URL%0D%0D%0D%23%23%20Actual%20Behavior%0D%0D%0D%23%23%20Expected%20Behavior%0D%0D%0D%23%23%20Steps%20to%20Reproduce%0D%0D%0D%23%23%20Screenshot&labels=bug).
 
