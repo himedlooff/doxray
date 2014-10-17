@@ -11,10 +11,20 @@ Note that this project is currently in Beta.
 
 ## Getting started
 
+### Install
+
 ```bash
 npm install https://github.com/cfpb/comment-docs/archive/0.1.0.tar.gz
 ```
 
+### Usage
+
+```js
+var CommentDocs = require('comment-docs');
+var docMaker = new CommentDocs();
+var docs = docMaker.parse( 'styles.css' );
+docMaker.writeJSON( docs, 'styles.json' );
+```
 
 ## Getting involved
 
