@@ -8,14 +8,14 @@ var CommentDocs = function() {
 
 CommentDocs.prototype.regex = {
   html: {
-    opening: /<!--\s*topdoc[^\n]*\n/,
+    opening: /^<!--\s*topdoc[^\n]*\n/m,
     closing: /-->/,
-    comment: /<!--\s*topdoc(?:[^-]|[\r\n]|-[^-])*-->/g
+    comment: /^<!--\s*topdoc(?:[^-]|[\r\n]|-[^-])*-->/gm
   },
   css: {
-    opening: /\/\*\s*topdoc[^\n]*\n/,
+    opening: /^\/\*\s*topdoc[^\n]*\n/m,
     closing: /\*\//,
-    comment: /\/\*\s*topdoc[^*]*\*+(?:[^/*][^*]*\*+)*\//g
+    comment: /^\/\*\s*topdoc[^*]*\*+(?:[^/*][^*]*\*+)*\//gm
   }
 };
 
