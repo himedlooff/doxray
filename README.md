@@ -1,6 +1,6 @@
 # Dox-ray
 
-Dox-ray is a node module which can parse special code comments and return
+Dox-ray is a node module that can parse special code comments and return
 an array of objects containing document/code pairs. Comments are written in YAML
 and parsed into structured objects. The YAML structure is up to you. You define
 the documentation properties that's right for your code. Dox-ray can also
@@ -9,17 +9,18 @@ documentation sites that won't slow down your task runner.
 
 Note that this project is currently in Beta.
 
+
 ## Getting started
 
 ### Install
 
 ```bash
-npm install https://github.com/himedlooff/dox-ray/archive/0.1.0.tar.gz
+$ npm install dox-ray
 ```
 
 ### Usage
 
-_Example files to come shortly._
+#### As a node module
 
 ```js
 // Create an instance of CommentDocs.
@@ -39,16 +40,22 @@ docMaker.writeJSON( docs, 'styles.json' );
 var docs = docMaker.parse( ['styles.css', 'styles.less'], 'name' );
 ```
 
+#### Angular demo
+
+The following repository demonstrates how to build a JSON file through Grunt and
+consume it with Angular: <https://github.com/himedlooff/dox-ray>
+
+
 ## Getting involved
 
-We welcome your feedback and contributions.
-Please see [CONTRIBUTING](CONTRIBUTING.md).
+I welcome your feedback and contributions.
+Please read [CONTRIBUTING](CONTRIBUTING.md).
 
 When submitting a pull request that changes or adds functionality please update
 the tests and run:
 
 ```bash
-npm test
+$ npm test
 ```
 
 To file a bug please us this handy [template](https://github.com/himedlooff/dox-ray/issues/new?body=%23%23%20URL%0D%0D%0D%23%23%20Actual%20Behavior%0D%0D%0D%23%23%20Expected%20Behavior%0D%0D%0D%23%23%20Steps%20to%20Reproduce%0D%0D%0D%23%23%20Screenshot&labels=bug).
@@ -56,14 +63,16 @@ To file a bug please us this handy [template](https://github.com/himedlooff/dox-
 
 ----
 
+
 ## Open source licensing info
-1. [TERMS](TERMS.md)
-2. [LICENSE](LICENSE)
-3. [CFPB Source Code Policy](https://github.com/cfpb/source-code-policy/)
+
+This projected is licensed under the terms of the [MIT license](LICENSE).
 
 
 ----
 
+
 ## Credits and references
 
 This project was inspired by [topdoc](https://github.com/topcoat/topdoc/).
+:smile:
