@@ -1,14 +1,14 @@
 {
-  "name": "comment-docs",
+  "name": "dox-ray",
   "version": "0.1.0",
   "description": "Parse documentation from code comments",
-  "license": "Public Domain",
+  "license": "MIT",
   "main": "index.js",
-  "repository": "cfpb/comment-docs",
+  "repository": "himedlooff/dox-ray",
   "author": {
-    "name": "Consumer Financial Protection Bureau",
-    "email": "michael.morici@cfpb.gov",
-    "url": "https://github.com/cfpb"
+    "name": "Michael Morici",
+    "email": "himedlooff@yahoo.com",
+    "url": "https://github.com/himedlooff"
   },
   "engines": {
     "node": ">=0.10.0"
@@ -20,8 +20,8 @@
     "index.js"
   ],
   "keywords": [
-    "cfpb",
-    "documentation"
+    "documentation",
+    "dox-ray"
   ],
   "dependencies": {
     "js-yaml": "~3.2.2"
