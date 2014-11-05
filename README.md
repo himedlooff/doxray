@@ -71,8 +71,8 @@ The above outputs:
 ```json
 [{
   "docs": {
-    "name": "Button"
-    "markup": "<button class=\"btn\">Button</button>"
+    "name": "Button",
+    "markup": "<button class=\"btn\">Button</button>",
     "notes": [ "Don't use anchor elements as buttons unless they actually link to another page." ]
   },
   "code": ".btn {\nfont-size: 0.875em;\n}",
