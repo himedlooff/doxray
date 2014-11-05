@@ -20,7 +20,7 @@ describe('#getFileContents', function() {
   it('returns the contents of a file, trimming everything before the first doc comment', function() {
     assert.equal(
       commentDocs.getFileContents( 'test/test.css', commentDocs.regex.css ),
-      '/* topdoc\n    prop1: Comment one\n*/\n'
+      '/* doxray\n    prop1: Comment one\n*/\n'
     );
   });
 });
@@ -46,7 +46,7 @@ describe('#getTextFromDocComment', function() {
   it('removes the opening and closing comments from a doc comment', function() {
     assert.equal(
       commentDocs.getTextFromDocComment(
-        '/* topdoc\n    prop1: Comment one\n*/\n',
+        '/* doxray\n    prop1: Comment one\n*/\n',
         commentDocs.regex.css
       ),
       '    prop1: Comment one\n\n'
@@ -58,7 +58,7 @@ describe('#parseOutDocs', function() {
   it('build an array from the text of each doc comment', function() {
     assert.deepEqual(
       commentDocs.parseOutDocs(
-        '/* topdoc\n    prop1: Comment one\n*/\n',
+        '/* doxray\n    prop1: Comment one\n*/\n',
         commentDocs.regex.css
       ),
       [ { prop1: 'Comment one' } ]
@@ -70,7 +70,7 @@ describe('#parseOutCode', function() {
   it('build an array from the code after each doc comment', function() {
     assert.deepEqual(
       commentDocs.parseOutCode(
-        '/* topdoc\n    prop1: Comment one\n*/\n.test{\n    content:\"Hello\";\n}',
+        '/* doxray\n    prop1: Comment one\n*/\n.test{\n    content:\"Hello\";\n}',
         commentDocs.regex.css
       ),
       [ '.test{\n    content:\"Hello\";\n}' ]
@@ -80,7 +80,7 @@ describe('#parseOutCode', function() {
 
 describe('#parsingIsValid', function() {
   it('validates that their is one code snippet (even if it\'s an empty string) for each doc comment', function() {
-    var fileContents = '/* topdoc\n    prop1: Comment one\n*/\n.test{\n    content:\"Hello\";\n}';
+    var fileContents = '/* doxray\n    prop1: Comment one\n*/\n.test{\n    content:\"Hello\";\n}';
     var docs = commentDocs.parseOutDocs( fileContents, commentDocs.regex.css );
     var code = commentDocs.parseOutCode( fileContents, commentDocs.regex.css );
     assert.equal( commentDocs.parsingIsValid( docs, code ), true );

@@ -1,25 +1,26 @@
 /* ==========================================================================
-   Parse documentation from code comments.
+   Dox-ray
+   Parse documentation from code comments
    ========================================================================== */
 
-var CommentDocs = function() {
+var Doxray = function() {
   //
 };
 
-CommentDocs.prototype.regex = {
+Doxray.prototype.regex = {
   html: {
-    opening: /^<!--\s*topdoc[^\n]*\n/m,
+    opening: /^<!--\s*doxray[^\n]*\n/m,
     closing: /-->/,
-    comment: /^<!--\s*topdoc(?:[^-]|[\r\n]|-[^-])*-->/gm
+    comment: /^<!--\s*doxray(?:[^-]|[\r\n]|-[^-])*-->/gm
   },
   css: {
-    opening: /^\/\*\s*topdoc[^\n]*\n/m,
+    opening: /^\/\*\s*doxray[^\n]*\n/m,
     closing: /\*\//,
-    comment: /^\/\*\s*topdoc[^*]*\*+(?:[^/*][^*]*\*+)*\//gm
+    comment: /^\/\*\s*doxray[^*]*\*+(?:[^/*][^*]*\*+)*\//gm
   }
 };
 
-CommentDocs.prototype.writeJSON = function( convertedDocs, dest ) {
+Doxray.prototype.writeJSON = function( convertedDocs, dest ) {
   var fs;
   fs = require('fs');
   fs.writeFile( dest, JSON.stringify( convertedDocs, null, '\t' ), function( err ) {
@@ -32,7 +33,7 @@ CommentDocs.prototype.writeJSON = function( convertedDocs, dest ) {
   });
 };
 
-CommentDocs.prototype.mergeParsedSources = function( sources, mergeProp ) {
+Doxray.prototype.mergeParsedSources = function( sources, mergeProp ) {
   var first, theRest;
   // The first parsed source will be our "master" source.
   first = sources[ 0 ];
@@ -55,7 +56,7 @@ CommentDocs.prototype.mergeParsedSources = function( sources, mergeProp ) {
   return first;
 };
 
-CommentDocs.prototype.addAltCodeToDocSet = function( docSet1, docSet2 ) {
+Doxray.prototype.addAltCodeToDocSet = function( docSet1, docSet2 ) {
   if ( docSet1.code_alt !== undefined ) {
     docSet1.code_alt += '\n\n' + docSet2.code;
   } else {
@@ -64,7 +65,7 @@ CommentDocs.prototype.addAltCodeToDocSet = function( docSet1, docSet2 ) {
   return docSet1;
 };
 
-CommentDocs.prototype.hasMatchingValues = function( obj1, obj2, key ) {
+Doxray.prototype.hasMatchingValues = function( obj1, obj2, key ) {
   // First check to see if the keys even exist
   if ( obj1[ key ] !== undefined && obj1[ key ] !== undefined ) {
     if ( obj1[ key ] === obj2[ key ] ) {
@@ -74,7 +75,7 @@ CommentDocs.prototype.hasMatchingValues = function( obj1, obj2, key ) {
   return false;
 };
 
-CommentDocs.prototype.parse = function( src, mergeProp ) {
+Doxray.prototype.parse = function( src, mergeProp ) {
   if ( typeof src == 'string' ) {
     return this.parseOneFile( src );
   } else if ( Array.isArray( src ) ) {
@@ -90,7 +91,7 @@ CommentDocs.prototype.parse = function( src, mergeProp ) {
   }
 };
 
-CommentDocs.prototype.parseOneFile = function( src ) {
+Doxray.prototype.parseOneFile = function( src ) {
   var fileContents, docs, code, convertedDocs, ext;
   // Get the file extension for src so we know which regex to use.
   ext = this.getCommentType( src );
@@ -104,7 +105,7 @@ CommentDocs.prototype.parseOneFile = function( src ) {
   return convertedDocs;
 };
 
-CommentDocs.prototype.joinDocsAndCode = function( docs, code ) {
+Doxray.prototype.joinDocsAndCode = function( docs, code ) {
   var convertedDocs;
   convertedDocs = [];
   // Create an array of objects. Each object contains a docs and code property
@@ -119,7 +120,7 @@ CommentDocs.prototype.joinDocsAndCode = function( docs, code ) {
   return convertedDocs;
 };
 
-CommentDocs.prototype.parseOutCode = function( fileContents, regex ) {
+Doxray.prototype.parseOutCode = function( fileContents, regex ) {
   var code;
   // The "code" is everything betwixt the regex.
   code = fileContents.split( regex.comment );
@@ -132,7 +133,7 @@ CommentDocs.prototype.parseOutCode = function( fileContents, regex ) {
   return code;
 };
 
-CommentDocs.prototype.parseOutDocs = function( fileContents, regex ) {
+Doxray.prototype.parseOutDocs = function( fileContents, regex ) {
   var docs;
   // "docs" are anything that matches the regex.
   docs = fileContents.match( regex.comment );
@@ -145,7 +146,7 @@ CommentDocs.prototype.parseOutDocs = function( fileContents, regex ) {
   return docs;
 };
 
-CommentDocs.prototype.convertYaml = function( yamlString, index ) {
+Doxray.prototype.convertYaml = function( yamlString, index ) {
   var yaml, convertedYaml, yamlError;
   yaml = require('js-yaml');
   // Try converting the doc to YAML and warn if it fails.
@@ -164,7 +165,7 @@ CommentDocs.prototype.convertYaml = function( yamlString, index ) {
   return convertedYaml;
 };
 
-CommentDocs.prototype.parsingIsValid = function( docs, code ) {
+Doxray.prototype.parsingIsValid = function( docs, code ) {
   // For each doc comment ther should be one correcsponding code snippet.
   // This checks to make sure the doc and code arrays have the same length.
   if ( docs.length !== code.length ) {
@@ -175,12 +176,12 @@ CommentDocs.prototype.parsingIsValid = function( docs, code ) {
   }
 };
 
-CommentDocs.prototype.getTextFromDocComment = function( item, regex ) {
+Doxray.prototype.getTextFromDocComment = function( item, regex ) {
   // Remove the opening and closing comments.
   return item.replace( regex.opening, '' ).replace( regex.closing, '' );
 };
 
-CommentDocs.prototype.getFileContents = function( src, regex ) {
+Doxray.prototype.getFileContents = function( src, regex ) {
   var fs, data;
   fs = require('fs');
   data = fs.readFileSync( src, 'utf-8' );
@@ -190,7 +191,7 @@ CommentDocs.prototype.getFileContents = function( src, regex ) {
   return data;
 };
 
-CommentDocs.prototype.getCommentType = function( src ) {
+Doxray.prototype.getCommentType = function( src ) {
   var path = require('path');
   var ext;
   ext = path.extname( src ).substring( 1 );
@@ -208,4 +209,4 @@ CommentDocs.prototype.getCommentType = function( src ) {
   return ext;
 };
 
-module.exports = CommentDocs;
+module.exports = Doxray;

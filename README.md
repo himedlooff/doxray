@@ -23,21 +23,21 @@ $ npm install dox-ray
 #### As a node module
 
 ```js
-// Create an instance of CommentDocs.
-var CommentDocs = require('comment-docs');
-var docMaker = new CommentDocs();
+// Create an instance of Doxray.
+var Doxray = require('dox-ray');
+var doxray = new Doxray();
 
 // Parse a file and get back an array of document/code pairs.
-var docs = docMaker.parse( 'styles.css' );
+var docs = doxray.parse( 'styles.css' );
 
 // Write it to a JSON file.
-docMaker.writeJSON( docs, 'styles.json' );
+doxray.writeJSON( docs, 'styles.json' );
 
 // You can "merge" files as well. This is handy when you have a source file like
 // a Less file that gets compiled into a CSS file and you want access to both
 // the Less and CSS for your documentation. The second parameter is the
 // top-level property to match in the YAML comments.
-var docs = docMaker.parse( ['styles.css', 'styles.less'], 'name' );
+var docs = doxray.parse( ['styles.css', 'styles.less'], 'name' );
 ```
 
 #### Angular demo
