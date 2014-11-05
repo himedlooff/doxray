@@ -20,6 +20,8 @@ $ npm install dox-ray
 
 ### Usage (as a node module)
 
+#### First, you'll need some source files to parse, for example:
+
 ```css
 /* styles.less */
 /* doxray
@@ -48,6 +50,8 @@ $ npm install dox-ray
 }
 ```
 
+#### Here's an example of setting up Dox-ray to parse the files above.
+
 ```js
 // Create an instance of Doxray.
 var Doxray = require('dox-ray');
@@ -55,7 +59,22 @@ var doxray = new Doxray();
 
 // Parse a file and get back an array of document/code pairs.
 var docs = doxray.parse( 'styles.less' );
+```
 
+In the above example, `docs` is equal to the following:
+
+```js
+[{
+  docs: {
+    name: "Button",
+    markup: "<button class=\"btn\">Button</button>,"
+    notes: [ "Don't use anchor elements as buttons unless they actually link to another page." ]
+  },
+  code: '.btn {\nfont-size: 0.875em;\n}'
+}]
+```
+
+```js
 // Write it to a JSON file.
 doxray.writeJSON( docs, 'styles.json' );
 
@@ -66,7 +85,7 @@ doxray.writeJSON( docs, 'styles.json' );
 var docs = doxray.parse( ['styles.css', 'styles.less'], 'name' );
 ```
 
-The above outputs:
+The above outputs the following JSON file:
 
 ```json
 [{
