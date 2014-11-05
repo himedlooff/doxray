@@ -43,7 +43,7 @@ var docs = doxray.parse( ['styles.css', 'styles.less'], 'name' );
 #### Angular demo
 
 The following repository demonstrates how to build a JSON file through Grunt and
-consume it with Angular: <https://github.com/himedlooff/dox-ray>
+consume it with Angular: <https://github.com/himedlooff/dox-ray-angular-demo>
 
 
 ## Getting involved
