@@ -76,8 +76,7 @@ The above outputs:
     "notes": [ "Don't use anchor elements as buttons unless they actually link to another page." ]
   },
   "code": ".btn {\nfont-size: 0.875em;\n}",
-  "code_alt": ".btn {\nfont-size: unit(14px / 16px, em);\n}",
-"
+  "code_alt": ".btn {\nfont-size: unit(14px / 16px, em);\n}"
 }]
 ```
 
