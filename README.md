@@ -22,8 +22,9 @@ $ npm install dox-ray
 
 #### First, you'll need some source files to parse, for example:
 
+_styles.less:_
+
 ```css
-/* styles.less */
 /* doxray
     name: Button
     markup: <button class="btn">Button</button>
@@ -36,8 +37,9 @@ $ npm install dox-ray
 }
 ```
 
+_styles.css:_
+
 ```css
-/* styles.css */
 /* doxray
     name: Button
     markup: <button class="btn">Button</button>
@@ -61,7 +63,7 @@ var doxray = new Doxray();
 var docs = doxray.parse( 'styles.less' );
 ```
 
-In the above example, `docs` is equal to the following:
+_In the above example, `docs` is equal to the following:_
 
 ```js
 [{
@@ -80,7 +82,7 @@ In the above example, `docs` is equal to the following:
 doxray.writeJSON( docs, 'styles.json' );
 ```
 
-`styles.json`:
+_styles.json:_
 
 ```json
 [{
@@ -105,7 +107,7 @@ var docs = doxray.parse( ['styles.css', 'styles.less'], 'name' );
 doxray.writeJSON( docs, 'styles.json' );
 ```
 
-`styles.json`:
+_styles.json:_
 
 ```json
 [{
