@@ -50,7 +50,7 @@ $ npm install dox-ray
 }
 ```
 
-#### Here's an example of setting up Dox-ray to parse the files above.
+#### Now set up Dox-ray to parse stuff.
 
 ```js
 // Create an instance of Doxray.
@@ -74,18 +74,38 @@ In the above example, `docs` is equal to the following:
 }]
 ```
 
-```js
-// Write it to a JSON file.
-doxray.writeJSON( docs, 'styles.json' );
+##### Now write it to a JSON file, and
 
-// You can "merge" files as well. This is handy when you have a source file like
-// a Less file that gets compiled into a CSS file and you want access to both
-// the Less and CSS for your documentation. The second parameter is the
-// top-level property to match in the YAML comments.
-var docs = doxray.parse( ['styles.css', 'styles.less'], 'name' );
+```js
+doxray.writeJSON( docs, 'styles.json' );
 ```
 
-The above outputs the following JSON file:
+`styles.json`:
+
+```json
+[{
+  "docs": {
+    "name": "Button",
+    "markup": "<button class=\"btn\">Button</button>",
+    "notes": [ "Don't use anchor elements as buttons unless they actually link to another page." ]
+  },
+  "code": ".btn {\nfont-size: 0.875em;\n}"
+}]
+```
+
+##### An example of merging
+
+You can "merge" files as well. This is handy when you have a source file like
+a Less file that gets compiled into a CSS file and you want access to both the
+Less and CSS for your documentation. The second parameter is the top-level
+property to match in the YAML comments.
+
+```js
+var docs = doxray.parse( ['styles.css', 'styles.less'], 'name' );
+doxray.writeJSON( docs, 'styles.json' );
+```
+
+`styles.json`:
 
 ```json
 [{
