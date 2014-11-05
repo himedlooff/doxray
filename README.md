@@ -18,9 +18,35 @@ Note that this project is currently in Beta.
 $ npm install dox-ray
 ```
 
-### Usage
+### Usage (as a node module)
 
-#### As a node module
+```css
+/* styles.less */
+/* doxray
+    name: Button
+    markup: <button class="btn">Button</button>
+    notes:
+      - "Don't use anchor elements as buttons unless they actually link to
+         another page."
+*/
+.btn {
+    font-size: unit(14px / 16px, em);
+}
+```
+
+```css
+/* styles.css */
+/* doxray
+    name: Button
+    markup: <button class="btn">Button</button>
+    notes:
+      - "Don't use anchor elements as buttons unless they actually link to
+         another page."
+*/
+.btn {
+    font-size: 0.875em;
+}
+```
 
 ```js
 // Create an instance of Doxray.
@@ -28,7 +54,7 @@ var Doxray = require('dox-ray');
 var doxray = new Doxray();
 
 // Parse a file and get back an array of document/code pairs.
-var docs = doxray.parse( 'styles.css' );
+var docs = doxray.parse( 'styles.less' );
 
 // Write it to a JSON file.
 doxray.writeJSON( docs, 'styles.json' );
@@ -40,7 +66,22 @@ doxray.writeJSON( docs, 'styles.json' );
 var docs = doxray.parse( ['styles.css', 'styles.less'], 'name' );
 ```
 
-#### Angular demo
+The above outputs:
+
+```json
+[{
+  "docs": {
+    "name": "Button"
+    "markup": "<button class=\"btn\">Button</button>"
+    "notes": [ "Don't use anchor elements as buttons unless they actually link to another page." ]
+  },
+  "code": ".btn {\nfont-size: 0.875em;\n}",
+  "code_alt": ".btn {\nfont-size: unit(14px / 16px, em);\n}",
+"
+}]
+```
+
+### Angular demo
 
 The following repository demonstrates how to build a JSON file through Grunt and
 consume it with Angular: <https://github.com/himedlooff/dox-ray-angular-demo>
