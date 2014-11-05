@@ -20,7 +20,7 @@ $ npm install dox-ray
 
 ### Usage (as a node module)
 
-#### First, you'll need some source files to parse, for example:
+#### First, you'll need some source files to parse, for example
 
 _styles.less:_
 
@@ -52,7 +52,7 @@ _styles.css:_
 }
 ```
 
-#### Now set up Dox-ray to parse stuff.
+#### Now set up Dox-ray to parse stuff
 
 ```js
 // Create an instance of Doxray.
@@ -76,7 +76,7 @@ _In the above example, `docs` is equal to the following:_
 }]
 ```
 
-##### Now write it to a JSON file, and
+##### Now write it to a JSON file
 
 ```js
 doxray.writeJSON( docs, 'styles.json' );
