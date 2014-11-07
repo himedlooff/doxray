@@ -154,7 +154,7 @@ See https://github.com/himedlooff/dox-ray/blob/master/index.js#L10-L21
 
 ## Getting involved
 
-I welcome your feedback and contributions.
+Feedback and contributions are welcome.
 Please read [CONTRIBUTING](CONTRIBUTING.md).
 
 When submitting a pull request that changes or adds functionality please update
