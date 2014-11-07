@@ -92,10 +92,14 @@ describe('#joinDocsAndCode', function() {
     var docs = [ { prop1: 'Comment one' } ];
     var code = [ '.test{\n    content:\"Hello\";\n}' ];
     assert.deepEqual(
-      commentDocs.joinDocsAndCode( docs, code ),
+      commentDocs.joinDocsAndCode( docs, code, 'test.css', 'css' ),
       [{
         docs: docs[0],
-        code: [ { code: code[0] } ]
+        code: [{
+          filename: 'test.css',
+          type: 'css',
+          code: code[0]
+        }]
       }]
     );
   });
@@ -107,7 +111,11 @@ describe('#parseOneFile', function() {
       commentDocs.parseOneFile( 'test/test.css' ),
       [{
         docs: { prop1: 'Comment one' },
-        code: [ { code: '' } ]
+        code: [{
+          filename: 'test.css',
+          type: 'css',
+          code: ''
+        }]
       }]
     );
   });
@@ -119,7 +127,11 @@ describe('#parse', function() {
       commentDocs.parseOneFile( 'test/test.css' ),
       [{
         docs: { prop1: 'Comment one' },
-        code: [ { code: '' } ]
+        code: [{
+          filename: 'test.css',
+          type: 'css',
+          code: ''
+        }]
       }]
     );
     assert.deepEqual(
@@ -127,11 +139,19 @@ describe('#parse', function() {
       [
         [{
           docs: { prop1: 'Comment one' },
-          code: [ { code: '' } ]
+          code: [{
+            filename: 'test.css',
+            type: 'css',
+            code: ''
+          }]
         }],
         [{
           docs: { prop1: 'Comment one' },
-          code: [ { code: '' } ]
+          code: [{
+            filename: 'test.css',
+            type: 'css',
+            code: ''
+          }]
         }]
       ]
     );

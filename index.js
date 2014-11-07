@@ -91,13 +91,14 @@ Doxray.prototype.parseOneFile = function( src ) {
   code = this.parseOutCode( fileContents, this.regex[ ext ] );
   if ( this.parsingIsValid( docs, code ) ) {
     // Join the docs and code back together as structured objects.
-    convertedDocs = this.joinDocsAndCode( docs, code );
+    convertedDocs = this.joinDocsAndCode( docs, code, src, ext );
   }
   return convertedDocs;
 };
 
-Doxray.prototype.joinDocsAndCode = function( docs, code ) {
-  var convertedDocs;
+Doxray.prototype.joinDocsAndCode = function( docs, code, src, ext ) {
+  var path, convertedDocs;
+  path = require('path');
   convertedDocs = [];
   // Create an array of objects. Each object contains a docs and code property
   // which represent the parsed doc comment object and the code that follows it
@@ -105,7 +106,11 @@ Doxray.prototype.joinDocsAndCode = function( docs, code ) {
   docs.forEach(function( item, index ) {
     convertedDocs.push({
       docs: docs[ index ],
-      code: [ { code: code[ index ] } ]
+      code: [{
+        filename: path.basename( src ),
+        type: ext,
+        code: code[ index ]
+      }]
     });
   });
   return convertedDocs;
