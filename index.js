@@ -102,10 +102,10 @@ Doxray.prototype.joinDocsAndCode = function( docs, code ) {
   // Create an array of objects. Each object contains a docs and code property
   // which represent the parsed doc comment object and the code that follows it
   // in the source.
-  docs.forEach(function( item, index ){
+  docs.forEach(function( item, index ) {
     convertedDocs.push({
       docs: docs[ index ],
-      code: code[ index ]
+      code: [ { code: code[ index ] } ]
     });
   });
   return convertedDocs;

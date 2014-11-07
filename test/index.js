@@ -95,7 +95,7 @@ describe('#joinDocsAndCode', function() {
       commentDocs.joinDocsAndCode( docs, code ),
       [{
         docs: docs[0],
-        code: code[0]
+        code: [ { code: code[0] } ]
       }]
     );
   });
@@ -107,7 +107,7 @@ describe('#parseOneFile', function() {
       commentDocs.parseOneFile( 'test/test.css' ),
       [{
         docs: { prop1: 'Comment one' },
-        code: ''
+        code: [ { code: '' } ]
       }]
     );
   });
@@ -119,7 +119,7 @@ describe('#parse', function() {
       commentDocs.parseOneFile( 'test/test.css' ),
       [{
         docs: { prop1: 'Comment one' },
-        code: ''
+        code: [ { code: '' } ]
       }]
     );
     assert.deepEqual(
@@ -127,11 +127,11 @@ describe('#parse', function() {
       [
         [{
           docs: { prop1: 'Comment one' },
-          code: ''
+          code: [ { code: '' } ]
         }],
         [{
           docs: { prop1: 'Comment one' },
-          code: ''
+          code: [ { code: '' } ]
         }]
       ]
     );
