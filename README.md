@@ -131,7 +131,7 @@ consume it with Angular: <https://github.com/himedlooff/dox-ray-angular-demo>
 
 ### Dox-ray comment formatting
 
-In order to make the regex simple Dox-ray comments must start with an opening
+In order to make the regex simple, Dox-ray comments must start with an opening
 comment, a space, then the word "doxray". The closing comment must be on a new line.
 
 ```html
