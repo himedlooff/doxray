@@ -20,7 +20,9 @@ $ npm install dox-ray
 
 ### Usage (as a node module)
 
-#### First, you'll need some source files to parse, for example
+#### First, you'll need some source files to parse
+
+Here's how you write a Dox-ray comment in your code:
 
 _styles.less:_
 
@@ -125,6 +127,29 @@ _styles.json:_
 
 The following repository demonstrates how to build a JSON file through Grunt and
 consume it with Angular: <https://github.com/himedlooff/dox-ray-angular-demo>
+
+
+### Dox-ray comment formatting
+
+In order to make the regex simple Dox-ray comments must start with an opening
+comment, a space, then the word "doxray". The closing comment must be on a new line.
+
+```html
+<!-- doxray
+    name: my pattern
+    description: this is how you structure my pattern
+-->
+```
+
+### Supported comment styles
+
+| Style | Example |
+| ----- | ------- |
+| CSS/JS | `/* */` |
+| HTML | `<!-- -->` |
+
+You can easily add more by extending `Doxray.prototype.regex`.
+See https://github.com/himedlooff/dox-ray/blob/master/index.js#L10-L21
 
 
 ## Getting involved
