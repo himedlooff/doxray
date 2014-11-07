@@ -99,11 +99,11 @@ _styles.json:_
 
 You can "merge" files as well. This is handy when you have a source file like
 a Less file that gets compiled into a CSS file and you want access to both the
-Less and CSS for your documentation. The second parameter is the top-level
-property to match in the YAML comments.
+Less and CSS for your documentation. To trigger a merge pass `true` as the
+second argument to the `parse` function:
 
 ```js
-var docs = doxray.parse( ['styles.css', 'styles.less'], 'name' );
+var docs = doxray.parse( ['styles.css', 'styles.less'], true );
 doxray.writeJSON( docs, 'styles.json' );
 ```
 

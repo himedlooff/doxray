@@ -1,6 +1,6 @@
 {
   "name": "dox-ray",
-  "version": "0.1.1",
+  "version": "0.2.0",
   "description": "Parse documentation from code comments",
   "license": "MIT",
   "main": "index.js",
@@ -24,6 +24,7 @@
     "dox-ray"
   ],
   "dependencies": {
+    "deep-equal": "~0.2.1",
     "js-yaml": "~3.2.2"
   },
    "devDependencies": {

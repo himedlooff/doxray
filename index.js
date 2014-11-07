@@ -33,21 +33,22 @@ Doxray.prototype.writeJSON = function( convertedDocs, dest ) {
   });
 };
 
-Doxray.prototype.mergeParsedSources = function( sources, mergeProp ) {
-  var first, theRest;
+Doxray.prototype.mergeParsedSources = function( sources ) {
+  var equal, first, theRest;
+  equal = require('deep-equal');
   // The first parsed source will be our "master" source.
   first = sources[ 0 ];
   // The rest of the sources are saved to their own array.
   theRest = sources.slice( 1 );
   // Compare each doc set from the master source to the doc sets of the rest of
-  // the sources. If they both have the mergeProp property and their values
-  // match then merge them together. "Merging" is done by taking the code from
-  // the second doc set and adding to the `code_alt` property of the master doc
-  // set. The rest of the second doc set is discarded.
+  // the sources. If both sets of docs are exactly the same then merge them
+  // together. "Merging" is done by taking the code from the second doc set and
+  // adding to the `code_alt` property of the master doc set. The rest of the
+  // second doc set is discarded.
   first.forEach( function( firstDocSet ) {
     theRest.forEach( function( src ) {
       src.forEach( function( secondDocSet ) {
-        if ( this.hasMatchingValues( firstDocSet.docs, secondDocSet.docs, mergeProp ) ) {
+        if ( equal( firstDocSet.docs, secondDocSet.docs ) ) {
           firstDocSet = this.addAltCodeToDocSet( firstDocSet, secondDocSet );
         }
       }, this );
@@ -65,17 +66,7 @@ Doxray.prototype.addAltCodeToDocSet = function( docSet1, docSet2 ) {
   return docSet1;
 };
 
-Doxray.prototype.hasMatchingValues = function( obj1, obj2, key ) {
-  // First check to see if the keys even exist
-  if ( obj1[ key ] !== undefined && obj1[ key ] !== undefined ) {
-    if ( obj1[ key ] === obj2[ key ] ) {
-      return true;
-    }
-  }
-  return false;
-};
-
-Doxray.prototype.parse = function( src, mergeProp ) {
+Doxray.prototype.parse = function( src, merge ) {
   if ( typeof src == 'string' ) {
     return this.parseOneFile( src );
   } else if ( Array.isArray( src ) ) {
@@ -83,8 +74,8 @@ Doxray.prototype.parse = function( src, mergeProp ) {
     src.forEach(function( singleSrc ) {
       parsed.push( this.parseOneFile( singleSrc ) );
     }, this);
-    if ( mergeProp !== undefined ) {
-      return this.mergeParsedSources( parsed, mergeProp );
+    if ( merge ) {
+      return this.mergeParsedSources( parsed );
     } else {
       return parsed;
     }

@@ -138,38 +138,6 @@ describe('#parse', function() {
   });
 });
 
-describe('#hasMatchingValues', function() {
-  it('...', function() {
-    assert.equal(
-      commentDocs.hasMatchingValues(
-        { foo: 'bar' },
-        { foo: 'bar' },
-        'foo',
-        'bar'
-      ),
-      true
-    );
-    assert.equal(
-      commentDocs.hasMatchingValues(
-        { foo: 'bar' },
-        { baz: 'bar' },
-        'foo',
-        'bar'
-      ),
-      false
-    );
-    assert.equal(
-      commentDocs.hasMatchingValues(
-        { foo: 'bar' },
-        { foo: 'baz' },
-        'foo',
-        'bar'
-      ),
-      false
-    );
-  });
-});
-
 describe('#addAltCodeToDocSet', function() {
   it('when given two objects, take the code property from the second object and add or append it to the code_alt property of the first object', function() {
     assert.deepEqual(
@@ -200,8 +168,7 @@ describe('#mergeParsedSources', function() {
           [
             { docs: { name: 'pattern name' }, code: 'second obj code' }
           ]
-        ],
-        'name'
+        ]
       ),
       [
         {
