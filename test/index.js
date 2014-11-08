@@ -135,7 +135,7 @@ describe('#parse', function() {
       }]
     );
     assert.deepEqual(
-      commentDocs.parse( [ 'test/test.css', 'test/test.css' ] ),
+      commentDocs.parse( [ 'test/test.css', 'test/test.css' ], false ),
       [
         [{
           docs: { prop1: 'Comment one' },
@@ -158,43 +158,79 @@ describe('#parse', function() {
   });
 });
 
-describe('#addAltCodeToDocSet', function() {
-  it('when given two objects, take the code property from the second object and add or append it to the code_alt property of the first object', function() {
-    assert.deepEqual(
-      commentDocs.addAltCodeToDocSet(
-        { code: 'first obj code' },
-        { code: 'second obj code' }
-      ),
-      { code: 'first obj code', code_alt: 'second obj code' }
-    );
-    assert.deepEqual(
-      commentDocs.addAltCodeToDocSet(
-        { code: 'first obj code', code_alt: 'existing alt_code' },
-        { code: 'additional alt_code' }
-      ),
-      { code: 'first obj code', code_alt: 'existing alt_code\n\nadditional alt_code' }
-    );
-  });
-});
-
 describe('#mergeParsedSources', function() {
-  it('merges two objects if their docs share the same property and value', function() {
+  it('merges two objects if their docs are identical', function() {
     assert.deepEqual(
       commentDocs.mergeParsedSources(
         [
           [
-            { docs: { name: 'pattern name' }, code: 'first obj code' }
+            {
+              docs: { name: 'pattern name' },
+              code: [
+                { code: 'test.css code', filename: 'test.css' }
+              ]
+            }
           ],
           [
-            { docs: { name: 'pattern name' }, code: 'second obj code' }
+            {
+              docs: { name: 'pattern name' },
+              code: [
+                { code: 'test.less code', filename: 'test.less' }
+              ]
+            }
           ]
         ]
       ),
       [
         {
           docs: { name: 'pattern name' },
-          code: 'first obj code',
-          code_alt: 'second obj code'
+          code: [
+            { code: 'test.css code', filename: 'test.css' },
+            { code: 'test.less code', filename: 'test.less' }
+          ]
+        }
+      ]
+    );
+  });
+});
+
+describe('#mergeParsedSources', function() {
+  it('when attempting to merge two', function() {
+    assert.deepEqual(
+      commentDocs.mergeParsedSources(
+        [
+          [
+            {
+              docs: { name: 'pattern name' },
+              code: [
+                { code: 'test.css code', filename: 'test.css' },
+                { code: 'test.less code', filename: 'test.less' }
+              ]
+            }
+          ],
+          [
+            {
+              docs: { name: 'a different pattern name' },
+              code: [
+                { code: 'test.less code', filename: 'test.less' }
+              ]
+            }
+          ]
+        ]
+      ),
+      [
+        {
+          docs: { name: 'pattern name' },
+          code: [
+            { code: 'test.css code', filename: 'test.css' },
+            { code: 'test.less code', filename: 'test.less' }
+          ]
+        },
+        {
+          docs: { name: 'a different pattern name' },
+          code: [
+            { code: 'test.less code', filename: 'test.less' }
+          ]
         }
       ]
     );

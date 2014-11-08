@@ -34,36 +34,37 @@ Doxray.prototype.writeJSON = function( convertedDocs, dest ) {
 };
 
 Doxray.prototype.mergeParsedSources = function( sources ) {
-  var equal, first, theRest;
+  var equal, first, theRest, nonMatches;
   equal = require('deep-equal');
   // The first parsed source will be our "master" source.
   first = sources[ 0 ];
   // The rest of the sources are saved to their own array.
   theRest = sources.slice( 1 );
+  // We'll need this later for doc sets that don't match anything.
+  uniqueSets = [];
   // Compare each doc set from the master source to the doc sets of the rest of
   // the sources. If both sets of docs are exactly the same then merge them
   // together. "Merging" is done by taking the code from the second doc set and
-  // adding to the `code_alt` property of the master doc set. The rest of the
-  // second doc set is discarded.
+  // adding to the code array of the master doc set.
   first.forEach( function( firstDocSet ) {
     theRest.forEach( function( src ) {
       src.forEach( function( secondDocSet ) {
         if ( equal( firstDocSet.docs, secondDocSet.docs ) ) {
-          firstDocSet = this.addAltCodeToDocSet( firstDocSet, secondDocSet );
+          // If this doc set has docs that match another doc sets docs,
+          // then take only its code and move it to the matching set.
+          firstDocSet.code = firstDocSet.code.concat( secondDocSet.code );
+        } else {
+          // If this doc set has docs that do not match any other doc sets docs,
+          // then move this whole doc set into uniqueSets. uniqueSets will be
+          // added to first after we finish looping through it.
+          uniqueSets.push( secondDocSet );
         }
       }, this );
     }, this );
   }, this );
+  // Add all the unique doc sets that couldn't get merged.
+  first = first.concat( uniqueSets );
   return first;
-};
-
-Doxray.prototype.addAltCodeToDocSet = function( docSet1, docSet2 ) {
-  if ( docSet1.code_alt !== undefined ) {
-    docSet1.code_alt += '\n\n' + docSet2.code;
-  } else {
-    docSet1.code_alt = docSet2.code;
-  }
-  return docSet1;
 };
 
 Doxray.prototype.parse = function( src, merge ) {
@@ -74,7 +75,7 @@ Doxray.prototype.parse = function( src, merge ) {
     src.forEach(function( singleSrc ) {
       parsed.push( this.parseOneFile( singleSrc ) );
     }, this);
-    if ( merge ) {
+    if ( typeof merge === 'undefined' || merge === true ) {
       return this.mergeParsedSources( parsed );
     } else {
       return parsed;
