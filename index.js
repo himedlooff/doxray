@@ -95,12 +95,12 @@ Doxray.prototype.parseOneFile = function( src ) {
   code = this.parseOutCode( fileContents, this.regex[ ext ] );
   if ( this.parsingIsValid( docs, code ) ) {
     // Join the docs and code back together as structured objects.
-    convertedDocs = this.joinDocsAndCode( docs, code, src, ext );
+    convertedDocs = this.joinDocsAndCode( docs, code, src );
   }
   return convertedDocs;
 };
 
-Doxray.prototype.joinDocsAndCode = function( docs, code, src, ext ) {
+Doxray.prototype.joinDocsAndCode = function( docs, code, src ) {
   var path, convertedDocs;
   path = require('path');
   convertedDocs = [];
@@ -112,7 +112,7 @@ Doxray.prototype.joinDocsAndCode = function( docs, code, src, ext ) {
       docs: docs[ index ],
       code: [{
         filename: path.basename( src ),
-        type: ext,
+        type: path.extname( src ),
         code: code[ index ]
       }]
     });
