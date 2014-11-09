@@ -92,12 +92,12 @@ describe('#joinDocsAndCode', function() {
     var docs = [ { prop1: 'Comment one' } ];
     var code = [ '.test{\n    content:\"Hello\";\n}' ];
     assert.deepEqual(
-      commentDocs.joinDocsAndCode( docs, code, 'test.css', 'css' ),
+      commentDocs.joinDocsAndCode( docs, code, 'test.css' ),
       [{
         docs: docs[0],
         code: [{
           filename: 'test.css',
-          type: 'css',
+          type: '.css',
           code: code[0]
         }]
       }]
@@ -113,7 +113,7 @@ describe('#parseOneFile', function() {
         docs: { prop1: 'Comment one' },
         code: [{
           filename: 'test.css',
-          type: 'css',
+          type: '.css',
           code: ''
         }]
       }]
@@ -129,29 +129,33 @@ describe('#parse', function() {
         docs: { prop1: 'Comment one' },
         code: [{
           filename: 'test.css',
-          type: 'css',
+          type: '.css',
           code: ''
         }]
       }]
     );
     assert.deepEqual(
-      commentDocs.parse( [ 'test/test.css', 'test/test.css' ], false ),
+      commentDocs.parse( [ 'test/test.css', 'test/test.less' ], false ),
       [
         [{
           docs: { prop1: 'Comment one' },
-          code: [{
-            filename: 'test.css',
-            type: 'css',
-            code: ''
-          }]
+          code: [
+            {
+              filename: 'test.css',
+              type: '.css',
+              code: ''
+            }
+          ]
         }],
         [{
           docs: { prop1: 'Comment one' },
-          code: [{
-            filename: 'test.css',
-            type: 'css',
-            code: ''
-          }]
+          code: [
+            {
+              filename: 'test.less',
+              type: '.less',
+              code: ''
+            }
+          ]
         }]
       ]
     );
@@ -160,6 +164,26 @@ describe('#parse', function() {
 
 describe('#mergeParsedSources', function() {
   it('merges two objects if their docs are identical', function() {
+    assert.deepEqual(
+      commentDocs.parse( [ 'test/test.css', 'test/test.less' ], true ),
+      [
+        {
+          docs: { prop1: 'Comment one' },
+          code: [
+            {
+              filename: 'test.css',
+              type: '.css',
+              code: ''
+            },
+            {
+              filename: 'test.less',
+              type: '.less',
+              code: ''
+            }
+          ]
+        },
+      ]
+    );
     assert.deepEqual(
       commentDocs.mergeParsedSources(
         [
