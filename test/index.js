@@ -165,7 +165,13 @@ describe('#mergeParsedSources', function() {
         [
           [
             {
-              docs: { name: 'pattern name' },
+              docs: { name: 'pattern one' },
+              code: [
+                { code: 'test.css code', filename: 'test.css' }
+              ]
+            },
+            {
+              docs: { name: 'pattern two' },
               code: [
                 { code: 'test.css code', filename: 'test.css' }
               ]
@@ -173,7 +179,13 @@ describe('#mergeParsedSources', function() {
           ],
           [
             {
-              docs: { name: 'pattern name' },
+              docs: { name: 'pattern one' },
+              code: [
+                { code: 'test.less code', filename: 'test.less' }
+              ]
+            },
+            {
+              docs: { name: 'pattern two' },
               code: [
                 { code: 'test.less code', filename: 'test.less' }
               ]
@@ -183,7 +195,14 @@ describe('#mergeParsedSources', function() {
       ),
       [
         {
-          docs: { name: 'pattern name' },
+          docs: { name: 'pattern one' },
+          code: [
+            { code: 'test.css code', filename: 'test.css' },
+            { code: 'test.less code', filename: 'test.less' }
+          ]
+        },
+        {
+          docs: { name: 'pattern two' },
           code: [
             { code: 'test.css code', filename: 'test.css' },
             { code: 'test.less code', filename: 'test.less' }
