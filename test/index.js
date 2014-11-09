@@ -282,16 +282,7 @@ describe('#mergeParsedSources', function() {
 
 describe('#writeJSON', function() {
   it('creates a .json file out of an object', function() {
-    commentDocs.writeJSON(
-      [
-        {
-          docs: { name: 'pattern name' },
-          code: 'first obj code',
-          code_alt: 'second obj code'
-        }
-      ],
-      'test/test.json'
-    );
+    commentDocs.writeJSON( [{}], 'test/test.json' );
     assert.isFile( 'test/test.json' );
   });
 });

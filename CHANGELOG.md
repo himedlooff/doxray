@@ -2,6 +2,21 @@ All notable changes to this project will be documented in this file.
 I follow the [Semantic Versioning 2.0.0](http://semver.org/) format.
 
 
+## 0.3.2 - 2014-11-09
+
+### Added
+- Nothing.
+
+### Deprecated
+- Nothing.
+
+### Removed
+- Nothing.
+
+### Fixed
+- Small fix to the writeJSON test.
+
+
 ## 0.3.1 - 2014-11-09
 
 ### Added
