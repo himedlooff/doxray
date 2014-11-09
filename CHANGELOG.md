@@ -2,6 +2,22 @@ All notable changes to this project will be documented in this file.
 I follow the [Semantic Versioning 2.0.0](http://semver.org/) format.
 
 
+## 0.3.0 - 2014-11-09
+
+### Added
+- If merging doesn't find a match it no longer ignores it and instead adds it
+  to the array of doc sets.
+
+### Deprecated
+- Nothing.
+
+### Removed
+- Nothing.
+
+### Fixed
+- Nothing.
+
+
 ## 0.2.0 - 2014-11-06
 
 ### Added

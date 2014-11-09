@@ -65,25 +65,8 @@ Doxray.prototype.mergeParsedSources = function( sources ) {
       }
     }, this );
   }, this );
-  // first.forEach( function( firstDocSet ) {
-  //   theRest.forEach( function( src ) {
-  //     src.forEach( function( secondDocSet ) {
-  //       if ( equal( firstDocSet.docs, secondDocSet.docs ) ) {
-  //         // If this doc set has docs that match another doc sets docs,
-  //         // then take only its code and move it to the matching set.
-  //         firstDocSet.code = firstDocSet.code.concat( secondDocSet.code );
-  //       } else {
-  //         // If this doc set has docs that do not match any other doc sets docs,
-  //         // then move this whole doc set into uniqueSets. uniqueSets will be
-  //         // added to first after we finish looping through it.
-  //         uniqueSets.push( secondDocSet );
-  //       }
-  //     }, this );
-  //   }, this );
-  // }, this );
   // Add all the unique doc sets that couldn't get merged.
   first = first.concat( uniqueSets );
-  console.log(first);
   return first;
 };
 
