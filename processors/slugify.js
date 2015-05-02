@@ -26,9 +26,11 @@ module.exports = function( parsed ) {
   parsed.files.forEach(function( file, fileIndex ){
     var currentHeader = '';
     file.forEach(function( docCodePair, docCodePairIndex ){
+      // Some docs are arrays of docs, some are just doc objects.
+      // If it's an array of docs, loop through it.
       if ( Array.isArray( docCodePair.docs ) ) {
         docCodePair.docs.forEach(function( doc, docIndex ){
-          doc.slug = slugify(doc.label);
+          doc.slug = slugify( doc.label );
           // If there is a header property prepend it to the slug. This is an
           // effort to make slugs mor unique.
           if ( doc.header ) {
@@ -37,12 +39,12 @@ module.exports = function( parsed ) {
             doc.slug = currentHeader + '-' + doc.slug;
           }
           // Save the indexes needed to get to this slug.
-          parsed.maps.slugs.indexes[doc.slug] = [fileIndex, docCodePairIndex, docIndex];
+          parsed.maps.slugs.indexes[ doc.slug ] = [ fileIndex, docCodePairIndex, docIndex ];
         });
       } else {
-        docCodePair.docs.slug = slugify(docCodePair.docs.label);
+        docCodePair.docs.slug = slugify( docCodePair.docs.label );
         // Save the indexes needed to get to this slug.
-        parsed.maps.slugs.indexes[docCodePair.docs.slug] = [fileIndex, docCodePairIndex];
+        parsed.maps.slugs.indexes[ docCodePair.docs.slug ] = [ fileIndex, docCodePairIndex ];
       }
     });
   });
