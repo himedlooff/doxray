@@ -302,6 +302,23 @@ describe('#mergeParsedSources', function() {
   });
 });
 
+describe('#postParseProcessing', function() {
+  it('runs an array of processing functions over a parsed set of docs', function() {
+    assert.deepEqual(
+      commentDocs.postParseProcessing( commentDocs.parse( 'test/test.css' ), [
+        function( parsed ) {
+          parsed.files = 'nothing anymore';
+          return parsed;
+        }
+      ] ),
+      {
+        maps: {},
+        files: 'nothing anymore'
+      }
+    );
+  });
+});
+
 describe('#writeJSON', function() {
   it('creates a .json file out of an object', function() {
     commentDocs.writeJSON( [{}], 'test/test.json' );

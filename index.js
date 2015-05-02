@@ -33,6 +33,19 @@ Doxray.prototype.writeJSON = function( convertedDocs, dest ) {
   });
 };
 
+Doxray.prototype.postParseProcessing = function( parsed, processors ) {
+  var processedDocs = {
+      maps: {},
+      files: parsed
+  };
+  if ( typeof processors !== 'undefined' ) {
+    processors.forEach(function( processor ){
+      processedDocs = processor( processedDocs );
+    });
+  }
+  return processedDocs;
+};
+
 Doxray.prototype.parse = function( src, merge ) {
   var parsed = [];
   if ( typeof src == 'string' ) {
