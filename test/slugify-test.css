@@ -12,3 +12,17 @@
 /* doxray
     - label: Special~`!@#$%^&*()+=[]{}\|,./<>?characters
 */
+
+/* doxray
+    - header: true
+      label: First header
+    - label: Comment one
+    - label: Comment two
+*/
+
+/* doxray
+    - header: true
+      label: Second header
+    - label: Comment one
+    - label: Comment two
+*/

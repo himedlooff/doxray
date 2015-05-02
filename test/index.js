@@ -359,6 +359,28 @@ describe('#postParseProcessing', function() {
   });
 });
 
+describe('#postParseProcessing', function() {
+  it('slugifys the label property in a doc and prepends a header if one exists when using the slugify processor', function() {
+    function run() {
+      var parsed = commentDocs.postParseProcessing(
+            commentDocs.parse( 'test/slugify-test.css' ),
+            [ slugifyProcessor ]
+          );
+      return parsed.files[0][3].docs[0].slug + ' ' +
+             parsed.files[0][3].docs[1].slug + ' ' +
+             parsed.files[0][3].docs[2].slug + ' ' +
+             parsed.files[0][4].docs[0].slug + ' ' +
+             parsed.files[0][4].docs[1].slug + ' ' +
+             parsed.files[0][4].docs[2].slug;
+    }
+    assert.equal(
+      run(),
+      ('first-header first-header-comment-one first-header-comment-two ' +
+       'second-header second-header-comment-one second-header-comment-two')
+    );
+  });
+});
+
 describe('#writeJSON', function() {
   it('creates a .json file out of an object', function() {
     commentDocs.writeJSON( [{}], 'test/test.json' );

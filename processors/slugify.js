@@ -17,12 +17,18 @@ module.exports = function( parsed ) {
   }
   // Loop through all code files in each doc/code pair of each file.
   parsed.files.forEach(function( file, index ){
+    var currentHeader = '';
     file.forEach(function( docCodePair ){
       if ( Array.isArray( docCodePair.docs ) ) {
         docCodePair.docs.forEach(function( doc ){
           // Map the filename of the code to the index of this file in the
           // files array so we can retrieve the whole file by filename.
           doc.slug = slugify(doc.label);
+          if ( doc.header ) {
+            currentHeader = doc.slug;
+          } else if ( currentHeader !== '' ) {
+            doc.slug = currentHeader + '-' + doc.slug;
+          }
           // parsed.maps.slugs.indexes[doc.label] = index;
         });
       } else {
