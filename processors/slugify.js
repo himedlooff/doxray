@@ -30,7 +30,7 @@ module.exports = function( parsed ) {
         docCodePair.docs.forEach(function( doc, docIndex ){
           doc.slug = slugify(doc.label);
           // If there is a header property prepend it to the slug. This is an
-          // effort to make slugs mor eunique.
+          // effort to make slugs mor unique.
           if ( doc.header ) {
             currentHeader = doc.slug;
           } else if ( currentHeader !== '' ) {
