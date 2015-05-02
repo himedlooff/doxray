@@ -122,18 +122,25 @@ describe('#parseOneFile', function() {
 });
 
 describe('#parse', function() {
-  it('parses a file or an array of files', function() {
+  it('parses a single file when the first argument is a string that is a path to an existing file', function() {
     assert.deepEqual(
-      commentDocs.parseOneFile( 'test/test.css' ),
-      [{
-        docs: { prop1: 'Comment one' },
-        code: [{
-          filename: 'test.css',
-          type: '.css',
-          code: ''
+      commentDocs.parse( 'test/test.css' ),
+      [
+        [{
+          docs: { prop1: 'Comment one' },
+          code: [{
+            filename: 'test.css',
+            type: '.css',
+            code: ''
+          }]
         }]
-      }]
+      ]
     );
+  });
+});
+
+describe('#parse', function() {
+  it('parses an array of files when the first argument is an array of strings that are paths to existing files', function() {
     assert.deepEqual(
       commentDocs.parse( [ 'test/test.css', 'test/test.less' ], false ),
       [
@@ -158,6 +165,21 @@ describe('#parse', function() {
           ]
         }]
       ]
+    );
+  });
+});
+
+describe('#parse', function() {
+  it('throws an error when the first argument is not a string or an array', function() {
+    assert.throws(
+      function() { commentDocs.parse( {} ); },
+      Error,
+      'parse() expected a String or Array.'
+    );
+    assert.throws(
+      function() { commentDocs.parse( 123 ); },
+      Error,
+      'parse() expected a String or Array.'
     );
   });
 });

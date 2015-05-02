@@ -34,19 +34,20 @@ Doxray.prototype.writeJSON = function( convertedDocs, dest ) {
 };
 
 Doxray.prototype.parse = function( src, merge ) {
+  var parsed = [];
   if ( typeof src == 'string' ) {
-    return this.parseOneFile( src );
+    parsed.push( this.parseOneFile( src ) );
   } else if ( Array.isArray( src ) ) {
-    var parsed = [];
     src.forEach(function( singleSrc ) {
       parsed.push( this.parseOneFile( singleSrc ) );
     }, this);
     if ( typeof merge === 'undefined' || merge === true ) {
-      return this.mergeParsedSources( parsed );
-    } else {
-      return parsed;
+      parsed = this.mergeParsedSources( parsed );
     }
+  } else {
+    throw new Error('parse() expected a String or Array.');
   }
+  return parsed;
 };
 
 Doxray.prototype.mergeParsedSources = function( sources ) {
