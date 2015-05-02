@@ -1,11 +1,9 @@
-var chai, assert, CommentDocs, commentDocs;
+var chai = require('chai');
+var assert = chai.assert;
+var CommentDocs = require('../index');
+var commentDocs = new CommentDocs();
 
-chai = require('chai');
-assert = chai.assert;
 chai.use( require('chai-fs') );
-
-CommentDocs = require('../index');
-commentDocs = new CommentDocs();
 
 describe('#getCommentType', function() {
   it('returns the correct comment type based on the file extension', function() {
