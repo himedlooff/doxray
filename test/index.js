@@ -3,6 +3,7 @@ var assert = chai.assert;
 var CommentDocs = require('../index');
 var commentDocs = new CommentDocs();
 var fileMappingProcessor = require('../processors/file-mappings.js');
+var slugifyProcessor = require('../processors/slugify.js');
 
 chai.use( require('chai-fs') );
 
@@ -325,9 +326,35 @@ describe('#postParseProcessing', function() {
         customData: 'my custom data'
       }
     );
+  });
+});
+
+describe('#postParseProcessing', function() {
+  it('provides a mapping of filenames via the file mappings processor', function() {
     assert.deepEqual(
-      commentDocs.postParseProcessing( commentDocs.parse( 'test/test.css' ), [ fileMappingProcessor ] ).maps.files.indexes,
+      commentDocs.postParseProcessing( commentDocs.parse( 'test/test.css' ),
+        [ fileMappingProcessor ]
+      ).maps.files.indexes,
       { 'test.css': 0 }
+    );
+  });
+});
+
+describe('#postParseProcessing', function() {
+  it('slugifys the label property in a doc via the slugify processor', function() {
+    function run() {
+      var parsed = commentDocs.postParseProcessing(
+            commentDocs.parse( 'test/slugify-test.css' ),
+            [ slugifyProcessor ]
+          );
+      return parsed.files[0][0].docs.slug + ' ' +
+             parsed.files[0][1].docs[0].slug + ' ' +
+             parsed.files[0][1].docs[1].slug + ' ' +
+             parsed.files[0][2].docs[0].slug;
+    }
+    assert.equal(
+      run(),
+      'comment-one comment-two comment-three specialcharacters'
     );
   });
 });
