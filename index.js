@@ -70,7 +70,7 @@ Doxray.prototype.mergeParsedSources = function( sources ) {
   return first;
 };
 
-Doxray.prototype.parse = function( src, merge ) {
+Doxray.prototype.parser = function( src, merge ) {
   if ( typeof src == 'string' ) {
     return this.parseOneFile( src );
   } else if ( Array.isArray( src ) ) {

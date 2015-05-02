@@ -121,7 +121,7 @@ describe('#parseOneFile', function() {
   });
 });
 
-describe('#parse', function() {
+describe('#parser', function() {
   it('parses a file or an array of files', function() {
     assert.deepEqual(
       commentDocs.parseOneFile( 'test/test.css' ),
@@ -135,7 +135,7 @@ describe('#parse', function() {
       }]
     );
     assert.deepEqual(
-      commentDocs.parse( [ 'test/test.css', 'test/test.less' ], false ),
+      commentDocs.parser( [ 'test/test.css', 'test/test.less' ], false ),
       [
         [{
           docs: { prop1: 'Comment one' },
@@ -165,7 +165,7 @@ describe('#parse', function() {
 describe('#mergeParsedSources', function() {
   it('merges two objects if their docs are identical', function() {
     assert.deepEqual(
-      commentDocs.parse( [ 'test/test.css', 'test/test.less' ], true ),
+      commentDocs.parser( [ 'test/test.css', 'test/test.less' ], true ),
       [
         {
           docs: { prop1: 'Comment one' },
