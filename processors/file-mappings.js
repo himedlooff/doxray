@@ -21,6 +21,5 @@ module.exports = function( parsed ) {
       });
     });
   });
-  console.log( parsed );
   return parsed;
 };
