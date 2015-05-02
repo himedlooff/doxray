@@ -2,6 +2,7 @@ var chai = require('chai');
 var assert = chai.assert;
 var CommentDocs = require('../index');
 var commentDocs = new CommentDocs();
+var fileMappingProcessor = require('../processors/file-mappings.js');
 
 chai.use( require('chai-fs') );
 
@@ -305,6 +306,14 @@ describe('#postParseProcessing', function() {
     assert.deepEqual(
       commentDocs.postParseProcessing( commentDocs.parse( 'test/test.css' ), [
         function( parsed ) {
+          return '';
+        }
+      ] ),
+      ''
+    );
+    assert.deepEqual(
+      commentDocs.postParseProcessing( commentDocs.parse( 'test/test.css' ), [
+        function( parsed ) {
           parsed.files = [];
           parsed.customData = 'my custom data';
           return parsed;
@@ -317,12 +326,8 @@ describe('#postParseProcessing', function() {
       }
     );
     assert.deepEqual(
-      commentDocs.postParseProcessing( commentDocs.parse( 'test/test.css' ), [
-        function( parsed ) {
-          return '';
-        }
-      ] ),
-      ''
+      commentDocs.postParseProcessing( commentDocs.parse( 'test/test.css' ), [ fileMappingProcessor ] ).maps.files.indexes,
+      { 'test.css': 0 }
     );
   });
 });
