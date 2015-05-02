@@ -33,6 +33,22 @@ Doxray.prototype.writeJSON = function( convertedDocs, dest ) {
   });
 };
 
+Doxray.prototype.parse = function( src, merge ) {
+  if ( typeof src == 'string' ) {
+    return this.parseOneFile( src );
+  } else if ( Array.isArray( src ) ) {
+    var parsed = [];
+    src.forEach(function( singleSrc ) {
+      parsed.push( this.parseOneFile( singleSrc ) );
+    }, this);
+    if ( typeof merge === 'undefined' || merge === true ) {
+      return this.mergeParsedSources( parsed );
+    } else {
+      return parsed;
+    }
+  }
+};
+
 Doxray.prototype.mergeParsedSources = function( sources ) {
   var equal, first, theRest, nonMatches;
   equal = require('deep-equal');
@@ -68,22 +84,6 @@ Doxray.prototype.mergeParsedSources = function( sources ) {
   // Add all the unique doc sets that couldn't get merged.
   first = first.concat( uniqueSets );
   return first;
-};
-
-Doxray.prototype.parser = function( src, merge ) {
-  if ( typeof src == 'string' ) {
-    return this.parseOneFile( src );
-  } else if ( Array.isArray( src ) ) {
-    var parsed = [];
-    src.forEach(function( singleSrc ) {
-      parsed.push( this.parseOneFile( singleSrc ) );
-    }, this);
-    if ( typeof merge === 'undefined' || merge === true ) {
-      return this.mergeParsedSources( parsed );
-    } else {
-      return parsed;
-    }
-  }
 };
 
 Doxray.prototype.parseOneFile = function( src ) {
