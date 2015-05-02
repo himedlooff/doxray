@@ -307,14 +307,24 @@ describe('#postParseProcessing', function() {
     assert.deepEqual(
       commentDocs.postParseProcessing( commentDocs.parse( 'test/test.css' ), [
         function( parsed ) {
-          parsed.files = 'nothing anymore';
+          parsed.files = [];
+          parsed.customData = 'my custom data';
           return parsed;
         }
       ] ),
       {
         maps: {},
-        files: 'nothing anymore'
+        files: [],
+        customData: 'my custom data'
       }
+    );
+    assert.deepEqual(
+      commentDocs.postParseProcessing( commentDocs.parse( 'test/test.css' ), [
+        function( parsed ) {
+          return '';
+        }
+      ] ),
+      ''
     );
   });
 });
