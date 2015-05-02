@@ -327,9 +327,7 @@ describe('#postParseProcessing', function() {
       }
     );
   });
-});
 
-describe('#postParseProcessing', function() {
   it('provides a mapping of filenames via the file mappings processor', function() {
     assert.deepEqual(
       commentDocs.postParseProcessing( commentDocs.parse( 'test/test.css' ),
@@ -338,9 +336,7 @@ describe('#postParseProcessing', function() {
       { 'test.css': 0 }
     );
   });
-});
 
-describe('#postParseProcessing', function() {
   it('slugifys the label property in a doc via the slugify processor', function() {
     function run() {
       var parsed = commentDocs.postParseProcessing(
@@ -357,9 +353,7 @@ describe('#postParseProcessing', function() {
       'comment-one comment-two comment-three specialcharacters'
     );
   });
-});
 
-describe('#postParseProcessing', function() {
   it('slugifys the label property in a doc and prepends a header if one exists when using the slugify processor', function() {
     function run() {
       var parsed = commentDocs.postParseProcessing(
@@ -377,6 +371,20 @@ describe('#postParseProcessing', function() {
       run(),
       ('first-header first-header-comment-one first-header-comment-two ' +
        'second-header second-header-comment-one second-header-comment-two')
+    );
+  });
+
+  it('uses the slugify processor to create a get function to access docs via a slug', function() {
+    function run() {
+      var parsed = commentDocs.postParseProcessing(
+            commentDocs.parse( 'test/slugify-test.css' ),
+            [ slugifyProcessor ]
+          );
+      return parsed.maps.slugs.get( 'comment-one', parsed ).docs.label;
+    }
+    assert.equal(
+      run(),
+      'Comment one'
     );
   });
 });

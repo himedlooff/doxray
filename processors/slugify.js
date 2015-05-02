@@ -11,28 +11,38 @@ module.exports = function( parsed ) {
       prop: 'slugs',
       indexes: {},
       get: function( slug, parsed ) {
-        return parsed[this.prop][this.indexes[slug]];
+        var indexPath = parsed.maps[this.prop].indexes[slug];
+        var returnDoc;
+        if ( indexPath.length === 2 ) {
+          returnDoc = parsed.files[indexPath[0]][indexPath[1]];
+        } else if ( indexPath.length === 3 ) {
+          returnDoc = parsed.files[indexPath[0]][indexPath[1]].docs[indexPath[2]];
+        }
+        return returnDoc;
       }
     };
   }
   // Loop through all code files in each doc/code pair of each file.
-  parsed.files.forEach(function( file, index ){
+  parsed.files.forEach(function( file, fileIndex ){
     var currentHeader = '';
-    file.forEach(function( docCodePair ){
+    file.forEach(function( docCodePair, docCodePairIndex ){
       if ( Array.isArray( docCodePair.docs ) ) {
-        docCodePair.docs.forEach(function( doc ){
-          // Map the filename of the code to the index of this file in the
-          // files array so we can retrieve the whole file by filename.
+        docCodePair.docs.forEach(function( doc, docIndex ){
           doc.slug = slugify(doc.label);
+          // If there is a header property prepend it to the slug. This is an
+          // effort to make slugs mor eunique.
           if ( doc.header ) {
             currentHeader = doc.slug;
           } else if ( currentHeader !== '' ) {
             doc.slug = currentHeader + '-' + doc.slug;
           }
-          // parsed.maps.slugs.indexes[doc.label] = index;
+          // Save the indexes needed to get to this slug.
+          parsed.maps.slugs.indexes[doc.slug] = [fileIndex, docCodePairIndex, docIndex];
         });
       } else {
         docCodePair.docs.slug = slugify(docCodePair.docs.label);
+        // Save the indexes needed to get to this slug.
+        parsed.maps.slugs.indexes[docCodePair.docs.slug] = [fileIndex, docCodePairIndex];
       }
     });
   });
