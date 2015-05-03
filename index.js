@@ -21,9 +21,24 @@ Doxray.prototype.regex = {
   }
 };
 
+Doxray.prototype.writeJS = function( convertedDocs, dest ) {
+  var fs = require('fs');
+  var util = require('util');
+
+  var convertedDocsAsString;
+  convertedDocsAsString = 'Doxray = ' + util.inspect( convertedDocs, { depth: null } ) + ';';
+  fs.writeFile( dest, convertedDocsAsString, 'utf-8', function( err ) {
+    if ( err ) {
+      throw err;
+      // TODO: A node.js equivalent to Grunts this.async( err );
+    }
+    console.log( dest, ' was created.' );
+    // TODO: A node.js equivalent to Grunts this.async();
+  });
+};
+
 Doxray.prototype.writeJSON = function( convertedDocs, dest ) {
-  var fs;
-  fs = require('fs');
+  var fs = require('fs');
   fs.writeFile( dest, JSON.stringify( convertedDocs, null, '\t' ), function( err ) {
     if ( err ) {
       throw err;

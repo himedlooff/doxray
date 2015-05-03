@@ -357,8 +357,15 @@ describe('#postParseProcessing', function() {
 });
 
 describe('#writeJSON', function() {
-  it('creates a .json file out of an object', function() {
+  it('creates a .json file', function() {
     commentDocs.writeJSON( [{}], 'test/test.json' );
+    assert.isFile( 'test/test.json' );
+  });
+});
+
+describe('#writeJS', function() {
+  it('creates a .js file', function() {
+    commentDocs.writeJS( [{}], 'test/test.js' );
     assert.isFile( 'test/test.json' );
   });
 });
