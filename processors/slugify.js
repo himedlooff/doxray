@@ -13,9 +13,9 @@ module.exports = function( parsed ) {
       get: function( slug, parsed ) {
         var indexPath = parsed.maps[this.prop].indexes[slug];
         var returnDoc;
-        if ( indexPath.length === 2 ) {
+        if ( indexPath && indexPath.length === 2 ) {
           returnDoc = parsed.files[indexPath[0]][indexPath[1]];
-        } else if ( indexPath.length === 3 ) {
+        } else if ( indexPath && indexPath.length === 3 ) {
           returnDoc = parsed.files[indexPath[0]][indexPath[1]].docs[indexPath[2]];
         }
         return returnDoc;

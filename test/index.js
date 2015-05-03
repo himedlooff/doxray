@@ -396,16 +396,24 @@ describe('#postParseProcessing', function() {
   });
 
   it('uses the slugify processor to create a get function to access docs via a slug', function() {
-    function run() {
+    function run( slugToFind ) {
       var parsed = commentDocs.postParseProcessing(
             commentDocs.parse( 'test/slugify-test.css' ),
             [ slugifyProcessor ]
           );
-      return parsed.maps.slugs.get( 'comment-one', parsed ).docs.label;
+      if ( typeof parsed.maps.slugs.get( slugToFind, parsed ) !== 'undefined' ) {
+        return parsed.maps.slugs.get( slugToFind, parsed ).docs.label;
+      } else {
+        return undefined;
+      }
     }
     assert.equal(
-      run(),
+      run('comment-one'),
       'Comment one'
+    );
+    assert.equal(
+      run('this-slug-does-not-exist'),
+      undefined
     );
   });
 
