@@ -55,7 +55,7 @@ Doxray.prototype.parse = function( src, merge ) {
       parsed.push( this.parseOneFile( singleSrc ) );
     }, this);
     if ( typeof merge === 'undefined' || merge === true ) {
-      parsed = this.mergeParsedSources( parsed );
+      parsed = [ this.mergeParsedSources( parsed ) ];
     }
   } else {
     throw new Error('parse() expected a String or Array.');

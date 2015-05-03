@@ -190,21 +190,23 @@ describe('#mergeParsedSources', function() {
     assert.deepEqual(
       commentDocs.parse( [ 'test/test.css', 'test/test.less' ], true ),
       [
-        {
-          docs: { prop1: 'Comment one' },
-          code: [
-            {
-              filename: 'test.css',
-              type: '.css',
-              code: ''
-            },
-            {
-              filename: 'test.less',
-              type: '.less',
-              code: ''
-            }
-          ]
-        },
+        [
+          {
+            docs: { prop1: 'Comment one' },
+            code: [
+              {
+                filename: 'test.css',
+                type: '.css',
+                code: ''
+              },
+              {
+                filename: 'test.less',
+                type: '.less',
+                code: ''
+              }
+            ]
+          },
+        ]
       ]
     );
     assert.deepEqual(
@@ -329,12 +331,30 @@ describe('#postParseProcessing', function() {
     );
   });
 
-  it('provides a mapping of filenames via the file mappings processor', function() {
+  it('provides a mapping of filenames via the file mappings processor when passing parse() and single file', function() {
     assert.deepEqual(
       commentDocs.postParseProcessing( commentDocs.parse( 'test/test.css' ),
         [ fileMappingProcessor ]
       ).maps.files.indexes,
       { 'test.css': 0 }
+    );
+  });
+
+  it('provides a mapping of filenames via the file mappings processor when passing parse() and array', function() {
+    assert.deepEqual(
+      commentDocs.postParseProcessing( commentDocs.parse( [ 'test/test.css', 'test/test.less' ] ),
+        [ fileMappingProcessor ]
+      ).maps.files.indexes,
+      { 'test.css': 0, 'test.less': 0 }
+    );
+  });
+
+  it('provides a mapping of filenames via the file mappings processor when passing parse() and array and not merging them', function() {
+    assert.deepEqual(
+      commentDocs.postParseProcessing( commentDocs.parse( [ 'test/test.css', 'test/test.less' ], false ),
+        [ fileMappingProcessor ]
+      ).maps.files.indexes,
+      { 'test.css': 0, 'test.less': 1 }
     );
   });
 
