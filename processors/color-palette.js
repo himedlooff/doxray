@@ -17,10 +17,10 @@ module.exports = function( parsed ) {
         if ( ruleAsArray.length === 2 ) {
           var key = ruleAsArray[ 0 ];
           var val = ruleAsArray[ 1 ];
-          if ( val.charAt( 0 ) === '#' ) {
+          if ( val.charAt( 0 ) !== '$' ) {
             palette.push({
               variable: key,
-              hex: val
+              value: val
             });
           }
         }

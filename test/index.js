@@ -400,8 +400,8 @@ describe('#postParseProcessing', function() {
     assert.deepEqual(
       run(),
       [
-        [ { variable: '$white', hex: '#fff' }, { variable: '$black', hex: '#000' } ],
-        [ { variable: '$red', hex: '#f00' }, { variable: '$green', hex: '#008000' } ]
+        [ { variable: '$white', value: '#fff' }, { variable: '$black', value: '#000' } ],
+        [ { variable: '$red', value: 'red' }, { variable: '$green', value: 'rgba(0,255,0,1)' } ]
       ]
     );
   });
