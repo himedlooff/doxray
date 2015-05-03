@@ -4,6 +4,7 @@ var CommentDocs = require('../index');
 var commentDocs = new CommentDocs();
 var fileMappingProcessor = require('../processors/file-mappings.js');
 var slugifyProcessor = require('../processors/slugify.js');
+var colorPaletteProcessor = require('../processors/color-palette.js');
 
 chai.use( require('chai-fs') );
 
@@ -385,6 +386,23 @@ describe('#postParseProcessing', function() {
     assert.equal(
       run(),
       'Comment one'
+    );
+  });
+
+  it('creates a color palette object when a colorPalette property specifies which file type in the code array to parse', function() {
+    function run() {
+      var parsed = commentDocs.postParseProcessing(
+            commentDocs.parse( 'test/color-palette-test.scss' ),
+            [ colorPaletteProcessor ]
+          );
+      return [ parsed.files[0][0].docs.colorPalette, parsed.files[0][1].docs[0].colorPalette ];
+    }
+    assert.deepEqual(
+      run(),
+      [
+        [ { variable: '$white', hex: '#fff' }, { variable: '$black', hex: '#000' } ],
+        [ { variable: '$red', hex: '#f00' }, { variable: '$green', hex: '#008000' } ]
+      ]
     );
   });
 });
