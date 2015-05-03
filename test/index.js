@@ -135,9 +135,7 @@ describe('#parse', function() {
       ]
     );
   });
-});
 
-describe('#parse', function() {
   it('parses an array of files when the first argument is an array of strings that are paths to existing files', function() {
     assert.deepEqual(
       commentDocs.parse( [ 'test/test.css', 'test/test.less' ], false ),
@@ -165,9 +163,7 @@ describe('#parse', function() {
       ]
     );
   });
-});
 
-describe('#parse', function() {
   it('throws an error when the first argument is not a string or an array', function() {
     assert.throws(
       function() { commentDocs.parse( {} ); },
@@ -257,9 +253,7 @@ describe('#mergeParsedSources', function() {
       ]
     );
   });
-});
 
-describe('#mergeParsedSources', function() {
   it('when attempting to merge two', function() {
     assert.deepEqual(
       commentDocs.mergeParsedSources(
