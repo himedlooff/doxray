@@ -2,7 +2,6 @@ var chai = require('chai');
 var assert = chai.assert;
 var CommentDocs = require('../index');
 var commentDocs = new CommentDocs();
-var fileMappingProcessor = require('../processors/file-mappings.js');
 var slugifyProcessor = require('../processors/slugify.js');
 var colorPaletteProcessor = require('../processors/color-palette.js');
 
@@ -331,33 +330,6 @@ describe('#postParseProcessing', function() {
     );
   });
 
-  it('provides a mapping of filenames via the file mappings processor when passing parse() and single file', function() {
-    assert.deepEqual(
-      commentDocs.postParseProcessing( commentDocs.parse( 'test/test.css' ),
-        [ fileMappingProcessor ]
-      ).maps.files.indexes,
-      { 'test.css': 0 }
-    );
-  });
-
-  it('provides a mapping of filenames via the file mappings processor when passing parse() and array', function() {
-    assert.deepEqual(
-      commentDocs.postParseProcessing( commentDocs.parse( [ 'test/test.css', 'test/test.less' ] ),
-        [ fileMappingProcessor ]
-      ).maps.files.indexes,
-      { 'test.css': 0, 'test.less': 0 }
-    );
-  });
-
-  it('provides a mapping of filenames via the file mappings processor when passing parse() and array and not merging them', function() {
-    assert.deepEqual(
-      commentDocs.postParseProcessing( commentDocs.parse( [ 'test/test.css', 'test/test.less' ], false ),
-        [ fileMappingProcessor ]
-      ).maps.files.indexes,
-      { 'test.css': 0, 'test.less': 1 }
-    );
-  });
-
   it('slugifys the label property in a doc via the slugify processor', function() {
     function run() {
       var parsed = commentDocs.postParseProcessing(
@@ -372,48 +344,6 @@ describe('#postParseProcessing', function() {
     assert.equal(
       run(),
       'comment-one comment-two comment-three specialcharacters'
-    );
-  });
-
-  it('slugifys the label property in a doc and prepends a header if one exists when using the slugify processor', function() {
-    function run() {
-      var parsed = commentDocs.postParseProcessing(
-            commentDocs.parse( 'test/slugify-test.css' ),
-            [ slugifyProcessor ]
-          );
-      return parsed.files[0][3].docs[0].slug + ' ' +
-             parsed.files[0][3].docs[1].slug + ' ' +
-             parsed.files[0][3].docs[2].slug + ' ' +
-             parsed.files[0][4].docs[0].slug + ' ' +
-             parsed.files[0][4].docs[1].slug + ' ' +
-             parsed.files[0][4].docs[2].slug;
-    }
-    assert.equal(
-      run(),
-      ('first-header first-header-comment-one first-header-comment-two ' +
-       'second-header second-header-comment-one second-header-comment-two')
-    );
-  });
-
-  it('uses the slugify processor to create a get function to access docs via a slug', function() {
-    function run( slugToFind ) {
-      var parsed = commentDocs.postParseProcessing(
-            commentDocs.parse( 'test/slugify-test.css' ),
-            [ slugifyProcessor ]
-          );
-      if ( typeof parsed.maps.slugs.get( slugToFind, parsed ) !== 'undefined' ) {
-        return parsed.maps.slugs.get( slugToFind, parsed ).docs.label;
-      } else {
-        return undefined;
-      }
-    }
-    assert.equal(
-      run('comment-one'),
-      'Comment one'
-    );
-    assert.equal(
-      run('this-slug-does-not-exist'),
-      undefined
     );
   });
 
