@@ -13,10 +13,14 @@ module.exports = function( parsed ) {
       // Loop through it if it's an array.
       if ( Array.isArray( docCodePair.docs ) ) {
         docCodePair.docs.forEach(function( doc ){
-          doc.slug = slugify( doc.label );
+          if ( doc.label ) {
+            doc.slug = slugify( doc.label );
+          }
         });
       } else {
-        docCodePair.docs.slug = slugify( docCodePair.docs.label );
+        if ( docCodePair.docs.label ) {
+          docCodePair.docs.slug = slugify( docCodePair.docs.label );
+        }
       }
     });
   });

@@ -300,16 +300,17 @@ describe('#postParseProcessing', function() {
   it('slugifys the label property in a doc via the slugify processor', function() {
     function run() {
       var parsed = commentDocs.postParseProcessing(
-            commentDocs.parse( 'test/slugify-test.css' )
+            commentDocs.parse( ['test/slugify-test.css', 'test/test.css'], false )
           );
       return parsed.files[0][0].docs.slug + ' ' +
              parsed.files[0][1].docs[0].slug + ' ' +
              parsed.files[0][1].docs[1].slug + ' ' +
-             parsed.files[0][2].docs[0].slug;
+             parsed.files[0][2].docs[0].slug + ' ' +
+             parsed.files[1][0].docs.slug;
     }
     assert.equal(
       run(),
-      'comment-one comment-two comment-three specialcharacters'
+      'comment-one comment-two comment-three specialcharacters undefined'
     );
   });
 
@@ -353,6 +354,8 @@ describe('#postParseProcessing', function() {
         customData: 'my custom data'
       }
     );
+    // We need to refresh the Doxray object because we deleted the processors.
+    commentDocs = new CommentDocs();
   });
 });
 
@@ -367,5 +370,37 @@ describe('#writeJS', function() {
   it('creates a .js file', function() {
     commentDocs.writeJS( [{}], 'test/test.js' );
     assert.isFile( 'test/test.json' );
+  });
+});
+
+describe('#run', function() {
+  it('uses the options argument to run the right tasks', function() {
+    var docs;
+    docs = commentDocs.run( 'test/test.css', {
+      jsFile: 'test/run-test.js',
+      jsonFile: 'test/run-test.json'
+    });
+    assert.isFile( 'test/run-test.js' );
+    assert.isFile( 'test/run-test.json' );
+    assert.deepEqual(
+      docs.files[0][0].docs.prop1,
+      'Comment one'
+    );
+  });
+
+  it('uses the options argument to merge', function() {
+    var docs;
+    docs = commentDocs.run( [ 'test/test.css', 'test/test.less' ], { merge: true } );
+    assert.deepEqual(
+      docs.files[0][0].docs.prop1,
+      'Comment one'
+    );
+  });
+
+  it('throws an error if the src does not exist', function() {
+    assert.throws(
+      function() { commentDocs.run( [ 'non-existent-file.css' ] ); },
+      Error
+    );
   });
 });

@@ -8,17 +8,38 @@ var Doxray = function() {
   //
 };
 
-Doxray.prototype.regex = {
-  html: {
-    opening: /^<!--\s*doxray[^\n]*\n/m,
-    closing: /-->/,
-    comment: /^<!--\s*doxray(?:[^-]|[\r\n]|-[^-])*-->/gm
-  },
-  css: {
-    opening: /^\/\*\s*doxray[^\n]*\n/m,
-    closing: /\*\//,
-    comment: /^\/\*\s*doxray[^*]*\*+(?:[^/*][^*]*\*+)*\//gm
+Doxray.prototype.run = function( src, options ) {
+  var parsed, processed;
+  src = this.handleSrc( src );
+  options = this.handleOptions( options );
+  parsed = this.parse( src, options.merge );
+  processed = this.postParseProcessing( parsed );
+  if ( options.jsonFile ) {
+    this.writeJSON( processed, options.jsonFile );
   }
+  if ( options.jsFile ) {
+    this.writeJS( processed, options.jsFile );
+  }
+  return processed;
+};
+
+Doxray.prototype.handleSrc = function( src ) {
+  var glob = require("glob");
+  var fileToTest;
+  if ( typeof src === 'string' ) {
+    src = glob.sync( src );
+  }
+  return src;
+};
+
+Doxray.prototype.handleOptions = function( options ) {
+  if ( typeof options !== 'object' ) {
+    options = {};
+  }
+  options.jsFile = options.jsFile;
+  options.jsonFile = options.jsonFile;
+  options.merge = options.merge || true;
+  return options;
 };
 
 Doxray.prototype.writeJS = function( convertedDocs, dest ) {
@@ -32,7 +53,7 @@ Doxray.prototype.writeJS = function( convertedDocs, dest ) {
       throw err;
       // TODO: A node.js equivalent to Grunts this.async( err );
     }
-    console.log( dest, ' was created.' );
+    console.log( dest, 'was created.' );
     // TODO: A node.js equivalent to Grunts this.async();
   });
 };
@@ -44,7 +65,7 @@ Doxray.prototype.writeJSON = function( convertedDocs, dest ) {
       throw err;
       // TODO: A node.js equivalent to Grunts this.async( err );
     }
-    console.log( dest, ' was created.' );
+    console.log( dest, 'was created.' );
     // TODO: A node.js equivalent to Grunts this.async();
   });
 };
@@ -118,6 +139,19 @@ Doxray.prototype.mergeParsedSources = function( sources ) {
   // Add all the unique doc sets that couldn't get merged.
   first = first.concat( uniqueSets );
   return first;
+};
+
+Doxray.prototype.regex = {
+  html: {
+    opening: /^<!--\s*doxray[^\n]*\n/m,
+    closing: /-->/,
+    comment: /^<!--\s*doxray(?:[^-]|[\r\n]|-[^-])*-->/gm
+  },
+  css: {
+    opening: /^\/\*\s*doxray[^\n]*\n/m,
+    closing: /\*\//,
+    comment: /^\/\*\s*doxray[^*]*\*+(?:[^/*][^*]*\*+)*\//gm
+  }
 };
 
 Doxray.prototype.parseOneFile = function( src ) {
