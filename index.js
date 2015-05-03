@@ -3,6 +3,7 @@
    Parse documentation from code comments
    ========================================================================== */
 
+// Create the Doxray Object
 var Doxray = function() {
   //
 };
@@ -33,13 +34,17 @@ Doxray.prototype.writeJSON = function( convertedDocs, dest ) {
   });
 };
 
-Doxray.prototype.postParseProcessing = function( parsed, processors ) {
+Doxray.prototype.processors = [
+  require('./processors/color-palette.js'),
+  require('./processors/slugify.js')
+];
+
+Doxray.prototype.postParseProcessing = function( parsed ) {
   var processedDocs = {
-      maps: {},
       files: parsed
   };
-  if ( typeof processors !== 'undefined' ) {
-    processors.forEach(function( processor ){
+  if ( typeof this.processors !== 'undefined' ) {
+    this.processors.forEach(function( processor ){
       processedDocs = processor( processedDocs );
     });
   }

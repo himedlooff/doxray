@@ -2,8 +2,6 @@ var chai = require('chai');
 var assert = chai.assert;
 var CommentDocs = require('../index');
 var commentDocs = new CommentDocs();
-var slugifyProcessor = require('../processors/slugify.js');
-var colorPaletteProcessor = require('../processors/color-palette.js');
 
 chai.use( require('chai-fs') );
 
@@ -305,36 +303,10 @@ describe('#mergeParsedSources', function() {
 });
 
 describe('#postParseProcessing', function() {
-  it('runs an array of processing functions over a parsed set of docs', function() {
-    assert.deepEqual(
-      commentDocs.postParseProcessing( commentDocs.parse( 'test/test.css' ), [
-        function( parsed ) {
-          return '';
-        }
-      ] ),
-      ''
-    );
-    assert.deepEqual(
-      commentDocs.postParseProcessing( commentDocs.parse( 'test/test.css' ), [
-        function( parsed ) {
-          parsed.files = [];
-          parsed.customData = 'my custom data';
-          return parsed;
-        }
-      ] ),
-      {
-        maps: {},
-        files: [],
-        customData: 'my custom data'
-      }
-    );
-  });
-
   it('slugifys the label property in a doc via the slugify processor', function() {
     function run() {
       var parsed = commentDocs.postParseProcessing(
-            commentDocs.parse( 'test/slugify-test.css' ),
-            [ slugifyProcessor ]
+            commentDocs.parse( 'test/slugify-test.css' )
           );
       return parsed.files[0][0].docs.slug + ' ' +
              parsed.files[0][1].docs[0].slug + ' ' +
@@ -350,8 +322,7 @@ describe('#postParseProcessing', function() {
   it('creates a color palette object when a colorPalette property specifies which file type in the code array to parse', function() {
     function run() {
       var parsed = commentDocs.postParseProcessing(
-            commentDocs.parse( 'test/color-palette-test.scss' ),
-            [ colorPaletteProcessor ]
+            commentDocs.parse( 'test/color-palette-test.scss' )
           );
       return [ parsed.files[0][0].docs.colorPalette, parsed.files[0][1].docs[0].colorPalette ];
     }
@@ -361,6 +332,32 @@ describe('#postParseProcessing', function() {
         [ { variable: '$white', value: '#fff' }, { variable: '$black', value: '#000' } ],
         [ { variable: '$red', value: 'red' }, { variable: '$green', value: 'rgba(0,255,0,1)' } ]
       ]
+    );
+  });
+
+  it('runs an array of processing functions over a parsed set of docs', function() {
+    commentDocs.processors = [
+      function( parsed ) {
+        return '';
+      }
+    ];
+    assert.deepEqual(
+      commentDocs.postParseProcessing( commentDocs.parse( 'test/test.css' ) ),
+      ''
+    );
+    commentDocs.processors = [
+      function( parsed ) {
+        parsed.files = [];
+        parsed.customData = 'my custom data';
+        return parsed;
+      }
+    ];
+    assert.deepEqual(
+      commentDocs.postParseProcessing( commentDocs.parse( 'test/test.css' ) ),
+      {
+        files: [],
+        customData: 'my custom data'
+      }
     );
   });
 });
