@@ -6,7 +6,7 @@ module.exports = function( parsed ) {
     parsed.maps.files = {
       prop: 'files',
       indexes: {},
-      get: function( filename, parsed ) {
+      get: function( filename ) {
         return parsed[this.prop][this.indexes[filename]];
       }
     };

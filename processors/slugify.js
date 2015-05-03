@@ -10,7 +10,7 @@ module.exports = function( parsed ) {
     parsed.maps.slugs = {
       prop: 'slugs',
       indexes: {},
-      get: function( slug, parsed ) {
+      get: function( slug ) {
         var indexPath = parsed.maps[this.prop].indexes[slug];
         var returnDoc;
         if ( indexPath && indexPath.length === 2 ) {
