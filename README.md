@@ -156,7 +156,7 @@ files.
       },
       "code": [
         {
-          "filename": "styles.less",
+          "filename": "styles.css",
           "type": ".css",
           "code": ".btn {\nfont-size: 0.875em;\n}"
         },
