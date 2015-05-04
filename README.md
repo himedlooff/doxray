@@ -129,8 +129,8 @@ _styles.json:_
 With Dox-ray you can parse a compiled CSS file and a bunch of Less source files
 all at once. Dox-ray will automatically try to match the comments from the
 compiled CSS to the comments from the Less files. This is handy when you want
-access to both the Less and CSS. You can disable this feature with
-`merge: false` in the options.
+access to both the Less and CSS from the same object. If you want you can
+disable this feature with `merge: false` in the options.
 
 To utilize this feature pass an array to Dox-ray, making usre that the first
 item is the compiled CSS file.
