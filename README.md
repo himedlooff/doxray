@@ -283,7 +283,7 @@ Dox-ray will generate color palette data automatically if you specify a
 `colorPalette` property in your Dox-ray comment. All you need to do is set the
 value of the `colorPalette` property to the file type that contains
 variable/color pairs. _Note that this only works when using a preprocessor like
-SASS or Less.__
+SASS or Less._
 
 For example, this comment:
 
