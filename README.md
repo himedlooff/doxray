@@ -210,7 +210,7 @@ comment:
 */
 ```
 
-Which can be represented like this:
+Which will parse to this:
 
 ```js
 {
@@ -231,7 +231,7 @@ each item:
 */
 ```
 
-Which can be represented like this:
+Which will parse to this:
 
 ```js
 [
