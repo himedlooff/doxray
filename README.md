@@ -291,8 +291,8 @@ For example, this comment:
 /* doxray
     colorPalette: less
 */
-$white: #fff;
-$black: #000;
+@white: #fff;
+@black: #000;
 ```
 
 Will automatically parse to this:
@@ -300,8 +300,8 @@ Will automatically parse to this:
 ```js
 {
   colorPalette: [
-    { variable: "$white", value: "#fff" },
-    { variable: "$black", value: "#000" }
+    { variable: "@white", value: "#fff" },
+    { variable: "@black", value: "#000" }
   ]
 }
 ```
