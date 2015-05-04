@@ -4,7 +4,7 @@ Dox-ray is a node module that can parse special code comments and return
 an array of objects containing document/code pairs. Comments are written in YAML
 and parsed into structured objects. The YAML structure is up to you. You define
 the documentation properties that's right for your code. Dox-ray can also
-write to a JSON file which you can use to build completely client-side
+write to a JS or JSON file which you can use to build completely client-side
 documentation sites that won't slow down your task runner.
 
 Note that this project is currently in Beta.
@@ -28,7 +28,7 @@ _styles.less:_
 
 ```css
 /* doxray
-    name: Button
+    label: Button
     markup: <button class="btn">Button</button>
     notes:
       - "Don't use anchor elements as buttons unless they actually link to
@@ -43,7 +43,7 @@ _styles.css:_
 
 ```css
 /* doxray
-    name: Button
+    label: Button
     markup: <button class="btn">Button</button>
     notes:
       - "Don't use anchor elements as buttons unless they actually link to
@@ -58,76 +58,127 @@ _styles.css:_
 
 ```js
 // Create an instance of Doxray.
-var Doxray = require('dox-ray');
-var doxray = new Doxray();
-
-// Parse a file and get back an array of document/code pairs.
-var docs = doxray.parse( 'styles.less' );
+var doxray = require('dox-ray');
+var docs = doxray('styles.less');
 ```
 
 _In the above example, `docs` is equal to the following:_
 
 ```js
-[{
-  docs: {
-    name: "Button",
-    markup: "<button class=\"btn\">Button</button>,"
-    notes: [ "Don't use anchor elements as buttons unless they actually link to another page." ]
-  },
-  code: '.btn {\nfont-size: 0.875em;\n}'
-}]
+{
+  files: [
+    [{
+      docs: {
+        label: "Button",
+        markup: "<button class=\"btn\">Button</button>,"
+        notes: [ "Don't use anchor elements as buttons unless they actually link to another page." ]
+      },
+      code: [
+        {
+          filename: "styles.less",
+          type: ".less",
+          code: ".btn {\nfont-size: unit(14px / 16px, em);\n}"
+        }
+      ]
+    }]
+  ]
+}
 ```
 
-##### Now write it to a JSON file
+##### You can also save it to a JS or JSON file
 
 ```js
-doxray.writeJSON( docs, 'styles.json' );
+var docs = doxray('styles.less', {
+  jsFile: 'styles.js',
+  jsonFile: 'styles.json'
+});
+```
+
+_styles.js:_
+
+```js
+Doxray = {
+  files: [
+    [{
+      docs: {
+        label: "Button",
+        markup: "<button class=\"btn\">Button</button>",
+        notes: [ "Don't use anchor elements as buttons unless they actually link to another page." ]
+      },
+      code: [
+        {
+          filename: "styles.less",
+          type: ".less",
+          code: ".btn {\nfont-size: unit(14px / 16px, em);\n}"
+        }
+      ]
+    }]
+  ]
+}
 ```
 
 _styles.json:_
 
 ```json
-[{
-  "docs": {
-    "name": "Button",
-    "markup": "<button class=\"btn\">Button</button>",
-    "notes": [ "Don't use anchor elements as buttons unless they actually link to another page." ]
-  },
-  "code": ".btn {\nfont-size: 0.875em;\n}"
-}]
+{
+  "files": [
+    [{
+      "docs": {
+        "name": "Button",
+        "markup": "<button class=\"btn\">Button</button>",
+        "notes": [ "Don't use anchor elements as buttons unless they actually link to another page." ]
+      },
+      "code": [
+        {
+          "filename": "styles.less",
+          "type": ".less",
+          "code": ".btn {\nfont-size: unit(14px / 16px, em);\n}"
+        }
+      ]
+    }]
+  ]
+}
 ```
 
-##### An example of merging
+##### Merging
 
-You can "merge" files as well. This is handy when you have a source file like
-a Less file that gets compiled into a CSS file and you want access to both the
-Less and CSS for your documentation. To trigger a merge pass `true` as the
-second argument to the `parse` function:
+Preprocessor and compiled files are automatically "merged" if their comments are
+identical. This is handy when you want access to both the Less and CSS. You can
+disable this feature with `merge: false` in the options.
 
 ```js
-var docs = doxray.parse( ['styles.css', 'styles.less'], true );
-doxray.writeJSON( docs, 'styles.json' );
+var docs = doxray(['styles.css', 'styles.less'], {
+  jsonFile: 'styles.json'
+});
 ```
 
 _styles.json:_
 
 ```json
-[{
-  "docs": {
-    "name": "Button",
-    "markup": "<button class=\"btn\">Button</button>",
-    "notes": [ "Don't use anchor elements as buttons unless they actually link to another page." ]
-  },
-  "code": ".btn {\nfont-size: 0.875em;\n}",
-  "code_alt": ".btn {\nfont-size: unit(14px / 16px, em);\n}"
-}]
+{
+  "files": [
+    [{
+      "docs": {
+        "name": "Button",
+        "markup": "<button class=\"btn\">Button</button>",
+        "notes": [ "Don't use anchor elements as buttons unless they actually link to another page." ]
+      },
+      "code": [
+        {
+          "filename": "styles.less",
+          "type": ".css",
+          "code": ".btn {\nfont-size: 0.875em;\n}"
+        },
+        {
+          "filename": "styles.less",
+          "type": ".less",
+          "code": ".btn {\nfont-size: unit(14px / 16px, em);\n}"
+        }
+      ]
+    }]
+  ]
+}
 ```
-
-### Angular demo
-
-The following repository demonstrates how to build a JSON file through Grunt and
-consume it with Angular: <https://github.com/himedlooff/dox-ray-angular-demo>
-
 
 ### Dox-ray comment formatting
 
@@ -136,12 +187,12 @@ comment, a space, then the word "doxray". The closing comment must be on a new l
 
 ```html
 <!-- doxray
-    name: my pattern
+    label: my pattern
     description: this is how you structure my pattern
 -->
 ```
 
-### Supported comment styles
+#### Supported comments
 
 | Style | Example |
 | ----- | ------- |
@@ -149,7 +200,119 @@ comment, a space, then the word "doxray". The closing comment must be on a new l
 | HTML | `<!-- -->` |
 
 You can easily add more by extending `Doxray.prototype.regex`.
-See https://github.com/himedlooff/dox-ray/blob/master/index.js#L10-L21
+See https://github.com/himedlooff/dox-ray/blob/master/doxray.js#L144-L155
+
+#### YAML structure
+
+There are two YAML structures that will help you get the most out of Dox-ray.
+Using them will allow you to take advantage of the slugify and color palette
+processors.
+
+The first supported structure is to add properties directly to the Dox-ray
+comment:
+
+```css
+/* doxray
+    label: Button
+    markup: <button class="btn">Button</button>
+*/
+```
+
+Which can be represented like this:
+
+```js
+{
+  label: "Button",
+  markup: "<button class=\"btn\">Button</button>"
+}
+```
+
+The second supported structure is to create a list and then add properties to
+each item:
+
+```css
+/* doxray
+    - label: Button
+      markup: <button class="btn">Button</button>
+    - label: Secondary Button
+      markup: <button class="btn btn__secondary">Secondary Button</button>
+*/
+```
+
+Which can be represented like this:
+
+```js
+[
+  {
+    label: "Button",
+    markup: "<button class=\"btn\">Button</button>"
+  },
+  {
+    label: "Secondary Button",
+    markup: "<button class=\"btn btn__secondary\">Secondary Button</button>"
+  }
+]
+```
+
+If these structures don't suit your needs you can use whatever works best. Just
+be aware that the processors won't work.
+
+### Processors
+
+Once Dox-ray parses the data it can run processing functions to manipulate the
+data. Dox-ray runs two processors out of the box.
+
+#### Slugify
+
+If you use the `label` property in your Dox-ray comment the Slugify processor
+will use that value to create a `slug` property. Slugs are useful for creating
+HTML id's so you can link to specific sections of a page.
+
+For example, this comment:
+
+```css
+/* doxray
+    label: Primary Button
+*/
+```
+
+Will automatically parse to this:
+
+```js
+{
+  label: "Primary Button",
+  slug: "primary-button"
+}
+```
+
+#### Color Palette
+
+Dox-ray will generate color palette data automatically if you specify a
+`colorPalette` property in your Dox-ray comment. All you need to do is set the
+value of the `colorPalette` property to the file type that contains
+variable/color pairs. _Note that this only works when using a preprocessor like
+SASS or Less.__
+
+For example, this comment:
+
+```scss
+/* doxray
+    colorPalette: less
+*/
+$white: #fff;
+$black: #000;
+```
+
+Will automatically parse to this:
+
+```js
+{
+  colorPalette: [
+    { variable: "$white", value: "#fff" },
+    { variable: "$black", value: "#000" }
+  ]
+}
+```
 
 
 ## Getting involved
