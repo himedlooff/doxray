@@ -20,9 +20,9 @@ $ npm install dox-ray
 
 ### Usage (as a node module)
 
-#### First, you'll need some source files to parse
+#### First, you'll need a file to parse
 
-Here's how you write a Dox-ray comment in your code:
+Here's how you write a Dox-ray comment:
 
 _styles.less:_
 
@@ -36,21 +36,6 @@ _styles.less:_
 */
 .btn {
     font-size: unit(14px / 16px, em);
-}
-```
-
-_styles.css:_
-
-```css
-/* doxray
-    label: Button
-    markup: <button class="btn">Button</button>
-    notes:
-      - "Don't use anchor elements as buttons unless they actually link to
-         another page."
-*/
-.btn {
-    font-size: 0.875em;
 }
 ```
 
@@ -141,9 +126,14 @@ _styles.json:_
 
 ##### Merging
 
-Preprocessor and compiled files are automatically "merged" if their comments are
-identical. This is handy when you want access to both the Less and CSS. You can
-disable this feature with `merge: false` in the options.
+With Dox-ray you can parse a compiled CSS file and a bunch of Less source files
+all at once. Dox-ray will automatically try to match the comments from the
+compiled CSS to the comments from the Less files. This is handy when you want
+access to both the Less and CSS. You can disable this feature with
+`merge: false` in the options.
+
+To utilize this feature pass an array to Dox-ray, making usre that the first
+item is the compiled CSS file.
 
 ```js
 var docs = doxray(['styles.css', 'styles.less'], {
@@ -151,7 +141,9 @@ var docs = doxray(['styles.css', 'styles.less'], {
 });
 ```
 
-_styles.json:_
+_styles.json:_  
+Notice how the `code` property now has a code object for the CSS file and for
+the Less file.
 
 ```json
 {
@@ -182,7 +174,8 @@ _styles.json:_
 ### Dox-ray comment formatting
 
 In order to make the regex simple, Dox-ray comments must start with an opening
-comment, a space, then the word "doxray". The closing comment must be on a new line.
+comment, a space, then the word "doxray". The closing comment must be on a new
+line.
 
 ```html
 <!-- doxray
