@@ -132,7 +132,7 @@ compiled CSS to the comments from the Less files. This is handy when you want
 access to both the Less and CSS from the same object. If you want you can
 disable this feature with `merge: false` in the options.
 
-To utilize this feature pass an array to Dox-ray, making usre that the first
+To utilize this feature pass an array to Dox-ray, making sure that the first
 item is the compiled CSS file.
 
 ```js
