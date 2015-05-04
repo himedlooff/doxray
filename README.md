@@ -197,7 +197,7 @@ See https://github.com/himedlooff/dox-ray/blob/master/doxray.js#L144-L155
 #### YAML structure
 
 There are two YAML structures that will help you get the most out of Dox-ray.
-Using them will allow you to take advantage of the slugify and color palette
+Using them will allow you to take advantage of the Slugify and Color Palette
 processors.
 
 The first supported structure is to add properties directly to the Dox-ray
