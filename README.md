@@ -142,8 +142,8 @@ var docs = doxray(['styles.css', 'styles.less'], {
 ```
 
 _styles.json:_  
-Notice how the `code` property now has a code object for the CSS file and for
-the Less file.
+Notice how the `code` property now has a code object for both the CSS and Less
+files.
 
 ```json
 {
