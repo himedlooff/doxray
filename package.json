@@ -1,6 +1,6 @@
 {
   "name": "dox-ray",
-  "version": "0.3.2",
+  "version": "0.4.0",
   "description": "Parse documentation from code comments",
   "license": "MIT",
   "main": "index.js",
