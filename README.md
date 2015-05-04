@@ -57,7 +57,6 @@ _styles.css:_
 #### Now set up Dox-ray to parse stuff
 
 ```js
-// Create an instance of Doxray.
 var doxray = require('dox-ray');
 var docs = doxray('styles.less');
 ```
