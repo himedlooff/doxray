@@ -2,6 +2,13 @@ All notable changes to this project will be documented in this file.
 I follow the [Semantic Versioning 2.0.0](http://semver.org/) format.
 
 
+## 0.5.2 - 2015-06-06
+
+### Fixed
+- Fixed and issue where `handleOptions` was inadvertently changing
+  `options.merge`.
+
+
 ## 0.5.1 - 2015-06-06
 
 ### Fixed

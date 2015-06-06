@@ -35,7 +35,9 @@ Doxray.prototype.handleOptions = function( options ) {
   }
   options.jsFile = options.jsFile;
   options.jsonFile = options.jsonFile;
-  options.merge = options.merge || true;
+  if ( typeof options.merge === 'undefined' ) {
+    options.merge = true;
+  }
   return options;
 };
 
