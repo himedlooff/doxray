@@ -2,6 +2,12 @@ All notable changes to this project will be documented in this file.
 I follow the [Semantic Versioning 2.0.0](http://semver.org/) format.
 
 
+## 0.5.0 - 2015-06-06
+
+### Added
+- Adds `filemap` and `slugmap` processors which allows you to target objects by filename or slug via `getFile()` and `getSlug()`.
+
+
 ## 0.4.3 - 2015-06-05
 
 ### Added

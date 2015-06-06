@@ -277,6 +277,56 @@ Will automatically parse to this:
 }
 ```
 
+#### Filemap and Slugmap
+
+Dox-ray creates maps so that you can grab data by filename or by slug.
+
+For example:
+
+_styles.less:_
+
+```scss
+/* doxray
+    label: Pattern 1
+    description: The first pattern
+*/
+...
+```
+
+```js
+var doxray = require('dox-ray');
+var docs = doxray('styles.less');
+var styles = docs.getFile('styles.less');
+var pattern1 = docs.getSlug('pattern-1');
+```
+
+`styles` =
+
+```js
+[{
+  docs: {
+    label: "Pattern 1",
+    description: "The first pattern"
+  },
+  code: [
+    {
+      filename: "styles.less",
+      type: ".less",
+      code: "..."
+    }
+  ]
+}]
+```
+
+`pattern1` =
+
+```js
+{
+  label: "Pattern 1",
+  description: "The first pattern"
+}
+```
+
 #### Color Palette
 
 Dox-ray will generate color palette data automatically if you specify a
