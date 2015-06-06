@@ -2,16 +2,25 @@ All notable changes to this project will be documented in this file.
 I follow the [Semantic Versioning 2.0.0](http://semver.org/) format.
 
 
+## 0.4.3 - 2015-06-05
+
+### Added
+- Updated the syntax of the global variable to use `var Doxray` instead of just
+  `Doxray`.
+
+
 ## 0.4.2 - 2015-06-05
 
 ### Added
-- Updated the `files` property in `package.json` to fix a problem with the following error: './processors/color-palette.js'.
+- Updated the `files` property in `package.json` to fix a problem with the
+  following error: './processors/color-palette.js'.
 
 
 ## 0.4.1 - 2015-06-05
 
 ### Added
-- Updated the `files` property in `package.json` to fix a problem with the following error: `Cannot find module './doxray'`.
+- Updated the `files` property in `package.json` to fix a problem with the
+  following error: `Cannot find module './doxray'`.
 
 
 ## 0.4.0 - 2015-05-04

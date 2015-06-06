@@ -47,7 +47,7 @@ Doxray.prototype.writeJS = function( convertedDocs, dest ) {
   var util = require('util');
 
   var convertedDocsAsString;
-  convertedDocsAsString = 'Doxray = ' + util.inspect( convertedDocs, { depth: null } ) + ';';
+  convertedDocsAsString = 'var Doxray = ' + util.inspect( convertedDocs, { depth: null } ) + ';';
   fs.writeFile( dest, convertedDocsAsString, 'utf-8', function( err ) {
     if ( err ) {
       throw err;
