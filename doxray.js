@@ -3,10 +3,7 @@
    Parse documentation from code comments
    ========================================================================== */
 
-// Create the Doxray Object
-var Doxray = function() {
-  //
-};
+var Doxray = function() {};
 
 Doxray.prototype.run = function( src, options ) {
   var parsed, processed;
@@ -42,12 +39,29 @@ Doxray.prototype.handleOptions = function( options ) {
   return options;
 };
 
+Doxray.prototype.jsonWhiteSpace = 2;
+
+// The following function was referenced from:
+// https://gist.github.com/cowboy/3749767
+Doxray.prototype.stringify = function( obj, prop ) {
+  var placeholder = '____PLACEHOLDER____';
+  var fns = [];
+  var json = JSON.stringify( obj, function( key, value ) {
+    if ( typeof value === 'function' ) {
+      fns.push( value );
+      return placeholder;
+    }
+    return value;
+  }, this.jsonWhiteSpace);
+  json = json.replace( new RegExp( '"' + placeholder + '"', 'g' ), function(_) {
+    return fns.shift();
+  });
+  return 'var ' + prop + ' = ' + json + ';';
+};
+
 Doxray.prototype.writeJS = function( convertedDocs, dest ) {
   var fs = require('fs');
-  var util = require('util');
-
-  var convertedDocsAsString;
-  convertedDocsAsString = 'var Doxray = ' + util.inspect( convertedDocs, { depth: null } ) + ';';
+  var convertedDocsAsString = this.stringify( convertedDocs, 'Doxray' );
   fs.writeFile( dest, convertedDocsAsString, 'utf-8', function( err ) {
     if ( err ) {
       throw err;
@@ -60,7 +74,8 @@ Doxray.prototype.writeJS = function( convertedDocs, dest ) {
 
 Doxray.prototype.writeJSON = function( convertedDocs, dest ) {
   var fs = require('fs');
-  fs.writeFile( dest, JSON.stringify( convertedDocs, null, '\t' ), function( err ) {
+  var convertedDocsAsString = JSON.stringify( convertedDocs, null, this.jsonWhiteSpace );
+  fs.writeFile( dest, convertedDocsAsString, function( err ) {
     if ( err ) {
       throw err;
       // TODO: A node.js equivalent to Grunts this.async( err );
