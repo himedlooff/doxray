@@ -300,9 +300,8 @@ var styles = docs.getFile('styles.less');
 var pattern1 = docs.getSlug('pattern-1');
 ```
 
-`styles` =
-
 ```js
+// var styles =
 [{
   docs: {
     label: "Pattern 1",
@@ -318,9 +317,8 @@ var pattern1 = docs.getSlug('pattern-1');
 }]
 ```
 
-`pattern1` =
-
 ```js
+// var pattern1 =
 {
   label: "Pattern 1",
   description: "The first pattern"
