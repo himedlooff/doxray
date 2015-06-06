@@ -298,6 +298,20 @@ describe('#mergeParsedSources', function() {
 });
 
 describe('#postParseProcessing', function() {
+  it('creates a mpa of the filenames via the filemap processor', function() {
+    function run() {
+      var parsed = doxray.postParseProcessing(
+            doxray.parse( ['test/slugify-test.css', 'test/test.css'], false )
+          );
+      console.log(parsed.getFile('slugify-test.css'));
+      return parsed.getFile('slugify-test.css')[0].docs.label;
+    }
+    assert.equal(
+      run(),
+      'Comment one'
+    );
+  });
+
   it('slugifys the label property in a doc via the slugify processor', function() {
     function run() {
       var parsed = doxray.postParseProcessing(

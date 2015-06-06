@@ -71,6 +71,7 @@ Doxray.prototype.writeJSON = function( convertedDocs, dest ) {
 };
 
 Doxray.prototype.processors = [
+  require('./processors/filemap.js'),
   require('./processors/color-palette.js'),
   require('./processors/slugify.js')
 ];
