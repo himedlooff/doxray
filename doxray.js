@@ -190,22 +190,49 @@ Doxray.prototype.parseOneFile = function( src ) {
 Doxray.prototype.joinDocsAndCode = function( docs, code, src ) {
   var path, convertedDocs;
   path = require('path');
-  convertedDocs = [];
+  patterns = [];
   // Create an array of objects. Each object contains a docs and code property
   // which represent the parsed doc comment object and the code that follows it
   // in the source.
-  docs.forEach(function( item, index ) {
-    convertedDocs.push({
-      docs: docs[ index ],
-      code: [{
-        filename: path.basename( src ),
-        type: path.extname( src ),
-        code: code[ index ]
-      }]
-    });
+  docs.forEach(function( doc, docIndex ) {
+    if ( Array.isArray( doc ) ) {
+      doc.forEach(function( nestedDoc, nestedDocIndex ) {
+        nestedDoc[ path.extname(src).replace('.', '') ] = code[ docIndex ];
+        if ( nestedDocIndex > 0 ) {
+          nestedDoc.codeFromPrevious = true;
+        }
+        nestedDoc.file = path.basename( src );
+        patterns.push( nestedDoc );
+      });
+    } else {
+      doc[ path.extname(src).replace('.', '') ] = code[ docIndex ];
+      doc.file = path.basename( src );
+      patterns.push( doc );
+    }
   });
-  return convertedDocs;
+  console.log(patterns);
+  return patterns;
 };
+
+// Doxray.prototype.joinDocsAndCode = function( docs, code, src ) {
+//   var path, convertedDocs;
+//   path = require('path');
+//   convertedDocs = [];
+//   // Create an array of objects. Each object contains a docs and code property
+//   // which represent the parsed doc comment object and the code that follows it
+//   // in the source.
+//   docs.forEach(function( item, index ) {
+//     convertedDocs.push({
+//       docs: docs[ index ],
+//       code: [{
+//         filename: path.basename( src ),
+//         type: path.extname( src ),
+//         code: code[ index ]
+//       }]
+//     });
+//   });
+//   return convertedDocs;
+// };
 
 Doxray.prototype.parseOutCode = function( fileContents, regex ) {
   var code;
