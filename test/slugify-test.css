@@ -5,24 +5,19 @@
 */
 
 /* doxray
-    - label: Comment two
-    - label: Comment three
+    label: Comment two
 */
 
 /* doxray
-    - label: Special~`!@#$%^&*()+=[]{}\|,./<>?characters
+    label: Special~`!@#$%^&*()+=[]{}\|,./<>?characters
 */
 
 /* doxray
-    - header: true
-      label: First header
-    - label: Comment one
-    - label: Comment two
+    header: true
+    label: First header
 */
 
 /* doxray
-    - header: true
-      label: Second header
-    - label: Comment one
-    - label: Comment two
+    header: true
+    label: Second header
 */

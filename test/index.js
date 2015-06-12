@@ -90,15 +90,13 @@ describe('#joinDocsAndCode', function() {
   it('takes an array of doc comments and an array of code snippets and merges them into one object', function() {
     var docs = [ { prop1: 'Comment one' } ];
     var code = [ '.test{\n    content:\"Hello\";\n}' ];
+    var filename = 'test.css';
     assert.deepEqual(
-      doxray.joinDocsAndCode( docs, code, 'test.css' ),
+      doxray.joinDocsAndCode( docs, code, filename ),
       [{
-        docs: docs[0],
-        code: [{
-          filename: 'test.css',
-          type: '.css',
-          code: code[0]
-        }]
+        prop1: docs[ 0 ].prop1,
+        filename: filename,
+        css: code[ 0 ]
       }]
     );
   });
@@ -109,12 +107,9 @@ describe('#parseOneFile', function() {
     assert.deepEqual(
       doxray.parseOneFile( 'test/test.css' ),
       [{
-        docs: { prop1: 'Comment one' },
-        code: [{
-          filename: 'test.css',
-          type: '.css',
-          code: ''
-        }]
+        prop1: 'Comment one',
+        filename: 'test.css',
+        css: ''
       }]
     );
   });
@@ -124,44 +119,26 @@ describe('#parse', function() {
   it('parses a single file when the first argument is a string that is a path to an existing file', function() {
     assert.deepEqual(
       doxray.parse( 'test/test.css' ),
-      [
-        [{
-          docs: { prop1: 'Comment one' },
-          code: [{
-            filename: 'test.css',
-            type: '.css',
-            code: ''
-          }]
-        }]
-      ]
+      [{
+        prop1: 'Comment one',
+        filename: 'test.css',
+        css: ''
+      }]
     );
   });
 
   it('parses an array of files when the first argument is an array of strings that are paths to existing files', function() {
     assert.deepEqual(
       doxray.parse( [ 'test/test.css', 'test/test.less' ], false ),
-      [
-        [{
-          docs: { prop1: 'Comment one' },
-          code: [
-            {
-              filename: 'test.css',
-              type: '.css',
-              code: ''
-            }
-          ]
-        }],
-        [{
-          docs: { prop1: 'Comment one' },
-          code: [
-            {
-              filename: 'test.less',
-              type: '.less',
-              code: ''
-            }
-          ]
-        }]
-      ]
+      [{
+        prop1: 'Comment one',
+        filename: 'test.css',
+        css: ''
+      },{
+        prop1: 'Comment one',
+        filename: 'test.less',
+        less: ''
+      }]
     );
   });
 
@@ -169,133 +146,133 @@ describe('#parse', function() {
     assert.throws(
       function() { doxray.parse( {} ); },
       Error,
-      'parse() expected a String or Array.'
+      doxray.parseGotWrongType
     );
     assert.throws(
       function() { doxray.parse( 123 ); },
       Error,
-      'parse() expected a String or Array.'
+      doxray.parseGotWrongType
     );
   });
 });
 
-describe('#mergeParsedSources', function() {
-  it('merges two objects if their docs are identical', function() {
-    assert.deepEqual(
-      doxray.parse( [ 'test/test.css', 'test/test.less' ], true ),
-      [
-        [
-          {
-            docs: { prop1: 'Comment one' },
-            code: [
-              {
-                filename: 'test.css',
-                type: '.css',
-                code: ''
-              },
-              {
-                filename: 'test.less',
-                type: '.less',
-                code: ''
-              }
-            ]
-          },
-        ]
-      ]
-    );
-    assert.deepEqual(
-      doxray.mergeParsedSources(
-        [
-          [
-            {
-              docs: { name: 'pattern one' },
-              code: [
-                { code: 'test.css code', filename: 'test.css' }
-              ]
-            },
-            {
-              docs: { name: 'pattern two' },
-              code: [
-                { code: 'test.css code', filename: 'test.css' }
-              ]
-            }
-          ],
-          [
-            {
-              docs: { name: 'pattern one' },
-              code: [
-                { code: 'test.less code', filename: 'test.less' }
-              ]
-            },
-            {
-              docs: { name: 'pattern two' },
-              code: [
-                { code: 'test.less code', filename: 'test.less' }
-              ]
-            }
-          ]
-        ]
-      ),
-      [
-        {
-          docs: { name: 'pattern one' },
-          code: [
-            { code: 'test.css code', filename: 'test.css' },
-            { code: 'test.less code', filename: 'test.less' }
-          ]
-        },
-        {
-          docs: { name: 'pattern two' },
-          code: [
-            { code: 'test.css code', filename: 'test.css' },
-            { code: 'test.less code', filename: 'test.less' }
-          ]
-        }
-      ]
-    );
-  });
+// describe('#mergeParsedSources', function() {
+//   it('merges two objects if their docs are identical', function() {
+//     assert.deepEqual(
+//       doxray.parse( [ 'test/test.css', 'test/test.less' ], true ),
+//       [
+//         [
+//           {
+//             docs: { prop1: 'Comment one' },
+//             code: [
+//               {
+//                 filename: 'test.css',
+//                 type: '.css',
+//                 code: ''
+//               },
+//               {
+//                 filename: 'test.less',
+//                 type: '.less',
+//                 code: ''
+//               }
+//             ]
+//           },
+//         ]
+//       ]
+//     );
+//     assert.deepEqual(
+//       doxray.mergeParsedSources(
+//         [
+//           [
+//             {
+//               docs: { name: 'pattern one' },
+//               code: [
+//                 { code: 'test.css code', filename: 'test.css' }
+//               ]
+//             },
+//             {
+//               docs: { name: 'pattern two' },
+//               code: [
+//                 { code: 'test.css code', filename: 'test.css' }
+//               ]
+//             }
+//           ],
+//           [
+//             {
+//               docs: { name: 'pattern one' },
+//               code: [
+//                 { code: 'test.less code', filename: 'test.less' }
+//               ]
+//             },
+//             {
+//               docs: { name: 'pattern two' },
+//               code: [
+//                 { code: 'test.less code', filename: 'test.less' }
+//               ]
+//             }
+//           ]
+//         ]
+//       ),
+//       [
+//         {
+//           docs: { name: 'pattern one' },
+//           code: [
+//             { code: 'test.css code', filename: 'test.css' },
+//             { code: 'test.less code', filename: 'test.less' }
+//           ]
+//         },
+//         {
+//           docs: { name: 'pattern two' },
+//           code: [
+//             { code: 'test.css code', filename: 'test.css' },
+//             { code: 'test.less code', filename: 'test.less' }
+//           ]
+//         }
+//       ]
+//     );
+//   });
 
-  it('when attempting to merge two', function() {
-    assert.deepEqual(
-      doxray.mergeParsedSources(
-        [
-          [
-            {
-              docs: { name: 'pattern name' },
-              code: [
-                { code: 'test.css code', filename: 'test.css' },
-                { code: 'test.less code', filename: 'test.less' }
-              ]
-            }
-          ],
-          [
-            {
-              docs: { name: 'a different pattern name' },
-              code: [
-                { code: 'test.less code', filename: 'test.less' }
-              ]
-            }
-          ]
-        ]
-      ),
-      [
-        {
-          docs: { name: 'pattern name' },
-          code: [
-            { code: 'test.css code', filename: 'test.css' },
-            { code: 'test.less code', filename: 'test.less' }
-          ]
-        },
-        {
-          docs: { name: 'a different pattern name' },
-          code: [
-            { code: 'test.less code', filename: 'test.less' }
-          ]
-        }
-      ]
-    );
-  });
-});
+//   it('when attempting to merge two', function() {
+//     assert.deepEqual(
+//       doxray.mergeParsedSources(
+//         [
+//           [
+//             {
+//               docs: { name: 'pattern name' },
+//               code: [
+//                 { code: 'test.css code', filename: 'test.css' },
+//                 { code: 'test.less code', filename: 'test.less' }
+//               ]
+//             }
+//           ],
+//           [
+//             {
+//               docs: { name: 'a different pattern name' },
+//               code: [
+//                 { code: 'test.less code', filename: 'test.less' }
+//               ]
+//             }
+//           ]
+//         ]
+//       ),
+//       [
+//         {
+//           docs: { name: 'pattern name' },
+//           code: [
+//             { code: 'test.css code', filename: 'test.css' },
+//             { code: 'test.less code', filename: 'test.less' }
+//           ]
+//         },
+//         {
+//           docs: { name: 'a different pattern name' },
+//           code: [
+//             { code: 'test.less code', filename: 'test.less' }
+//           ]
+//         }
+//       ]
+//     );
+//   });
+// });
 
 describe('#postParseProcessing', function() {
   it('slugifys the label property in a doc via the slugify processor', function() {
@@ -303,15 +280,16 @@ describe('#postParseProcessing', function() {
       var parsed = doxray.postParseProcessing(
             doxray.parse( ['test/slugify-test.css', 'test/test.css'], false )
           );
-      return parsed.files[0][0].docs.slug + ' ' +
-             parsed.files[0][1].docs[0].slug + ' ' +
-             parsed.files[0][1].docs[1].slug + ' ' +
-             parsed.files[0][2].docs[0].slug + ' ' +
-             parsed.files[1][0].docs.slug;
+      return parsed.patterns[0].slug + ' ' +
+             parsed.patterns[1].slug + ' ' +
+             parsed.patterns[2].slug + ' ' +
+             parsed.patterns[3].slug + ' ' +
+             parsed.patterns[4].slug + ' ' +
+             parsed.patterns[5].slug;
     }
     assert.equal(
       run(),
-      'comment-one comment-two comment-three specialcharacters undefined'
+      'comment-one comment-two specialcharacters first-header second-header undefined'
     );
   });
 
@@ -320,7 +298,7 @@ describe('#postParseProcessing', function() {
       var parsed = doxray.postParseProcessing(
             doxray.parse( 'test/color-palette-test.scss' )
           );
-      return [ parsed.files[0][0].docs.colorPalette, parsed.files[0][1].docs[0].colorPalette ];
+      return [ parsed.patterns[0].colorPalette, parsed.patterns[1].colorPalette ];
     }
     assert.deepEqual(
       run(),
@@ -331,30 +309,24 @@ describe('#postParseProcessing', function() {
     );
   });
 
-  it('creates a map of the filenames via the filemap processor', function() {
+  it('#getByProperty( property ) returns an array of patterns with the presence of a specific property', function() {
     function run() {
       var parsed = doxray.postParseProcessing(
             doxray.parse( ['test/slugify-test.css', 'test/test.css'], false )
           );
-      return parsed.getFile('slugify-test.css')[0].docs.label;
+      return parsed.getByProperty( 'label' ).length;
     }
-    assert.equal(
-      run(),
-      'Comment one'
-    );
+    assert.equal( run(), 5 );
   });
 
-  it('creates a map of the slugs via the slugmap processor', function() {
+  it('#getByProperty( property, value ) returns an array of patterns with a specific property that matches a specific value', function() {
     function run() {
       var parsed = doxray.postParseProcessing(
             doxray.parse( ['test/slugify-test.css', 'test/test.css'], false )
           );
-      return parsed.getSlug('comment-one').label + ' ' + parsed.getSlug('comment-two').label;
+      return parsed.getByProperty( 'label', 'comment one' ).length;
     }
-    assert.equal(
-      run(),
-      'Comment one Comment two'
-    );
+    assert.equal( run(), 1 );
   });
 
   it('runs an array of processing functions over a parsed set of docs', function() {
@@ -369,7 +341,7 @@ describe('#postParseProcessing', function() {
     );
     doxray.processors = [
       function( parsed ) {
-        parsed.files = [];
+        parsed.patterns = [];
         parsed.customData = 'my custom data';
         return parsed;
       }
@@ -377,7 +349,7 @@ describe('#postParseProcessing', function() {
     assert.deepEqual(
       doxray.postParseProcessing( doxray.parse( 'test/test.css' ) ),
       {
-        files: [],
+        patterns: [],
         customData: 'my custom data'
       }
     );
@@ -388,7 +360,7 @@ describe('#postParseProcessing', function() {
 
 describe('#writeJSON', function() {
   it('creates a .json file', function() {
-    doxray.writeJSON( [{}], 'test/test.json' );
+    doxray.writeJSON( { patterns: [] }, 'test/test.json' );
     assert.isFile( 'test/test.json' );
   });
 });
@@ -396,7 +368,7 @@ describe('#writeJSON', function() {
 describe('#writeJS', function() {
   it('creates a .js file', function() {
     doxray.writeJS( [{}], 'test/test.js' );
-    assert.isFile( 'test/test.json' );
+    assert.isFile( 'test/test.js' );
   });
 });
 
@@ -408,19 +380,19 @@ describe('#run', function() {
     });
     assert.isFile( 'test/run-test.js' );
     assert.isFile( 'test/run-test.json' );
-    assert.deepEqual(
-      docs.files[0][0].docs.prop1,
+    assert.equal(
+      docs.patterns[0].prop1,
       'Comment one'
     );
   });
 
-  it('uses the options argument to merge', function() {
-    var docs = doxray.run( [ 'test/test.css', 'test/test.less' ], { merge: true } );
-    assert.deepEqual(
-      docs.files[0][0].docs.prop1,
-      'Comment one'
-    );
-  });
+  // it('uses the options argument to merge', function() {
+  //   var docs = doxray.run( [ 'test/test.css', 'test/test.less' ], { merge: true } );
+  //   assert.equal(
+  //     docs.patterns[0].prop1,
+  //     'Comment one'
+  //   );
+  // });
 
   it('throws an error if the src does not exist', function() {
     assert.throws(
@@ -439,18 +411,18 @@ describe('#doxraySimple', function() {
     assert.isFile( 'test/run-test.js' );
     assert.isFile( 'test/run-test.json' );
     assert.deepEqual(
-      docs.files[0][0].docs.prop1,
+      docs.patterns[0].prop1,
       'Comment one'
     );
   });
 
-  it('uses the options argument to merge', function() {
-    var docs = doxraySimple( [ 'test/test.css', 'test/test.less' ], { merge: true } );
-    assert.deepEqual(
-      docs.files[0][0].docs.prop1,
-      'Comment one'
-    );
-  });
+  // it('uses the options argument to merge', function() {
+  //   var docs = doxraySimple( [ 'test/test.css', 'test/test.less' ], { merge: true } );
+  //   assert.deepEqual(
+  //     docs.patterns[0].prop1,
+  //     'Comment one'
+  //   );
+  // });
 
   it('throws an error if the src does not exist', function() {
     assert.throws(

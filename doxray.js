@@ -5,6 +5,11 @@
 
 var Doxray = function() {};
 
+Doxray.prototype.logMessages = {
+  parseGotWrongType: 'parse() expected a String or an Array.',
+  parsedDocsDoesNotMatchParsedCode: 'Parsing failed because the number of parsed doc comments does not match the number of parsed code snippets.'
+}
+
 Doxray.prototype.run = function( src, options ) {
   var parsed, processed;
   src = this.handleSrc( src );
@@ -76,7 +81,7 @@ Doxray.prototype.writeJS = function( convertedDocs, dest ) {
 
 Doxray.prototype.writeJSON = function( convertedDocs, dest ) {
   var fs = require('fs');
-  var convertedDocsAsString = JSON.stringify( convertedDocs, null, this.jsonWhiteSpace );
+  var convertedDocsAsString = JSON.stringify( convertedDocs.patterns, null, this.jsonWhiteSpace );
   fs.writeFile( dest, convertedDocsAsString, function( err ) {
     if ( err ) {
       throw err;
@@ -88,15 +93,14 @@ Doxray.prototype.writeJSON = function( convertedDocs, dest ) {
 };
 
 Doxray.prototype.processors = [
-  require('./processors/filemap.js'),
+  require('./processors/filters.js'),
   require('./processors/slugify.js'),
-  require('./processors/slugmap.js'),
   require('./processors/color-palette.js')
 ];
 
 Doxray.prototype.postParseProcessing = function( parsed ) {
   var processedDocs = {
-      files: parsed
+      patterns: parsed
   };
   if ( typeof this.processors !== 'undefined' ) {
     this.processors.forEach(function( processor ){
@@ -108,17 +112,21 @@ Doxray.prototype.postParseProcessing = function( parsed ) {
 
 Doxray.prototype.parse = function( src, merge ) {
   var parsed = [];
+  // For consistency let's always use an Array, even if the user passed
+  // a string.
   if ( typeof src == 'string' ) {
-    parsed.push( this.parseOneFile( src ) );
-  } else if ( Array.isArray( src ) ) {
+    src = [ src ];
+  }
+  if ( Array.isArray( src ) ) {
     src.forEach(function( singleSrc ) {
-      parsed.push( this.parseOneFile( singleSrc ) );
+      parsed = parsed.concat( this.parseOneFile( singleSrc ) );
     }, this);
-    if ( typeof merge === 'undefined' || merge === true ) {
-      parsed = [ this.mergeParsedSources( parsed ) ];
-    }
+    // Removing the merge option for now for simplicity.
+    // if ( typeof merge === 'undefined' || merge === true ) {
+    //   parsed = [ this.mergeParsedSources( parsed ) ];
+    // }
   } else {
-    throw new Error('parse() expected a String or Array.');
+    throw new Error(this.logMessages.parseGotWrongType);
   }
   return parsed;
 };
@@ -195,44 +203,12 @@ Doxray.prototype.joinDocsAndCode = function( docs, code, src ) {
   // which represent the parsed doc comment object and the code that follows it
   // in the source.
   docs.forEach(function( doc, docIndex ) {
-    if ( Array.isArray( doc ) ) {
-      doc.forEach(function( nestedDoc, nestedDocIndex ) {
-        nestedDoc[ path.extname(src).replace('.', '') ] = code[ docIndex ];
-        if ( nestedDocIndex > 0 ) {
-          nestedDoc.codeFromPrevious = true;
-        }
-        nestedDoc.file = path.basename( src );
-        patterns.push( nestedDoc );
-      });
-    } else {
-      doc[ path.extname(src).replace('.', '') ] = code[ docIndex ];
-      doc.file = path.basename( src );
-      patterns.push( doc );
-    }
+    doc[ path.extname(src).replace('.', '') ] = code[ docIndex ];
+    doc.filename = path.basename( src );
+    patterns.push( doc );
   });
-  console.log(patterns);
   return patterns;
 };
-
-// Doxray.prototype.joinDocsAndCode = function( docs, code, src ) {
-//   var path, convertedDocs;
-//   path = require('path');
-//   convertedDocs = [];
-//   // Create an array of objects. Each object contains a docs and code property
-//   // which represent the parsed doc comment object and the code that follows it
-//   // in the source.
-//   docs.forEach(function( item, index ) {
-//     convertedDocs.push({
-//       docs: docs[ index ],
-//       code: [{
-//         filename: path.basename( src ),
-//         type: path.extname( src ),
-//         code: code[ index ]
-//       }]
-//     });
-//   });
-//   return convertedDocs;
-// };
 
 Doxray.prototype.parseOutCode = function( fileContents, regex ) {
   var code;
@@ -284,7 +260,7 @@ Doxray.prototype.parsingIsValid = function( docs, code ) {
   // This checks to make sure the doc and code arrays have the same length.
   if ( docs.length !== code.length ) {
     // TODO: A node.js equivalent to Grunts this.async();
-    throw new Error('Parsing failed because the number of parsed doc comments does not match the number of parsed code snippets.');
+    throw new Error(this.logMessages.parsedDocsDoesNotMatchParsedCode);
   } else {
     return true;
   }
