@@ -7,26 +7,25 @@ module.exports = function( doxrayObject ) {
     // Grab the code from file type specified in the colorPalette property.
     var palette = [];
     var code = pattern[ pattern.colorPalette ];
-    // Cleans up the code and splits it on semicolons placing each
-    // property/value pair in an array
+    // Cleans up the code string and splits it on semicolons placing each
+    // property/value pair in an array that can be looped through.
     code = code
       .replace( /(\/\*([\s\S]*?)\*\/)|(\/\/(.*)$)/gm, '' )
       .replace( / +?/gm, '' )
       .replace( /(\r\n|\n|\r)/gm, '' )
       .split(';');
-    for ( var i = 0; i < code.length; i++ ) {
-      var keyValPairAsArray = code[ i ].split(':');
-      if ( keyValPairAsArray.length === 2 ) {
-        var key = keyValPairAsArray[ 0 ];
-        var val = keyValPairAsArray[ 1 ];
-        // Ignore Less or SASS variables.
-        if ( val.charAt( 0 ) === '@' || val.charAt( 0 ) === '$' ) return;
-        palette.push({
-          variable: key,
-          value: val
-        });
-      }
-    }
+    code.forEach(function( keyValPair ) {
+      var keyValPairAsArray = keyValPair.split(':');
+      if ( keyValPairAsArray.length !== 2 ) return;
+      var key = keyValPairAsArray[ 0 ];
+      var val = keyValPairAsArray[ 1 ];
+      // Ignore values that are Less or SASS variables.
+      if ( val.charAt( 0 ) === '@' || val.charAt( 0 ) === '$' ) return;
+      palette.push({
+        variable: key,
+        value: val
+      });
+    });
     pattern.colorPalette = palette;
   });
 
