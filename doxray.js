@@ -54,12 +54,10 @@ Doxray.prototype.writeJSON = function( convertedDocs, dest, callback ) {
   fs.writeFile( dest, convertedDocsAsString, function( err ) {
     if ( err ) {
       throw err;
-      // TODO: A node.js equivalent to Grunts this.async( err );
     }
     console.log( dest, 'was created.' );
     if ( typeof callback === 'undefined' ) return;
     callback();
-    // TODO: A node.js equivalent to Grunts this.async();
   });
 };
 
@@ -87,12 +85,10 @@ Doxray.prototype.writeJS = function( convertedDocs, dest, callback ) {
   fs.writeFile( dest, convertedDocsAsString, 'utf-8', function( err ) {
     if ( err ) {
       throw err;
-      // TODO: A node.js equivalent to Grunts this.async( err );
     }
     console.log( dest, 'was created.' );
     if ( typeof callback === 'undefined' ) return;
     callback();
-    // TODO: A node.js equivalent to Grunts this.async();
   });
 };
 
