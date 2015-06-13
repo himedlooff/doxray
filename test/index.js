@@ -25,9 +25,12 @@ describe('#getFileContents', function() {
 });
 
 describe('#convertYaml', function() {
-  it('converts a yaml string into an object and identifies the comment number if the conversion fails', function() {
+  it('converts a yaml string into an object', function() {
     var yamlString = 'prop1: Comment one';
     assert.deepEqual( doxray.convertYaml( yamlString ), { prop1: 'Comment one' } );
+  });
+
+  it('identifies the comment number if the conversion fails', function() {
     assert.throws(
       function() { doxray.convertYaml( 'prop1: prop1:' ); },
       Error,
