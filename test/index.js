@@ -45,10 +45,10 @@ describe('#convertYaml', function() {
   });
 });
 
-describe('#getTextFromDocComment', function() {
+describe('#removeDoxrayCommentTokens', function() {
   it('removes the opening and closing comments from a doc comment', function() {
     assert.equal(
-      doxray.getTextFromDocComment(
+      doxray.removeDoxrayCommentTokens(
         '/* doxray\n    prop1: Comment one\n*/\n',
         doxray.regex.css
       ),

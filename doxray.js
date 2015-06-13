@@ -237,7 +237,7 @@ Doxray.prototype.parseOutDocs = function( fileContents, regex ) {
   docs = fileContents.match( regex.comment );
   docs.forEach(function( item, index ){
     // Grab the doc text from the comments.
-    docs[ index ] = this.getTextFromDocComment( item, regex );
+    docs[ index ] = this.removeDoxrayCommentTokens( item, regex );
     // Conver it from YAML into a JavaScript object.
     docs[ index ] = this.convertYaml( docs[ index ], index );
   }, this );
@@ -272,7 +272,7 @@ Doxray.prototype.parsingIsValid = function( docs, code ) {
   }
 };
 
-Doxray.prototype.getTextFromDocComment = function( item, regex ) {
+Doxray.prototype.removeDoxrayCommentTokens = function( item, regex ) {
   // Remove the opening and closing comments.
   return item.replace( regex.opening, '' ).replace( regex.closing, '' );
 };
