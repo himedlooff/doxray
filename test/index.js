@@ -3,11 +3,10 @@ var chai = require('chai');
 var assert = chai.assert;
 var Doxray = require('../doxray');
 var doxray = new Doxray();
-var doxraySimple = require('../index');
 
 chai.use( require('chai-fs') );
 
-describe('#getCommentType', function() {
+describe('getCommentType()', function() {
   it('returns the correct comment type based on the file extension', function() {
     assert.equal( doxray.getCommentType('test.css'), 'css' );
     assert.equal( doxray.getCommentType('test.less'), 'css' );
@@ -16,7 +15,7 @@ describe('#getCommentType', function() {
   });
 });
 
-describe('#getFileContents', function() {
+describe('getFileContents()', function() {
   it('returns the contents of a file, trimming everything before the first doc comment', function() {
     assert.equal(
       doxray.getFileContents( 'test/test.css', doxray.regex.css ),
@@ -25,7 +24,7 @@ describe('#getFileContents', function() {
   });
 });
 
-describe('#convertYaml', function() {
+describe('convertYaml()', function() {
   it('converts a yaml string into an object', function() {
     var yamlString = 'prop1: Comment one';
     assert.deepEqual( doxray.convertYaml( yamlString ), { prop1: 'Comment one' } );
@@ -45,7 +44,7 @@ describe('#convertYaml', function() {
   });
 });
 
-describe('#removeDoxrayCommentTokens', function() {
+describe('removeDoxrayCommentTokens()', function() {
   it('removes the opening and closing comments from a doc comment', function() {
     assert.equal(
       doxray.removeDoxrayCommentTokens(
@@ -57,7 +56,7 @@ describe('#removeDoxrayCommentTokens', function() {
   });
 });
 
-describe('#parseOutDocs', function() {
+describe('parseOutDocs()', function() {
   it('build an array from the text of each doc comment', function() {
     assert.deepEqual(
       doxray.parseOutDocs(
@@ -69,7 +68,7 @@ describe('#parseOutDocs', function() {
   });
 });
 
-describe('#parseOutCode', function() {
+describe('parseOutCode()', function() {
   it('build an array from the code after each doc comment', function() {
     assert.deepEqual(
       doxray.parseOutCode(
@@ -81,7 +80,7 @@ describe('#parseOutCode', function() {
   });
 });
 
-describe('#parsingIsValid', function() {
+describe('parsingIsValid()', function() {
   it('validates that their is one code snippet (even if it\'s an empty string) for each doc comment', function() {
     var fileContents = '/* doxray\n    prop1: Comment one\n*/\n.test{\n    content:\"Hello\";\n}';
     var docs = doxray.parseOutDocs( fileContents, doxray.regex.css );
@@ -90,7 +89,7 @@ describe('#parsingIsValid', function() {
   });
 });
 
-describe('#joinDocsAndCode', function() {
+describe('joinDocsAndCode()', function() {
   it('takes an array of doc comments and an array of code snippets and merges them into one object', function() {
     var docs = [ { prop1: 'Comment one' } ];
     var code = [ '.test{\n    content:\"Hello\";\n}' ];
@@ -106,7 +105,7 @@ describe('#joinDocsAndCode', function() {
   });
 });
 
-describe('#parseOneFile', function() {
+describe('parseOneFile()', function() {
   it('parses a single file into an array of objects', function() {
     assert.deepEqual(
       doxray.parseOneFile( 'test/test.css' ),
@@ -119,7 +118,7 @@ describe('#parseOneFile', function() {
   });
 });
 
-describe('#parse', function() {
+describe('parse()', function() {
   it('parses a single file when the first argument is a string that is a path to an existing file', function() {
     assert.deepEqual(
       doxray.parse( 'test/test.css' ),
@@ -160,7 +159,7 @@ describe('#parse', function() {
   });
 });
 
-// describe('#mergeParsedSources', function() {
+// describe('mergeParsedSources()', function() {
 //   it('merges two objects if their docs are identical', function() {
 //     assert.deepEqual(
 //       doxray.parse( [ 'test/test.css', 'test/test.less' ], true ),
@@ -278,7 +277,7 @@ describe('#parse', function() {
 //   });
 // });
 
-describe('#postParseProcessing', function() {
+describe('postParseProcessing()', function() {
   it('slugifys the label property in a doc via the slugify processor', function() {
     function run() {
       var parsed = doxray.postParseProcessing(
@@ -362,7 +361,7 @@ describe('#postParseProcessing', function() {
   });
 });
 
-describe('#writeJSON', function() {
+describe('writeJSON()', function() {
   it('creates a .json file', function() {
     var file = 'test/test.json';
     if ( fs.existsSync( file ) ) {
@@ -374,7 +373,7 @@ describe('#writeJSON', function() {
   });
 });
 
-describe('#writeJS', function() {
+describe('writeJS()', function() {
   it('creates a .js file', function() {
     var file = 'test/test.js';
     if ( fs.existsSync( file ) ) {
@@ -386,25 +385,27 @@ describe('#writeJS', function() {
   });
 });
 
-describe('#doxraySimple', function() {
+describe('doxray()', function() {
   it('allows you to call run() by creating a Doxray instance for you', function() {
+    var doxray = require('../index');
     var docs;
     var file = 'test/run-test.json';
     if ( fs.existsSync( file ) ) {
       fs.unlinkSync( file );
     }
-    docs = doxraySimple( 'test/test.css', { jsonFile: file }, function() {
+    docs = doxray( 'test/test.css', { jsonFile: file }, function() {
       assert.isFile( file );
     });
   });
 
   it('allows you to call run() by creating a Doxray instance for you', function() {
+    var doxray = require('../index');
     var docs;
     var file = 'test/run-test.js';
     if ( fs.existsSync( file ) ) {
       fs.unlinkSync( file );
     }
-    docs = doxraySimple( 'test/test.css', { jsFile: file }, function() {
+    docs = doxray( 'test/test.css', { jsFile: file }, function() {
       assert.isFile( file );
       assert.deepEqual(
         docs.patterns[0].prop1,
@@ -414,7 +415,8 @@ describe('#doxraySimple', function() {
   });
 
   // it('uses the options argument to merge', function() {
-  //   var docs = doxraySimple( [ 'test/test.css', 'test/test.less' ], { merge: true } );
+  //   var doxray = require('../index');
+  //   var docs = doxray( [ 'test/test.css', 'test/test.less' ], { merge: true } );
   //   assert.deepEqual(
   //     docs.patterns[0].prop1,
   //     'Comment one'
@@ -422,8 +424,9 @@ describe('#doxraySimple', function() {
   // });
 
   it('throws an error if the src does not exist', function() {
+    var doxray = require('../index');
     assert.throws(
-      function() { doxraySimple( [ 'non-existent-file.css' ] ); },
+      function() { doxray( [ 'non-existent-file.css' ] ); },
       Error
     );
   });
