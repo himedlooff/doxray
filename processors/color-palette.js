@@ -4,20 +4,21 @@ module.exports = function( doxrayObject ) {
     // Check to see if we have everything that we need.
     if ( typeof pattern.colorPalette === 'undefined' ) return;
     if ( typeof pattern[ pattern.colorPalette ] === 'undefined' ) return;
-
     // Grab the code from file type specified in the colorPalette property.
     var palette = [];
     var code = pattern[ pattern.colorPalette ];
+    // Cleans up the code and splits it on semicolons placing each
+    // property/value pair in an array
     code = code
-      .replace(/(\/\*([\s\S]*?)\*\/)|(\/\/(.*)$)/gm, '')
-      .replace(/ +?/gm, '')
-      .replace(/(\r\n|\n|\r)/gm, '')
+      .replace( /(\/\*([\s\S]*?)\*\/)|(\/\/(.*)$)/gm, '' )
+      .replace( / +?/gm, '' )
+      .replace( /(\r\n|\n|\r)/gm, '' )
       .split(';');
     for ( var i = 0; i < code.length; i++ ) {
-      var ruleAsArray = code[ i ].split(':');
-      if ( ruleAsArray.length === 2 ) {
-        var key = ruleAsArray[ 0 ];
-        var val = ruleAsArray[ 1 ];
+      var keyValPairAsArray = code[ i ].split(':');
+      if ( keyValPairAsArray.length === 2 ) {
+        var key = keyValPairAsArray[ 0 ];
+        var val = keyValPairAsArray[ 1 ];
         // Ignore Less or SASS variables.
         if ( val.charAt( 0 ) === '@' || val.charAt( 0 ) === '$' ) return;
         palette.push({
