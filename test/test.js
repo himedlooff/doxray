@@ -1,3 +1,1 @@
-var Doxray = [
-  {}
-];
+var Doxray = {};

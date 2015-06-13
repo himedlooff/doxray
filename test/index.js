@@ -1,3 +1,4 @@
+var fs = require('fs');
 var chai = require('chai');
 var assert = chai.assert;
 var Doxray = require('../doxray');
@@ -363,60 +364,53 @@ describe('#postParseProcessing', function() {
 
 describe('#writeJSON', function() {
   it('creates a .json file', function() {
-    doxray.writeJSON( { patterns: [] }, 'test/test.json' );
-    assert.isFile( 'test/test.json' );
+    var file = 'test/test.json';
+    if ( fs.existsSync( file ) ) {
+      fs.unlinkSync( file );
+    }
+    doxray.writeJSON( { patterns: [] }, file, function() {
+      assert.isFile( file );
+    });
   });
 });
 
 describe('#writeJS', function() {
   it('creates a .js file', function() {
-    doxray.writeJS( [{}], 'test/test.js' );
-    assert.isFile( 'test/test.js' );
-  });
-});
-
-describe('#run', function() {
-  it('uses the options argument to run the right tasks', function() {
-    var docs = doxray.run( 'test/test.css', {
-      jsFile: 'test/run-test.js',
-      jsonFile: 'test/run-test.json'
+    var file = 'test/test.js';
+    if ( fs.existsSync( file ) ) {
+      fs.unlinkSync( file );
+    }
+    doxray.writeJS( {}, file, function() {
+      assert.isFile( file );
     });
-    assert.isFile( 'test/run-test.js' );
-    assert.isFile( 'test/run-test.json' );
-    assert.equal(
-      docs.patterns[0].prop1,
-      'Comment one'
-    );
-  });
-
-  // it('uses the options argument to merge', function() {
-  //   var docs = doxray.run( [ 'test/test.css', 'test/test.less' ], { merge: true } );
-  //   assert.equal(
-  //     docs.patterns[0].prop1,
-  //     'Comment one'
-  //   );
-  // });
-
-  it('throws an error if the src does not exist', function() {
-    assert.throws(
-      function() { doxray.run( [ 'non-existent-file.css' ] ); },
-      Error
-    );
   });
 });
 
 describe('#doxraySimple', function() {
-  it('an easy way to use Doxray', function() {
-    var docs = doxraySimple( 'test/test.css', {
-      jsFile: 'test/run-test.js',
-      jsonFile: 'test/run-test.json'
+  it('an easy way to use Doxray to write a .json file', function() {
+    var docs;
+    var file = 'test/run-test.json';
+    if ( fs.existsSync( file ) ) {
+      fs.unlinkSync( file );
+    }
+    docs = doxraySimple( 'test/test.css', { jsonFile: file }, function() {
+      assert.isFile( 'test/run-test.js' );
     });
-    assert.isFile( 'test/run-test.js' );
-    assert.isFile( 'test/run-test.json' );
-    assert.deepEqual(
-      docs.patterns[0].prop1,
-      'Comment one'
-    );
+  });
+
+  it('an easy way to use Doxray to write a .js file', function() {
+    var docs;
+    var file = 'test/run-test.js';
+    if ( fs.existsSync( file ) ) {
+      fs.unlinkSync( file );
+    }
+    docs = doxraySimple( 'test/test.css', { jsFile: file }, function() {
+      assert.isFile( 'test/run-test.js' );
+      assert.deepEqual(
+        docs.patterns[0].prop1,
+        'Comment one'
+      );
+    });
   });
 
   // it('uses the options argument to merge', function() {

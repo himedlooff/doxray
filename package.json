@@ -30,7 +30,7 @@
     "glob": "~5.0.5",
     "js-yaml": "~3.2.2"
   },
-   "devDependencies": {
+  "devDependencies": {
     "chai": "~1.9.2",
     "chai-fs": "~0.1.0",
     "mocha": "~1.21.4"

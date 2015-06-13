@@ -10,17 +10,17 @@ Doxray.prototype.logMessages = {
   parsedDocsDoesNotMatchParsedCode: 'Parsing failed because the number of parsed doc comments does not match the number of parsed code snippets.'
 }
 
-Doxray.prototype.run = function( src, options ) {
+Doxray.prototype.run = function( src, options, callback ) {
   var parsed, processed;
   src = this.handleSrc( src );
   options = this.handleOptions( options );
   parsed = this.parse( src, options.merge );
   processed = this.postParseProcessing( parsed );
   if ( options.jsonFile ) {
-    this.writeJSON( processed, options.jsonFile );
+    this.writeJSON( processed, options.jsonFile, callback );
   }
   if ( options.jsFile ) {
-    this.writeJS( processed, options.jsFile );
+    this.writeJS( processed, options.jsFile, callback );
   }
   return processed;
 };
@@ -48,6 +48,21 @@ Doxray.prototype.handleOptions = function( options ) {
 
 Doxray.prototype.jsonWhiteSpace = 2;
 
+Doxray.prototype.writeJSON = function( convertedDocs, dest, callback ) {
+  var fs = require('fs');
+  var convertedDocsAsString = JSON.stringify( convertedDocs.patterns, null, this.jsonWhiteSpace );
+  fs.writeFile( dest, convertedDocsAsString, function( err ) {
+    if ( err ) {
+      throw err;
+      // TODO: A node.js equivalent to Grunts this.async( err );
+    }
+    console.log( dest, 'was created.' );
+    if ( typeof callback === 'undefined' ) return;
+    callback();
+    // TODO: A node.js equivalent to Grunts this.async();
+  });
+};
+
 // The following function was referenced from:
 // https://gist.github.com/cowboy/3749767
 Doxray.prototype.stringify = function( obj, prop ) {
@@ -66,7 +81,7 @@ Doxray.prototype.stringify = function( obj, prop ) {
   return 'var ' + prop + ' = ' + json + ';';
 };
 
-Doxray.prototype.writeJS = function( convertedDocs, dest ) {
+Doxray.prototype.writeJS = function( convertedDocs, dest, callback ) {
   var fs = require('fs');
   var convertedDocsAsString = this.stringify( convertedDocs, 'Doxray' );
   fs.writeFile( dest, convertedDocsAsString, 'utf-8', function( err ) {
@@ -75,19 +90,8 @@ Doxray.prototype.writeJS = function( convertedDocs, dest ) {
       // TODO: A node.js equivalent to Grunts this.async( err );
     }
     console.log( dest, 'was created.' );
-    // TODO: A node.js equivalent to Grunts this.async();
-  });
-};
-
-Doxray.prototype.writeJSON = function( convertedDocs, dest ) {
-  var fs = require('fs');
-  var convertedDocsAsString = JSON.stringify( convertedDocs.patterns, null, this.jsonWhiteSpace );
-  fs.writeFile( dest, convertedDocsAsString, function( err ) {
-    if ( err ) {
-      throw err;
-      // TODO: A node.js equivalent to Grunts this.async( err );
-    }
-    console.log( dest, 'was created.' );
+    if ( typeof callback === 'undefined' ) return;
+    callback();
     // TODO: A node.js equivalent to Grunts this.async();
   });
 };
