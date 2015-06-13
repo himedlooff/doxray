@@ -5,9 +5,9 @@
 
 var Doxray = require('./doxray');
 
-function doxray( src, options ) {
+function doxray( src, options, callback ) {
   var doxrayInstance = new Doxray();
-  return doxrayInstance.run( src, options );
+  return doxrayInstance.run( src, options, callback );
 }
 
 module.exports = doxray;

@@ -387,25 +387,25 @@ describe('#writeJS', function() {
 });
 
 describe('#doxraySimple', function() {
-  it('an easy way to use Doxray to write a .json file', function() {
+  it('allows you to call run() by creating a Doxray instance for you', function() {
     var docs;
     var file = 'test/run-test.json';
     if ( fs.existsSync( file ) ) {
       fs.unlinkSync( file );
     }
     docs = doxraySimple( 'test/test.css', { jsonFile: file }, function() {
-      assert.isFile( 'test/run-test.js' );
+      assert.isFile( file );
     });
   });
 
-  it('an easy way to use Doxray to write a .js file', function() {
+  it('allows you to call run() by creating a Doxray instance for you', function() {
     var docs;
     var file = 'test/run-test.js';
     if ( fs.existsSync( file ) ) {
       fs.unlinkSync( file );
     }
     docs = doxraySimple( 'test/test.css', { jsFile: file }, function() {
-      assert.isFile( 'test/run-test.js' );
+      assert.isFile( file );
       assert.deepEqual(
         docs.patterns[0].prop1,
         'Comment one'
