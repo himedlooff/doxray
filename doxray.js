@@ -5,10 +5,39 @@
 
 var Doxray = function() {};
 
+/* ==========================================================================
+   Properties
+   ========================================================================== */
+
+Doxray.prototype.regex = {
+  html: {
+    opening: /^<!--\s*doxray[^\n]*\n/m,
+    closing: /-->/,
+    comment: /^<!--\s*doxray(?:[^-]|[\r\n]|-[^-])*-->/gm
+  },
+  css: {
+    opening: /^\/\*\s*doxray[^\n]*\n/m,
+    closing: /\*\//,
+    comment: /^\/\*\s*doxray[^*]*\*+(?:[^/*][^*]*\*+)*\//gm
+  }
+};
+
+Doxray.prototype.processors = [
+  require('./processors/filters.js'),
+  require('./processors/slugify.js'),
+  require('./processors/color-palette.js')
+];
+
+Doxray.prototype.jsonWhiteSpace = 2;
+
 Doxray.prototype.logMessages = {
   parseGotWrongType: 'parse() expected a String or an Array.',
   parsedDocsDoesNotMatchParsedCode: 'Parsing failed because the number of parsed doc comments does not match the number of parsed code snippets.'
 }
+
+/* ==========================================================================
+   Methods
+   ========================================================================== */
 
 Doxray.prototype.run = function( src, options, callback ) {
   var parsed, processed;
@@ -45,8 +74,6 @@ Doxray.prototype.handleOptions = function( options ) {
   }
   return options;
 };
-
-Doxray.prototype.jsonWhiteSpace = 2;
 
 Doxray.prototype.writeJSON = function( convertedDocs, dest, callback ) {
   var fs = require('fs');
@@ -91,12 +118,6 @@ Doxray.prototype.writeJS = function( convertedDocs, dest, callback ) {
     callback();
   });
 };
-
-Doxray.prototype.processors = [
-  require('./processors/filters.js'),
-  require('./processors/slugify.js'),
-  require('./processors/color-palette.js')
-];
 
 Doxray.prototype.postParseProcessing = function( parsed ) {
   var processedDocs = {
@@ -166,19 +187,6 @@ Doxray.prototype.mergeParsedSources = function( sources ) {
   // Add all the unique doc sets that couldn't get merged.
   first = first.concat( uniqueSets );
   return first;
-};
-
-Doxray.prototype.regex = {
-  html: {
-    opening: /^<!--\s*doxray[^\n]*\n/m,
-    closing: /-->/,
-    comment: /^<!--\s*doxray(?:[^-]|[\r\n]|-[^-])*-->/gm
-  },
-  css: {
-    opening: /^\/\*\s*doxray[^\n]*\n/m,
-    closing: /\*\//,
-    comment: /^\/\*\s*doxray[^*]*\*+(?:[^/*][^*]*\*+)*\//gm
-  }
 };
 
 Doxray.prototype.parseOneFile = function( src ) {
@@ -281,8 +289,7 @@ Doxray.prototype.getFileContents = function( src, regex ) {
 
 Doxray.prototype.getCommentType = function( src ) {
   var path = require('path');
-  var ext;
-  ext = path.extname( src ).substring( 1 );
+  var ext = path.extname( src ).substring( 1 );
   switch ( ext ) {
     case 'css':
     case 'less':
