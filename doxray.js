@@ -249,7 +249,6 @@ Doxray.prototype.convertYaml = function( yamlString, index ) {
     } else {
       yamlError = yamlError.replace( '# ', '' );
     }
-    // TODO: A node.js equivalent to Grunts this.async();
     throw new Error( yamlError );
   }
   return convertedYaml;
@@ -259,7 +258,6 @@ Doxray.prototype.parsingIsValid = function( docs, code ) {
   // For each doc comment ther should be one correcsponding code snippet.
   // This checks to make sure the doc and code arrays have the same length.
   if ( docs.length !== code.length ) {
-    // TODO: A node.js equivalent to Grunts this.async();
     throw new Error(this.logMessages.parsedDocsDoesNotMatchParsedCode);
   } else {
     return true;
