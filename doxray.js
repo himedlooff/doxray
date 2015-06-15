@@ -31,8 +31,8 @@ Doxray.prototype.processors = [
 Doxray.prototype.jsonWhiteSpace = 2;
 
 Doxray.prototype.logMessages = {
-  parseGotWrongType: 'parse() expected a String or an Array.',
-  parsedDocsDoesNotMatchParsedCode: 'Parsing failed because the number of parsed doc comments does not match the number of parsed code snippets.'
+  wrongType: 'Doxray expected a String or an Array as the first argument.',
+  noDoxrayCommentsFound: 'Doxray did not find any Doxray comments in this file.'
 }
 
 /* ==========================================================================
@@ -147,7 +147,7 @@ Doxray.prototype.parse = function( src, merge ) {
     //   parsed = [ this.mergeParsedSources( parsed ) ];
     // }
   } else {
-    throw new Error(this.logMessages.parseGotWrongType);
+    throw new Error( this.logMessages.wrongType );
   }
   return parsed;
 };
@@ -196,7 +196,9 @@ Doxray.prototype.parseOneFile = function( src ) {
   fileContents = this.getFileContents( src, this.regex[ ext ] );
   docs = this.parseOutDocs( fileContents, this.regex[ ext ] );
   code = this.parseOutCode( fileContents, this.regex[ ext ] );
-  if ( this.parsingIsValid( docs, code ) ) {
+  if ( docs.length === 0 ) {
+    convertedDocs = [];
+  } else {
     // Join the docs and code back together as structured objects.
     convertedDocs = this.joinDocsAndCode( docs, code, src );
   }
@@ -207,11 +209,11 @@ Doxray.prototype.joinDocsAndCode = function( docs, code, src ) {
   var path, convertedDocs;
   path = require('path');
   patterns = [];
-  // Create an array of objects. Each object contains a docs and code property
-  // which represent the parsed doc comment object and the code that follows it
-  // in the source.
   docs.forEach(function( doc, docIndex ) {
+    // For each item in docs add its corresponding code item using the code
+    // filetype as the key.
     doc[ path.extname(src).replace('.', '') ] = code[ docIndex ];
+    // Also add the filename.
     doc.filename = path.basename( src );
     patterns.push( doc );
   });
@@ -235,6 +237,9 @@ Doxray.prototype.parseOutDocs = function( fileContents, regex ) {
   var docs;
   // "docs" are anything that matches the regex.
   docs = fileContents.match( regex.comment );
+  if ( !docs ) {
+    return [];
+  }
   docs.forEach(function( item, index ){
     // Grab the doc text from the comments.
     docs[ index ] = this.removeDoxrayCommentTokens( item, regex );
@@ -260,16 +265,6 @@ Doxray.prototype.convertYaml = function( yamlString, index ) {
     throw new Error( yamlError );
   }
   return convertedYaml;
-};
-
-Doxray.prototype.parsingIsValid = function( docs, code ) {
-  // For each doc comment ther should be one correcsponding code snippet.
-  // This checks to make sure the doc and code arrays have the same length.
-  if ( docs.length !== code.length ) {
-    throw new Error(this.logMessages.parsedDocsDoesNotMatchParsedCode);
-  } else {
-    return true;
-  }
 };
 
 Doxray.prototype.removeDoxrayCommentTokens = function( item, regex ) {
