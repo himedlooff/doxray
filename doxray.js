@@ -41,8 +41,8 @@ Doxray.prototype.logMessages = {
 
 Doxray.prototype.run = function( src, options, callback ) {
   var parsed, processed;
-  src = this.handleSrc( src );
-  options = this.handleOptions( options );
+  src = require('./utils.js').handleSrc( src );
+  options = require('./utils.js').handleOptions( options );
   parsed = this.parse( src, options.merge );
   processed = this.postParseProcessing( parsed );
   if ( options.jsonFile ) {
@@ -52,27 +52,6 @@ Doxray.prototype.run = function( src, options, callback ) {
     this.writeJS( processed, options.jsFile, callback );
   }
   return processed;
-};
-
-Doxray.prototype.handleSrc = function( src ) {
-  var glob = require("glob");
-  var fileToTest;
-  if ( typeof src === 'string' ) {
-    src = glob.sync( src );
-  }
-  return src;
-};
-
-Doxray.prototype.handleOptions = function( options ) {
-  if ( typeof options !== 'object' ) {
-    options = {};
-  }
-  options.jsFile = options.jsFile;
-  options.jsonFile = options.jsonFile;
-  if ( typeof options.merge === 'undefined' ) {
-    options.merge = true;
-  }
-  return options;
 };
 
 Doxray.prototype.writeJSON = function( convertedDocs, dest, callback ) {
@@ -88,27 +67,10 @@ Doxray.prototype.writeJSON = function( convertedDocs, dest, callback ) {
   });
 };
 
-// The following function was referenced from:
-// https://gist.github.com/cowboy/3749767
-Doxray.prototype.stringify = function( obj, prop ) {
-  var placeholder = '____PLACEHOLDER____';
-  var fns = [];
-  var json = JSON.stringify( obj, function( key, value ) {
-    if ( typeof value === 'function' ) {
-      fns.push( value );
-      return placeholder;
-    }
-    return value;
-  }, this.jsonWhiteSpace);
-  json = json.replace( new RegExp( '"' + placeholder + '"', 'g' ), function(_) {
-    return fns.shift();
-  });
-  return 'var ' + prop + ' = ' + json + ';';
-};
-
 Doxray.prototype.writeJS = function( convertedDocs, dest, callback ) {
   var fs = require('fs');
-  var convertedDocsAsString = this.stringify( convertedDocs, 'Doxray' );
+  var stringify = require('./utils.js').stringify;
+  var convertedDocsAsString = stringify( convertedDocs, 'Doxray', this.jsonWhiteSpace );
   fs.writeFile( dest, convertedDocsAsString, 'utf-8', function( err ) {
     if ( err ) {
       throw err;
@@ -150,43 +112,6 @@ Doxray.prototype.parse = function( src, merge ) {
     throw new Error( this.logMessages.wrongType );
   }
   return parsed;
-};
-
-Doxray.prototype.mergeParsedSources = function( sources ) {
-  var equal, first, theRest, nonMatches;
-  equal = require('deep-equal');
-  // The first parsed source will be our "master" source.
-  first = sources[ 0 ];
-  // The rest of the sources are saved to their own array.
-  theRest = sources.slice( 1 );
-  // We'll need this later for doc sets that don't match anything.
-  uniqueSets = [];
-  // Compare each doc set from the master source to the doc sets of the rest of
-  // the sources. If both sets of docs are exactly the same then merge them
-  // together. "Merging" is done by taking the code from the second doc set and
-  // adding to the code array of the master doc set.
-  theRest.forEach( function( src ) {
-    src.forEach( function( secondDocSet ) {
-      var matchesSomethingInFirst = false;
-      first.forEach( function( firstDocSet ) {
-        if ( equal( firstDocSet.docs, secondDocSet.docs ) ) {
-          // If this doc set has docs that match another doc sets docs,
-          // then take only its code and move it to the matching set.
-          firstDocSet.code = firstDocSet.code.concat( secondDocSet.code );
-          matchesSomethingInFirst = true;
-        }
-      }, this );
-      if ( matchesSomethingInFirst === false ) {
-        // If this doc set has docs that do not match any other doc sets docs,
-        // then move this whole doc set into uniqueSets. uniqueSets will be
-        // added to first after we finish looping through it.
-        uniqueSets.push( secondDocSet );
-      }
-    }, this );
-  }, this );
-  // Add all the unique doc sets that couldn't get merged.
-  first = first.concat( uniqueSets );
-  return first;
 };
 
 Doxray.prototype.parseOneFile = function( src ) {
@@ -300,3 +225,40 @@ Doxray.prototype.getCommentType = function( src ) {
 };
 
 module.exports = Doxray;
+
+// Doxray.prototype.mergeParsedSources = function( sources ) {
+//   var equal, first, theRest, nonMatches;
+//   equal = require('deep-equal');
+//   // The first parsed source will be our "master" source.
+//   first = sources[ 0 ];
+//   // The rest of the sources are saved to their own array.
+//   theRest = sources.slice( 1 );
+//   // We'll need this later for doc sets that don't match anything.
+//   uniqueSets = [];
+//   // Compare each doc set from the master source to the doc sets of the rest of
+//   // the sources. If both sets of docs are exactly the same then merge them
+//   // together. "Merging" is done by taking the code from the second doc set and
+//   // adding to the code array of the master doc set.
+//   theRest.forEach( function( src ) {
+//     src.forEach( function( secondDocSet ) {
+//       var matchesSomethingInFirst = false;
+//       first.forEach( function( firstDocSet ) {
+//         if ( equal( firstDocSet.docs, secondDocSet.docs ) ) {
+//           // If this doc set has docs that match another doc sets docs,
+//           // then take only its code and move it to the matching set.
+//           firstDocSet.code = firstDocSet.code.concat( secondDocSet.code );
+//           matchesSomethingInFirst = true;
+//         }
+//       }, this );
+//       if ( matchesSomethingInFirst === false ) {
+//         // If this doc set has docs that do not match any other doc sets docs,
+//         // then move this whole doc set into uniqueSets. uniqueSets will be
+//         // added to first after we finish looping through it.
+//         uniqueSets.push( secondDocSet );
+//       }
+//     }, this );
+//   }, this );
+//   // Add all the unique doc sets that couldn't get merged.
+//   first = first.concat( uniqueSets );
+//   return first;
+// };
