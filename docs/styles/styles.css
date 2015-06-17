@@ -1,0 +1,452 @@
+@charset "UTF-8";
+/* doxray
+header:
+    true
+label:
+    Variables
+*/
+/* doxray
+label:
+    Fonts
+category:
+    helper
+notes:
+    - >
+        `Open Sans` is a Google font.
+    - >
+        `<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600">`
+*/
+/* doxray
+label:
+    Colors
+colorPalette:
+    scss
+*/
+/* doxray
+label:
+    Dimension and spacing
+*/
+/* doxray
+header:
+    true
+label:
+    Styles
+*/
+/* doxray
+label:
+    .doxray
+*/
+.doxray {
+  margin: 0;
+  padding: 0;
+}
+
+/* doxray
+label:
+    .doxray_nav
+*/
+.doxray_nav {
+  box-sizing: border-box;
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  width: 220px;
+  padding: 0 0 60px 20px;
+  background: #fdfdfd;
+  overflow-y: auto;
+  z-index: 0;
+}
+
+.doxray_patterns {
+  position: relative;
+  margin-left: 220px;
+  background: #ffffff;
+  box-shadow: 0 0 4px #6e6c6c;
+  z-index: 1;
+}
+
+/**********************
+ *  Generic patterns  *
+ **********************/
+.doxray-icon-file:before {
+  content: "ƒ";
+  font-family: "Open Sans", "Segoe UI", "Helvetica Neue", Helvetica, Arial;
+  font-weight: 400;
+}
+.doxray-icon-file:after {
+  content: " ";
+}
+
+.doxray-icon-pattern:before {
+  content: "⁋";
+  font-family: "Open Sans", "Segoe UI", "Helvetica Neue", Helvetica, Arial;
+  font-weight: 400;
+}
+.doxray-icon-pattern:after {
+  content: " ";
+}
+
+/***********************
+ *  Table of contents  *
+ ***********************/
+.doxray-toc_masthead {
+  margin: 0;
+  padding: 72px;
+  background: #fdfdfd;
+  font-family: "Open Sans", "Segoe UI", "Helvetica Neue", Helvetica, Arial;
+  font-size: 42px;
+  font-weight: 300;
+  text-align: center;
+}
+
+.doxray-toc_body {
+  position: relative;
+  padding: 72px;
+  box-shadow: 0 0 2px #6e6c6c;
+}
+
+.doxray-toc_collapsed-view-btn {
+  position: absolute;
+  bottom: 24px;
+  left: 72px;
+  font-family: "Open Sans", "Segoe UI", "Helvetica Neue", Helvetica, Arial;
+  font-size: 12px;
+}
+
+.doxray-toc_file-list {
+  display: -webkit-box;
+  display: -moz-box;
+  display: -ms-flexbox;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-flex-wrap: wrap;
+  -ms-flex-wrap: wrap;
+  flex-wrap: wrap;
+  margin: 0;
+  padding: 0;
+  list-style-type: none;
+}
+
+.doxray-toc_file-list-item {
+  width: 200px;
+  min-width: 200px;
+  margin: 0 1em 4em 0;
+}
+.doxray-toc_file-list-item.is-collapsed {
+  margin-bottom: 1em;
+}
+.doxray-toc_file-list-item.is-collapsed .doxray-link__file {
+  margin-bottom: 0;
+}
+.doxray-toc_file-list-item.is-collapsed .doxray-link__pattern-header, .doxray-toc_file-list-item.is-collapsed .doxray-link__pattern {
+  display: none;
+}
+
+/*****************
+ *  Header link  *
+ *****************/
+.doxray-header-link, .doxray-header-link:link, .doxray-header-link:visited {
+  box-sizing: border-box;
+  display: block;
+  width: 220px;
+  min-height: 40px;
+  padding: 0 20px;
+  background: #f8f8f8;
+  color: #474646;
+  font-size: 18px;
+  line-height: 38px;
+  text-decoration: none;
+}
+.doxray-header-link:hover, .doxray-header-link:focus {
+  background: #f0f0f0;
+  outline: 0;
+}
+
+.doxray-header-link__file {
+  margin-left: -20px;
+  margin-bottom: 20px;
+}
+
+.doxray-header-link__toc {
+  position: fixed;
+  left: 0;
+  bottom: 0;
+}
+
+.doxray-header-link_info {
+  margin-left: .75em;
+  font-family: "Open Sans", "Segoe UI", "Helvetica Neue", Helvetica, Arial;
+  font-size: 12px;
+}
+
+/**********
+ *  Link  *
+ **********/
+.doxray-link, .doxray-link:link, .doxray-link:visited {
+  position: relative;
+  display: block;
+  margin: 0;
+  padding: .5em .75em;
+  border: 0;
+  background: transparent;
+  font-family: "Open Sans", "Segoe UI", "Helvetica Neue", Helvetica, Arial;
+  font-size: 12px;
+  color: #474646;
+  text-decoration: none;
+}
+.doxray-link:hover, .doxray-link:focus {
+  background: #f8f8f8;
+}
+.doxray-link:focus {
+  outline: 0;
+}
+
+.doxray-link__file, .doxray-link__file:link, .doxray-link__file:visited {
+  margin: 0 0 .5em;
+  background: #f8f8f8;
+  font-family: "Lucida Sans Typewriter", "Lucida Console", monaco, "Bitstream Vera Sans Mono", monospace;
+  font-size: 12px;
+}
+.doxray-link__file:hover, .doxray-link__file:focus {
+  background: #f0f0f0;
+}
+.doxray-link__file .doxray-icon-file {
+  opacity: .75;
+}
+
+.doxray-link__pattern-header, .doxray-link__pattern-header:link, .doxray-link__pattern-header:visited {
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.doxray-link__pattern, .doxray-link__pattern:link, .doxray-link__pattern:visited {
+  padding: .5em .75em .5em 1.85em;
+}
+.doxray-link__pattern .doxray-icon-pattern {
+  position: absolute;
+  left: .75em;
+  width: 1.75em;
+  opacity: .15;
+}
+
+.doxray-link-hr {
+  display: block;
+  height: 1px;
+  margin: 20px 0 20px -20px;
+  border: 0;
+  background: #f8f8f8;
+}
+
+/**************
+ *  The doc  *
+ **************/
+.doxray-doc {
+  padding: 72px;
+}
+
+.doxray-doc + .doxray-doc {
+  border-top: 1px solid #f0f0f0;
+}
+
+.doxray-doc-label {
+  margin: 0 0 18px;
+  font-size: 30px;
+  font-weight: 600;
+}
+
+.doxray-doc-label__header {
+  font-size: 42px;
+}
+
+.doxray-doc-label_link, .doxray-doc-label_link:link, .doxray-doc-label_link:visited, .doxray-doc-label_link:hover, .doxray-doc-label_link:focus {
+  color: #474646;
+  font-family: "Open Sans", "Segoe UI", "Helvetica Neue", Helvetica, Arial;
+  text-decoration: none;
+  outline: 0;
+}
+
+.doxray-doc-tag {
+  display: inline-block;
+  margin: 0 0 0 .5em;
+  padding: .2em .8em;
+  border-radius: 12px;
+  font-family: "Open Sans", "Segoe UI", "Helvetica Neue", Helvetica, Arial;
+  font-size: 12px;
+  font-weight: 400;
+  background: #f0f0f0;
+  color: #474646;
+}
+
+.doxray-doc-description {
+  max-width: 50em;
+  margin: 18px 0;
+  font-family: "Open Sans", "Segoe UI", "Helvetica Neue", Helvetica, Arial;
+  font-size: 26px;
+  font-weight: 400;
+}
+
+.doxray-doc-note {
+  position: relative;
+  max-width: 50em;
+  margin: 18px 0;
+  padding-left: 1em;
+  font-family: "Open Sans", "Segoe UI", "Helvetica Neue", Helvetica, Arial;
+  font-size: 18px;
+  font-weight: 400;
+}
+.doxray-doc-note:before {
+  content: "●";
+  position: absolute;
+  left: 0;
+  display: inline-block;
+  margin-right: .25em;
+  color: #f0f0f0;
+}
+
+.doxray-doc-description p,
+.doxray-doc-note p {
+  margin: 18px 0 0;
+}
+.doxray-doc-description code,
+.doxray-doc-note code {
+  display: inline-block;
+  padding: 2px 5px;
+  border-radius: 3px;
+  background: #f8f8f8;
+  color: #474646;
+  font-family: "Lucida Sans Typewriter", "Lucida Console", monaco, "Bitstream Vera Sans Mono", monospace;
+  font-size: .8em;
+}
+
+.doxray-doc-reference, .doxray-doc-reference:active, .doxray-doc-reference:link, .doxray-doc-reference:focus, .doxray-doc-reference:hover, .doxray-doc-reference:visited {
+  margin: 18px 0;
+  font-size: 18px;
+  color: #5b7489;
+  text-decoration: none;
+}
+
+.doxray-doc-markup {
+  margin: 36px -36px;
+  box-shadow: 0 0 6px #6e6c6c;
+  overflow: hidden;
+}
+.doxray-doc-markup:after {
+  display: table;
+  clear: both;
+  content: "";
+}
+
+.doxray-doc-markup_rendered {
+  display: inline-block;
+  padding: 72px;
+  margin-right: -3.75px;
+}
+
+.doxray-doc-markup_rendered__block {
+  display: block;
+}
+
+.doxray-doc-markup-theme {
+  position: relative;
+}
+
+.doxray-doc-markup-theme_label {
+  position: absolute;
+  top: 2.5em;
+  font-family: "Open Sans", "Segoe UI", "Helvetica Neue", Helvetica, Arial;
+  font-size: 12px;
+  line-height: 1;
+  text-transform: capitalize;
+}
+
+.doxray-doc-code {
+  position: relative;
+  margin: 18px 0 0;
+}
+
+.doxray-doc-code_text {
+  display: block;
+  margin: 0;
+  padding: 36px;
+  background: #f8f8f8;
+  font-size: 18px;
+  line-height: 1.5;
+}
+
+.doxray-doc-code-expander {
+  position: relative;
+}
+
+.doxray-doc-code-expander_body {
+  height: 160px;
+  overflow: hidden;
+}
+
+.doxray-doc-code-expander_btn, .doxray-doc-code-expander_btn:active, .doxray-doc-code-expander_btn:link, .doxray-doc-code-expander_btn:focus, .doxray-doc-code-expander_btn:hover, .doxray-doc-code-expander_btn:visited {
+  display: block;
+  width: 100%;
+  padding: .5em .75em;
+  border: 0;
+  background: #f0f0f0;
+  color: #474646;
+  font-size: 12px;
+  line-height: 1;
+  text-align: center;
+  text-decoration: none;
+  outline: 0;
+  cursor: pointer;
+}
+.doxray-doc-code-expander_btn:hover, .doxray-doc-code-expander_btn:focus {
+  background: #ebebeb;
+}
+.doxray-doc-code-expander_btn:before {
+  content: "⇣";
+}
+.doxray-doc-code-expander_btn__flipped:before {
+  content: "⇡";
+}
+
+/*******************
+ *  Color palette  *
+ *******************/
+.doxray-doc-palette {
+  width: 96px;
+  display: inline-block;
+  margin-top: 16px;
+}
+
+.doxray-doc-palette_color {
+  display: block;
+  height: 96px;
+}
+
+.doxray-doc-palette_input {
+  position: relative;
+  z-index: 1;
+  box-sizing: border-box;
+  width: 100%;
+  margin-top: 4px;
+  padding: 8px 10px 10px;
+  border: 1px solid #f0f0f0;
+  border-radius: 0;
+  background: #ffffff;
+  color: #6e6c6c;
+  font-family: "Open Sans", "Segoe UI", "Helvetica Neue", Helvetica, Arial;
+  font-size: 14px;
+  font-weight: 400;
+}
+.doxray-doc-palette_input:focus {
+  outline: 0;
+}
+
+.doxray-doc-palette_input + .doxray-doc-palette_input {
+  margin-top: -1px;
+}
+
+.doxray-doc-palette_input:hover, .doxray-doc-palette_input:focus {
+  width: 150px;
+  z-index: 2;
+  border-color: #474646;
+  box-shadow: 0 0 4px #6e6c6c;
+}

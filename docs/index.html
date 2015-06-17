@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Dox-ray</title>
+    <script type="text/x-handlebars-template" id="doxray_toc-template">
+        <main class="doxray_toc doxray-toc" id="doxray_toc">
+            <h1 class="doxray-toc_masthead">
+                Pattern Library
+            </h1>
+            <div class="doxray-toc_body">
+                <label class="doxray-toc_collapsed-view-btn">
+                    <input class="js-doxray-toggle-collapsed-toc" type="checkbox">
+                    Collapsed view
+                </label>
+                <ul class="doxray-toc_file-list">
+                    {{#each this}}
+                    <li class="doxray-toc_file-list-item">
+                        <a class="doxray-link doxray-link__file" href="?file={{@key}}">
+                            <i class="doxray-icon-file"></i> {{@key}}
+                        </a>
+                        {{#each this}}
+                            {{#if this.header}}
+                                <a class="doxray-link doxray-link__pattern-header" href="?file={{@../key}}#{{this.slug}}">
+                                    {{this.label}}
+                                </a>
+                            {{else}}
+                                <a class="doxray-link doxray-link__pattern" href="?file={{@../key}}#{{this.slug}}">
+                                    <i class="doxray-icon-pattern"></i>
+                                    {{this.label}}
+                                </a>
+                            {{/if}}
+                        {{/each}}
+                    </li>
+                    {{/each}}
+                </ul>
+            </div>
+        </main>
+    </script>
+    <script type="text/x-handlebars-template" id="doxray_patterns-template-raw">
+        {{#each this}}{{#unless this.docs.eof}}
+            <section id="{{this.slug}}">
+                {{#if this.label}}
+                    <br>
+                    {{this.label}}
+                    <br>
+                    <br>
+                    {{{this.markup}}}
+                {{/if}}
+            </section>
+        {{/unless}}{{/each}}
+    </script>
+    <script type="text/x-handlebars-template" id="doxray_nav-template">
+        <nav class="doxray_nav" id="doxray_nav">
+            <a class="doxray-header-link doxray-header-link__file" href="?file={{this.0.filename}}">
+                <i class="doxray-icon-file"></i>
+                <span class="doxray-header-link_info">
+                    {{this.0.filename}}
+                </span>
+            </a>
+            {{#each this}}
+                {{#if this.header}}
+                    <a class="doxray-link doxray-link__pattern-header" href="?file={{../../this.0.filename}}#{{this.slug}}">
+                        {{this.label}}
+                    </a>
+                {{else}}
+                    <a class="doxray-link doxray-link__pattern" href="?file={{../../this.0.filename}}#{{this.slug}}">
+                        <i class="doxray-icon-pattern"></i>
+                        {{this.label}}
+                    </a>
+                {{/if}}
+            {{/each}}
+            <hr class="doxray-link-hr">
+            <a class="doxray-link" href="?file={{this.0.filename}}&raw=true">Raw view</a>
+            <a class="doxray-header-link doxray-header-link__toc js-toggle-all-patterns" href="index.html">
+                <i class="doxray-icon-pattern"></i>
+                <span class="doxray-header-link_info">
+                    All patterns
+                </span>
+            </a>
+        </nav>
+    </script>
+    <script type="text/x-handlebars-template" id="doxray_patterns-template">
+        <main class="doxray_patterns" id="doxray_patterns">
+            {{#each this}}{{#unless this.eof}}
+                <section class="doxray-doc{{#if this.header}} doxray-doc__header{{/if}}" id="{{this.slug}}">
+                    {{#if this.label}}
+                        <h1 class="doxray-doc-label{{#if this.header}} doxray-doc-label__header{{/if}}">
+                            <a class="doxray-doc-label_link" href="#{{this.slug}}">
+                                {{this.label}}
+                            </a>
+                            {{#if this.category}}
+                                <small class="doxray-doc-tag">{{this.category}}</small>
+                            {{/if}}
+                            {{#if this.type}}
+                                <small class="doxray-doc-tag">{{this.type}}</small>
+                            {{/if}}
+                        </h1>
+                    {{/if}}
+                    {{#if this.description}}
+                        <div class="doxray-doc-description">
+                            {{{this.description}}}
+                        </div>
+                    {{/if}}
+                    {{#each this.notes}}
+                        <div class="doxray-doc-note">
+                            {{{this}}}
+                        </div>
+                    {{/each}}
+                    {{#if this.reference}}
+                        <a class="doxray-doc-reference" href="{{this.reference}}" target="_blank">{{this.reference}}</a>
+                    {{/if}}
+                    {{#if this.colorPalette}}
+                        <div class="doxray-doc-palette-container">
+                            {{#each this.colorPalette}}
+                                <div class="doxray-doc-palette">
+                                    <div class="doxray-doc-palette_color" style="background-color:{{this.value}};"></div>
+                                    <input class="doxray-doc-palette_input" type="text" value="{{this.variable}}">
+                                    <input class="doxray-doc-palette_input" type="text" value="{{this.value}}">
+                                </div>
+                            {{/each}}
+                        </div>
+                    {{/if}}
+                    {{#if this.markup}}
+                        <div class="doxray-doc-markup">
+                            {{#if this.themes}}
+                                <div class="doxray-doc-markup_rendered{{#if ../this.blockMarkup}} doxray-doc-markup_rendered__block{{/if}} doxray-doc-markup-theme">
+                                    <span class="doxray-doc-markup-theme_label">
+                                        no theme (mint)
+                                    </span>
+                                    {{{this.markup}}}
+                                </div>
+                                {{#each this.themes}}
+                                    <div class="doxray-doc-markup_rendered{{#if ../this.blockMarkup}} doxray-doc-markup_rendered__block{{/if}} doxray-doc-markup-theme {{this}}-theme">
+                                        <span class="doxray-doc-markup-theme_label">
+                                            {{this}} theme
+                                        </span>
+                                        {{{../this.markup}}}
+                                    </div>
+                                {{/each}}
+                            {{else}}
+                                <div class="doxray-doc-markup_rendered{{#if this.blockMarkup}} doxray-doc-markup_rendered__block{{/if}}">
+                                    {{{this.markup}}}
+                                </div>
+                            {{/if}}
+                            {{#if this.collapseMarkup}}
+                                <pre class="doxray-doc-code doxray-doc-code-expander"><code class="doxray-doc-code_text doxray-doc-code-expander_body">{{this.markup}}</code><button class="doxray-doc-code-expander_btn js-doxray-doc-code-expander_btn"></button></pre>
+                            {{else}}
+                                <pre class="doxray-doc-code"><code class="doxray-doc-code_text">{{this.markup}}</code></pre>
+                            {{/if}}
+                        </div>
+                    {{/if}}
+                    {{#if this.scss}}
+                        <pre class="doxray-doc-code doxray-doc-code-expander"><code class="doxray-doc-code_text doxray-doc-code-expander_body">{{this.scss}}</code><button class="doxray-doc-code-expander_btn js-doxray-doc-code-expander_btn"></button></pre>
+                    {{/if}}
+                </section>
+            {{/unless}}{{/each}}
+        </main>
+    </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/3.0.3/handlebars.min.js"></script>
+    <script src="https://code.jquery.com/jquery-1.11.3.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/marked/0.3.2/marked.min.js"></script>
+    <script src="parsed_docs.js"></script>
+    <script src="pattern_library.js"></script>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600">
+    <link rel="stylesheet" href="styles/styles.css">
+</head>
+<body class="doxray" id="doxray"></body>
+</html>

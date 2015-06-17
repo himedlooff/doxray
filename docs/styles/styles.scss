@@ -1,0 +1,508 @@
+@import "_variables.scss";
+
+/* doxray
+header:
+    true
+label:
+    Styles
+*/
+
+
+/* doxray
+label:
+    .doxray
+*/
+
+.doxray {
+    margin: 0;
+    padding: 0;
+}
+
+
+/* doxray
+label:
+    .doxray_nav
+*/
+
+.doxray_nav {
+    box-sizing: border-box;
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    width: $doxray-nav-width;
+    padding: 0 0 60px 20px;
+    background: $doxray-color-paper-white;
+    overflow-y: auto;
+    z-index: 0;
+}
+
+.doxray_patterns {
+    position: relative;
+    margin-left: $doxray-nav-width;
+    background: $doxray-color-clean-white;
+    box-shadow: 0 0 4px $doxray-color-shadow;
+    z-index: 1;
+}
+
+/**********************
+ *  Generic patterns  *
+ **********************/
+
+.doxray-icon-file {
+    &:before {
+        content: "ƒ";
+        font-family: $doxray-font-family-default;
+        font-weight: $doxray-font-weight-normal;
+    }
+
+    &:after {
+        content: " ";
+    }
+}
+
+.doxray-icon-pattern {
+    &:before {
+        content: "⁋";
+        font-family: $doxray-font-family-default;
+        font-weight: $doxray-font-weight-normal;
+    }
+
+    &:after {
+        content: " ";
+    }
+}
+
+/***********************
+ *  Table of contents  *
+ ***********************/
+
+.doxray-toc_masthead {
+    margin: 0;
+    padding: $doxray-margin-large;
+    background: $doxray-color-paper-white;
+    font-family: $doxray-font-family-default;
+    font-size: $doxray-font-size-xlg;
+    font-weight: $doxray-font-weight-light;
+    text-align: center;
+}
+
+.doxray-toc_body {
+    position: relative;
+    padding: $doxray-margin-large;
+    box-shadow: 0 0 2px $doxray-color-shadow;
+}
+
+.doxray-toc_collapsed-view-btn {
+    position: absolute;
+    bottom: $doxray-margin-large / 3;
+    left: $doxray-margin-large;
+    font-family: $doxray-font-family-default;
+    font-size: 12px;
+}
+
+.doxray-toc_file-list {
+    display: -webkit-box;
+    display: -moz-box;
+    display: -ms-flexbox;
+    display: -webkit-flex;
+    display: flex;
+    -webkit-flex-wrap: wrap;
+        -ms-flex-wrap: wrap;
+            flex-wrap: wrap;
+    margin: 0;
+    padding: 0;
+    list-style-type: none;
+}
+
+.doxray-toc_file-list-item {
+    width: 200px;
+    min-width: 200px;
+    margin: 0 1em 4em 0;
+
+    &.is-collapsed {
+        margin-bottom: 1em;
+    }
+
+    &.is-collapsed .doxray-link__file {
+        margin-bottom: 0;
+    }
+
+    &.is-collapsed .doxray-link__pattern-header,
+    &.is-collapsed .doxray-link__pattern {
+        display: none;
+    }
+}
+
+/*****************
+ *  Header link  *
+ *****************/
+
+.doxray-header-link {
+    &,
+    &:link,
+    &:visited {
+        box-sizing: border-box;
+        display: block;
+        width: $doxray-nav-width;
+        min-height: 40px;
+        padding: 0 20px;
+        background: $doxray-color-dirty-white;
+        color: $doxray-color-gray;
+        font-size: $doxray-font-size-md;
+        line-height: 38px;
+        text-decoration: none;
+    }
+
+    &:hover,
+    &:focus {
+        background: $doxray-color-dirtier-white;
+        outline: 0;
+    }
+}
+
+.doxray-header-link__file {
+    margin-left: -20px;
+    margin-bottom: 20px;
+}
+
+.doxray-header-link__toc {
+    position: fixed;
+    left: 0;
+    bottom: 0;
+}
+
+.doxray-header-link_info {
+    margin-left: .75em;
+    font-family: $doxray-font-family-default;
+    font-size: $doxray-font-size-sm;
+}
+
+/**********
+ *  Link  *
+ **********/
+
+.doxray-link {
+    &,
+    &:link,
+    &:visited {
+        position: relative;
+        display: block;
+        margin: 0;
+        padding: .5em .75em;
+        border: 0;
+        background: transparent;
+        font-family: $doxray-font-family-default;
+        font-size: $doxray-font-size-sm;
+        color: $doxray-color-gray;
+        text-decoration: none;
+    }
+
+    &:hover,
+    &:focus {
+        background: $doxray-color-dirty-white;
+    }
+
+    &:focus {
+        outline: 0;
+    }
+}
+
+.doxray-link__file {
+    &,
+    &:link,
+    &:visited {
+        margin: 0 0 .5em;
+        background: $doxray-color-dirty-white;
+        font-family: $doxray-font-family-code;
+        font-size: $doxray-font-size-sm;
+    }
+
+    &:hover,
+    &:focus {
+        background: $doxray-color-dirtier-white;
+    }
+
+    .doxray-icon-file {
+        opacity: .75;
+    }
+}
+
+.doxray-link__pattern-header {
+    &,
+    &:link,
+    &:visited {
+        font-size: $doxray-font-size-sm;
+        font-weight: $doxray-font-weight-demi;
+    }
+}
+
+.doxray-link__pattern {
+    &,
+    &:link,
+    &:visited {
+        padding: .5em .75em .5em 1.85em;
+    }
+
+    .doxray-icon-pattern {
+        position: absolute;
+        left: .75em;
+        width: 1.75em;
+        opacity: .15;
+    }
+}
+
+.doxray-link-hr {
+    display: block;
+    height: 1px;
+    margin: 20px 0 20px -20px;
+    border: 0;
+    background: $doxray-color-dirty-white;
+}
+
+/**************
+ *  The doc  *
+ **************/
+
+.doxray-doc {
+    padding: $doxray-margin-large;
+}
+
+.doxray-doc + .doxray-doc {
+    border-top: 1px solid $doxray-color-dirtier-white;
+}
+
+.doxray-doc-label {
+    margin: 0 0 $doxray-margin;
+    font-size: $doxray-font-size-lg;
+    font-weight: $doxray-font-weight-demi;
+}
+
+.doxray-doc-label__header {
+    font-size: $doxray-font-size-xlg;
+}
+
+.doxray-doc-label_link {
+    &,
+    &:link,
+    &:visited,
+    &:hover,
+    &:focus {
+        color: $doxray-color-gray;
+        font-family: $doxray-font-family-default;
+        text-decoration: none;
+        outline: 0;
+    }
+}
+
+.doxray-doc-tag {
+    display: inline-block;
+    margin: 0 0 0 .5em;
+    padding: .2em .8em;
+    border-radius: $doxray-font-size-sm;
+    font-family: $doxray-font-family-default;
+    font-size: $doxray-font-size-sm;
+    font-weight: $doxray-font-weight-normal;
+    background: $doxray-color-dirtier-white;
+    color: $doxray-color-gray;
+}
+
+.doxray-doc-description {
+    max-width: 50em;
+    margin: $doxray-margin 0;
+    font-family: $doxray-font-family-default;
+    font-size: $doxray-font-size-lg - 4px;
+    font-weight: $doxray-font-weight-normal;
+}
+
+.doxray-doc-note {
+    position: relative;
+    max-width: 50em;
+    margin: $doxray-margin 0;
+    padding-left: 1em;
+    font-family: $doxray-font-family-default;
+    font-size: $doxray-font-size-md;
+    font-weight: $doxray-font-weight-normal;
+
+    &:before {
+        content: "●";
+        position: absolute;
+        left: 0;
+        display: inline-block;
+        margin-right: .25em;
+        color: $doxray-color-dirtier-white;
+    }
+}
+
+.doxray-doc-description,
+.doxray-doc-note {
+    p {
+        margin: $doxray-margin 0 0;
+    }
+
+    code {
+        display: inline-block;
+        padding: 2px 5px;
+        border-radius: 3px;
+        background: $doxray-color-dirty-white;
+        color: $doxray-color-gray;
+        font-family: $doxray-font-family-code;
+        font-size: .8em;
+    }
+}
+
+.doxray-doc-reference {
+    &,
+    &:active,
+    &:link,
+    &:focus,
+    &:hover,
+    &:visited {
+        margin: $doxray-margin 0;
+        font-size: $doxray-font-size-md;
+        color: $doxray-color-blue;
+        text-decoration: none;
+    }
+}
+
+.doxray-doc-markup {
+    margin: ($doxray-margin-large / 2) ($doxray-margin-large / 2 * -1);
+    box-shadow: 0 0 6px $doxray-color-shadow;
+    overflow: hidden;
+
+    &:after {
+        display: table;
+        clear: both;
+        content: "";
+    }
+}
+
+.doxray-doc-markup_rendered {
+    display: inline-block;
+    padding: $doxray-margin-large;
+    margin-right: -3.75px;
+}
+
+.doxray-doc-markup_rendered__block {
+    display: block;
+}
+
+.doxray-doc-markup-theme {
+    position: relative;
+}
+
+.doxray-doc-markup-theme_label {
+    position: absolute;
+    top: 2.5em;
+    font-family: $doxray-font-family-default;
+    font-size: $doxray-font-size-sm;
+    line-height: 1;
+    text-transform: capitalize;
+}
+
+.doxray-doc-code {
+    position: relative;
+    margin: $doxray-margin 0 0;
+}
+
+.doxray-doc-code_text {
+    display: block;
+    margin: 0;
+    padding: $doxray-margin-large / 2;
+    background: $doxray-color-dirty-white;
+    font-size: $doxray-font-size-md;
+    line-height: 1.5;
+}
+
+.doxray-doc-code-expander {
+    position: relative;
+}
+
+.doxray-doc-code-expander_body {
+    height: 160px;
+    overflow: hidden;
+}
+
+.doxray-doc-code-expander_btn {
+    &,
+    &:active,
+    &:link,
+    &:focus,
+    &:hover,
+    &:visited {
+        display: block;
+        width: 100%;
+        padding: .5em .75em;
+        border: 0;
+        background: $doxray-color-dirtier-white;
+        color: $doxray-color-gray;
+        font-size: $doxray-font-size-sm;
+        line-height: 1;
+        text-align: center;
+        text-decoration: none;
+        outline: 0;
+        cursor: pointer;
+    }
+
+    &:hover,
+    &:focus {
+        background: darken($doxray-color-dirtier-white, 2%);
+    }
+
+    &:before {
+        content: "⇣";
+    }
+
+    &__flipped:before {
+        content: "⇡";
+    }
+}
+
+/*******************
+ *  Color palette  *
+ *******************/
+
+.doxray-doc-palette {
+    width: 96px;
+    display: inline-block;
+    margin-top: 16px;
+}
+
+.doxray-doc-palette_color {
+    display: block;
+    height: 96px;
+}
+
+.doxray-doc-palette_input {
+    position: relative;
+    z-index: 1;
+    box-sizing: border-box;
+    width: 100%;
+    margin-top: 4px;
+    padding: 8px 10px 10px;
+    border: 1px solid $doxray-color-dirtier-white;
+    border-radius: 0;
+    background: $doxray-color-clean-white;
+    color: $doxray-color-shadow;
+    font-family: $doxray-font-family-default;
+    font-size: 14px;
+    font-weight: $doxray-font-weight-normal;
+
+    &:focus {
+        outline: 0;
+    }
+}
+
+.doxray-doc-palette_input + .doxray-doc-palette_input {
+    margin-top: -1px;
+}
+
+.doxray-doc-palette_input {
+    &:hover,
+    &:focus {
+        width: 150px;
+        z-index: 2;
+        border-color: $doxray-color-gray;
+        box-shadow: 0 0 4px $doxray-color-shadow;
+    }
+}
