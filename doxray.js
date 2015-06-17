@@ -117,111 +117,17 @@ Doxray.prototype.parse = function( src, merge ) {
 Doxray.prototype.parseOneFile = function( src ) {
   var fileContents, docs, code, convertedDocs, ext;
   // Get the file extension for src so we know which regex to use.
-  ext = this.getCommentType( src );
-  fileContents = this.getFileContents( src, this.regex[ ext ] );
-  docs = this.parseOutDocs( fileContents, this.regex[ ext ] );
-  code = this.parseOutCode( fileContents, this.regex[ ext ] );
+  ext = require('./utils.js').getCommentType( src );
+  fileContents = require('./utils.js').getFileContents( src, this.regex[ ext ] );
+  docs = require('./utils.js').parseOutDocs( fileContents, this.regex[ ext ] );
+  code = require('./utils.js').parseOutCode( fileContents, this.regex[ ext ] );
   if ( docs.length === 0 ) {
     convertedDocs = [];
   } else {
     // Join the docs and code back together as structured objects.
-    convertedDocs = this.joinDocsAndCode( docs, code, src );
+    convertedDocs = require('./utils.js').joinDocsAndCode( docs, code, src );
   }
   return convertedDocs;
-};
-
-Doxray.prototype.joinDocsAndCode = function( docs, code, src ) {
-  var path, convertedDocs;
-  path = require('path');
-  patterns = [];
-  docs.forEach(function( doc, docIndex ) {
-    // For each item in docs add its corresponding code item using the code
-    // filetype as the key.
-    doc[ path.extname(src).replace('.', '') ] = code[ docIndex ];
-    // Also add the filename.
-    doc.filename = path.basename( src );
-    patterns.push( doc );
-  });
-  return patterns;
-};
-
-Doxray.prototype.parseOutCode = function( fileContents, regex ) {
-  var code;
-  // The "code" is everything betwixt the regex.
-  code = fileContents.split( regex.comment );
-  // Removes the first item in the array since it will always be empty.
-  code.shift();
-  // Clean each item in the array.
-  code.forEach(function( item, index ){
-    code[ index ] = code[ index ].trim();
-  });
-  return code;
-};
-
-Doxray.prototype.parseOutDocs = function( fileContents, regex ) {
-  var docs;
-  // "docs" are anything that matches the regex.
-  docs = fileContents.match( regex.comment );
-  if ( !docs ) {
-    return [];
-  }
-  docs.forEach(function( item, index ){
-    // Grab the doc text from the comments.
-    docs[ index ] = this.removeDoxrayCommentTokens( item, regex );
-    // Conver it from YAML into a JavaScript object.
-    docs[ index ] = this.convertYaml( docs[ index ], index );
-  }, this );
-  return docs;
-};
-
-Doxray.prototype.convertYaml = function( yamlString, index ) {
-  var yaml, convertedYaml, yamlError;
-  yaml = require('js-yaml');
-  // Try converting the doc to YAML and warn if it fails.
-  try {
-    convertedYaml = yaml.safeLoad( yamlString );
-  } catch ( err ) {
-    yamlError = 'Error converting comment # to YAML. Please check for formatting errors.';
-    if ( index !== undefined ) {
-      yamlError = yamlError.replace( '#', '#' + (index+1) );
-    } else {
-      yamlError = yamlError.replace( '# ', '' );
-    }
-    throw new Error( yamlError );
-  }
-  return convertedYaml;
-};
-
-Doxray.prototype.removeDoxrayCommentTokens = function( item, regex ) {
-  // Remove the opening and closing comments.
-  return item.replace( regex.opening, '' ).replace( regex.closing, '' );
-};
-
-Doxray.prototype.getFileContents = function( src, regex ) {
-  var fs, data;
-  fs = require('fs');
-  data = fs.readFileSync( src, 'utf-8' );
-  // Trim everything before the first regex because it's not associated with
-  // any comment.
-  data = data.slice( data.search( regex.comment ) );
-  return data;
-};
-
-Doxray.prototype.getCommentType = function( src ) {
-  var path = require('path');
-  var ext = path.extname( src ).substring( 1 );
-  switch ( ext ) {
-    case 'css':
-    case 'less':
-      ext = 'css';
-      break;
-    case 'html':
-      ext = 'html';
-      break;
-    default:
-      ext = 'css';
-  }
-  return ext;
 };
 
 module.exports = Doxray;

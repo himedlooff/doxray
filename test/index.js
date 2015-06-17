@@ -14,7 +14,7 @@ chai.use( require('chai-fs') );
 
 console.log('The purpose of Doxray is to parse text files and convert special Doxray comments into structured objects that can be used to generate pattern libraries.');
 
-describe('Doxray core', function() {
+describe('doxray.js, core methods', function() {
 
   describe('run()', function() {
     it('should parse the requested file into an array of pattern objects', function() {
@@ -115,103 +115,6 @@ describe('Doxray core', function() {
       assert.deepEqual(
         doxray.parseOneFile( 'test/empty-file.css' ),
         []
-      );
-    });
-  });
-
-  describe('getCommentType()', function() {
-    it('should return the correct comment type based on the file extension', function() {
-      assert.equal( doxray.getCommentType('test.css'), 'css' );
-      assert.equal( doxray.getCommentType('test.less'), 'css' );
-      assert.equal( doxray.getCommentType('test.less'), 'css' );
-      assert.equal( doxray.getCommentType('test.html'), 'html' );
-    });
-  });
-
-  describe('getFileContents()', function() {
-    it('should return the contents of a file, trimming everything before the first doc comment', function() {
-      assert.equal(
-        doxray.getFileContents( 'test/test.css', doxray.regex.css ),
-        '/* doxray\n    prop1: Comment one\n*/\n'
-      );
-    });
-  });
-
-  describe('convertYaml()', function() {
-    it('should convert a yaml string into an object', function() {
-      var yamlString = 'prop1: Comment one';
-      assert.deepEqual( doxray.convertYaml( yamlString ), { prop1: 'Comment one' } );
-    });
-
-    it('identifies the comment number if the conversion fails', function() {
-      assert.throws(
-        function() { doxray.convertYaml( 'prop1: prop1:' ); },
-        Error,
-        'Error converting comment to YAML. Please check for formatting errors.'
-      );
-      assert.throws(
-        function() { doxray.convertYaml( 'prop1: prop1:', 0 ); },
-        Error,
-        'Error converting comment #1 to YAML. Please check for formatting errors.'
-      );
-    });
-  });
-
-  describe('removeDoxrayCommentTokens()', function() {
-    it('should remove the opening and closing comments from a doc comment', function() {
-      assert.equal(
-        doxray.removeDoxrayCommentTokens(
-          '/* doxray\n    prop1: Comment one\n*/\n',
-          doxray.regex.css
-        ),
-        '    prop1: Comment one\n\n'
-      );
-    });
-  });
-
-  describe('parseOutCode()', function() {
-    it('should build an array of text blocks that come after each Doxray comment', function() {
-      assert.deepEqual(
-        doxray.parseOutCode(
-          '/* doxray\n    prop1: Comment one\n*/\n.test{\n    content:\"Hello\";\n}',
-          doxray.regex.css
-        ),
-        [ '.test{\n    content:\"Hello\";\n}' ]
-      );
-    });
-  });
-
-  describe('parseOutDocs()', function() {
-    it('should build an array of structured objects from the contents of a file', function() {
-      assert.deepEqual(
-        doxray.parseOutDocs(
-          '/* doxray\n    prop1: Comment one\n*/\n',
-          doxray.regex.css
-        ),
-        [ { prop1: 'Comment one' } ]
-      );
-    });
-
-    it('should return an empty array if the file has no Doxray comments', function() {
-      assert.deepEqual(
-        doxray.parseOutDocs( '', doxray.regex.css ),
-        []
-      );
-    });
-  });
-
-  describe('joinDocsAndCode()', function() {
-    it('should merge an array of converted Doxray comments with an array of the text that follows each comment', function() {
-      var docs = [ { prop1: 'Comment one' } ];
-      var code = [ '.test{\n    content:\"Hello\";\n}' ];
-      var filename = 'test.css';
-      assert.deepEqual(
-        doxray.joinDocsAndCode( docs, code, filename ),
-        [{
-          prop1: docs[ 0 ].prop1,
-          filename: filename,
-          css: code[ 0 ]
-        }]
       );
     });
   });
@@ -323,9 +226,9 @@ describe('Doxray core', function() {
 
 });
 
-describe('Doxray alias', function() {
+describe('index.js, a simple alias that creates an instance of Doxray() for you', function() {
 
-  describe('var doxray = require("../index.js") // when using as a node module you\'d use require("doxray")', function() {
+  describe('var doxray = require("doxray")', function() {
     it('should parse the requested file into an array of pattern objects (this is a duplicate of the test used for the run() method)', function() {
       var doxray = require('../index');
       var docs;
@@ -345,6 +248,106 @@ describe('Doxray alias', function() {
 
 });
 
+describe('utils.js', function() {
+
+  describe('parseOutDocs()', function() {
+    it('should build an array of structured objects from the contents of a file', function() {
+      assert.deepEqual(
+        require('../utils.js').parseOutDocs(
+          '/* doxray\n    prop1: Comment one\n*/\n',
+          doxray.regex.css
+        ),
+        [ { prop1: 'Comment one' } ]
+      );
+    });
+
+    it('should return an empty array if the file has no Doxray comments', function() {
+      assert.deepEqual(
+        require('../utils.js').parseOutDocs( '', doxray.regex.css ),
+        []
+      );
+    });
+  });
+
+  describe('parseOutCode()', function() {
+    it('should build an array of text blocks that come after each Doxray comment', function() {
+      assert.deepEqual(
+        require('../utils.js').parseOutCode(
+          '/* doxray\n    prop1: Comment one\n*/\n.test{\n    content:\"Hello\";\n}',
+          doxray.regex.css
+        ),
+        [ '.test{\n    content:\"Hello\";\n}' ]
+      );
+    });
+  });
+
+  describe('joinDocsAndCode()', function() {
+    it('should merge an array of converted Doxray comments with an array of the text that follows each comment', function() {
+      var docs = [ { prop1: 'Comment one' } ];
+      var code = [ '.test{\n    content:\"Hello\";\n}' ];
+      var filename = 'test.css';
+      assert.deepEqual(
+        require('../utils.js').joinDocsAndCode( docs, code, filename ),
+        [{
+          prop1: docs[ 0 ].prop1,
+          filename: filename,
+          css: code[ 0 ]
+        }]
+      );
+    });
+  });
+
+  describe('getCommentType()', function() {
+    it('should return the correct comment type based on the file extension', function() {
+      assert.equal( require('../utils.js').getCommentType('test.css'), 'css' );
+      assert.equal( require('../utils.js').getCommentType('test.less'), 'css' );
+      assert.equal( require('../utils.js').getCommentType('test.less'), 'css' );
+      assert.equal( require('../utils.js').getCommentType('test.html'), 'html' );
+    });
+  });
+
+  describe('getFileContents()', function() {
+    it('should return the contents of a file, trimming everything before the first doc comment', function() {
+      assert.equal(
+        require('../utils.js').getFileContents( 'test/test.css', doxray.regex.css ),
+        '/* doxray\n    prop1: Comment one\n*/\n'
+      );
+    });
+  });
+
+  describe('removeDoxrayCommentTokens()', function() {
+    it('should remove the opening and closing comments from a doc comment', function() {
+      assert.equal(
+        require('../utils.js').removeDoxrayCommentTokens(
+          '/* doxray\n    prop1: Comment one\n*/\n',
+          doxray.regex.css
+        ),
+        '    prop1: Comment one\n\n'
+      );
+    });
+  });
+
+  describe('convertYaml()', function() {
+    it('should convert a yaml string into an object', function() {
+      var yamlString = 'prop1: Comment one';
+      assert.deepEqual( require('../utils.js').convertYaml( yamlString ), { prop1: 'Comment one' } );
+    });
+
+    it('identifies the comment number if the conversion fails', function() {
+      assert.throws(
+        function() { require('../utils.js').convertYaml( 'prop1: prop1:' ); },
+        Error,
+        'Error converting comment to YAML. Please check for formatting errors.'
+      );
+      assert.throws(
+        function() { require('../utils.js').convertYaml( 'prop1: prop1:', 0 ); },
+        Error,
+        'Error converting comment #1 to YAML. Please check for formatting errors.'
+      );
+    });
+  });
+
+});
 
 // describe('mergeParsedSources()', function() {
 //   it('merges two objects if their docs are identical', function() {
