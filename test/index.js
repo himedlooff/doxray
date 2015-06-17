@@ -60,52 +60,9 @@ describe('doxray.js, core methods', function() {
 
   describe('parse()', function() {
 
-    it('should parse the file given it into an array of structured objects if the first argument is a string', function() {
+    it('should parse an array of files into an array of structured objects', function() {
       assert.deepEqual(
-        doxray.parse( 'test/test.css' ),
-        [{
-          prop1: 'Comment one',
-          filename: 'test.css',
-          css: ''
-        }]
-      );
-    });
-
-    it('should parse an array of files given it into an array of structured objects if the first argument is an array', function() {
-      assert.deepEqual(
-        doxray.parse( [ 'test/test.css', 'test/test.less' ], false ),
-        [{
-          prop1: 'Comment one',
-          filename: 'test.css',
-          css: ''
-        },{
-          prop1: 'Comment one',
-          filename: 'test.less',
-          less: ''
-        }]
-      );
-    });
-
-    it('should throw an error when the first argument is neither a string or an array', function() {
-      assert.throws(
-        function() { doxray.parse( {} ); },
-        Error,
-        doxray.parseGotWrongType
-      );
-      assert.throws(
-        function() { doxray.parse( 123 ); },
-        Error,
-        doxray.parseGotWrongType
-      );
-    });
-
-  });
-
-  describe('parseOneFile()', function() {
-
-    it('should parse a file into an array of structured objects', function() {
-      assert.deepEqual(
-        doxray.parseOneFile( 'test/test.css' ),
+        doxray.parse( ['test/test.css'] ),
         [{
           prop1: 'Comment one',
           filename: 'test.css',
@@ -116,7 +73,7 @@ describe('doxray.js, core methods', function() {
 
     it('should return an empty array if no Doxray comments are found', function() {
       assert.deepEqual(
-        doxray.parseOneFile( 'test/empty-file.css' ),
+        doxray.parse( ['test/empty-file.css'] ),
         []
       );
     });
@@ -134,7 +91,7 @@ describe('doxray.js, core methods', function() {
         }
       ];
       assert.deepEqual(
-        doxray.postParseProcessing( doxray.parse( 'test/test.css' ) ),
+        doxray.postParseProcessing( doxray.parse( ['test/test.css'] ) ),
         {
           patterns: [],
           customData: 'my custom data'
@@ -171,7 +128,7 @@ describe('doxray.js, core methods', function() {
       it('should replace the colorPalette property with an array of key value pairs', function() {
         function run() {
           var parsed = doxray.postParseProcessing(
-                doxray.parse( 'test/color-palette-test.scss' )
+                doxray.parse( ['test/color-palette-test.scss'] )
               );
           return [ parsed.patterns[0].colorPalette, parsed.patterns[1].colorPalette ];
         }

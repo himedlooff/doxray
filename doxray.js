@@ -33,7 +33,6 @@ Doxray.prototype.jsonWhiteSpace = 2;
 Doxray.prototype.logging = false;
 
 Doxray.prototype.logMessages = {
-  wrongType: 'Doxray expected a String or an Array as the first argument.',
   noDoxrayCommentsFound: 'Doxray did not find any Doxray comments in this file.'
 }
 
@@ -58,39 +57,22 @@ Doxray.prototype.run = function( src, options, callback ) {
 
 Doxray.prototype.parse = function( src, merge ) {
   var parsed = [];
-  // For consistency let's always use an Array, even if the user passed
-  // a string.
-  if ( typeof src == 'string' ) {
-    src = [ src ];
-  }
-  if ( Array.isArray( src ) ) {
-    src.forEach(function( singleSrc ) {
-      parsed = parsed.concat( this.parseOneFile( singleSrc ) );
-    }, this);
-    // Removing the merge option for now for simplicity.
-    // if ( typeof merge === 'undefined' || merge === true ) {
-    //   parsed = [ this.mergeParsedSources( parsed ) ];
-    // }
-  } else {
-    throw new Error( this.logMessages.wrongType );
-  }
+  src.forEach(function( singleSrc ) {
+    var fileContents, docs, code, convertedDocs, ext;
+    // Get the file extension for src so we know which regex to use.
+    ext = require('./utils.js').getCommentType( singleSrc );
+    fileContents = require('./utils.js').getFileContents( singleSrc, this.regex[ ext ] );
+    docs = require('./utils.js').parseOutDocs( fileContents, this.regex[ ext ] );
+    code = require('./utils.js').parseOutCode( fileContents, this.regex[ ext ] );
+    if ( docs.length === 0 ) {
+      convertedDocs = [];
+    } else {
+      // Join the docs and code back together as structured objects.
+      convertedDocs = require('./utils.js').joinDocsAndCode( docs, code, singleSrc );
+    }
+    parsed = parsed.concat( convertedDocs );
+  }, this);
   return parsed;
-};
-
-Doxray.prototype.parseOneFile = function( src ) {
-  var fileContents, docs, code, convertedDocs, ext;
-  // Get the file extension for src so we know which regex to use.
-  ext = require('./utils.js').getCommentType( src );
-  fileContents = require('./utils.js').getFileContents( src, this.regex[ ext ] );
-  docs = require('./utils.js').parseOutDocs( fileContents, this.regex[ ext ] );
-  code = require('./utils.js').parseOutCode( fileContents, this.regex[ ext ] );
-  if ( docs.length === 0 ) {
-    convertedDocs = [];
-  } else {
-    // Join the docs and code back together as structured objects.
-    convertedDocs = require('./utils.js').joinDocsAndCode( docs, code, src );
-  }
-  return convertedDocs;
 };
 
 Doxray.prototype.postParseProcessing = function( parsed ) {
