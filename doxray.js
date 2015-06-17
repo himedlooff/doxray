@@ -54,45 +54,6 @@ Doxray.prototype.run = function( src, options, callback ) {
   return processed;
 };
 
-Doxray.prototype.writeJSON = function( convertedDocs, dest, callback ) {
-  var fs = require('fs');
-  var convertedDocsAsString = JSON.stringify( convertedDocs.patterns, null, this.jsonWhiteSpace );
-  fs.writeFile( dest, convertedDocsAsString, function( err ) {
-    if ( err ) {
-      throw err;
-    }
-    console.log( dest, 'was created.' );
-    if ( typeof callback === 'undefined' ) return;
-    callback();
-  });
-};
-
-Doxray.prototype.writeJS = function( convertedDocs, dest, callback ) {
-  var fs = require('fs');
-  var stringify = require('./utils.js').stringify;
-  var convertedDocsAsString = stringify( convertedDocs, 'Doxray', this.jsonWhiteSpace );
-  fs.writeFile( dest, convertedDocsAsString, 'utf-8', function( err ) {
-    if ( err ) {
-      throw err;
-    }
-    console.log( dest, 'was created.' );
-    if ( typeof callback === 'undefined' ) return;
-    callback();
-  });
-};
-
-Doxray.prototype.postParseProcessing = function( parsed ) {
-  var processedDocs = {
-      patterns: parsed
-  };
-  if ( typeof this.processors !== 'undefined' ) {
-    this.processors.forEach(function( processor ){
-      processedDocs = processor( processedDocs );
-    });
-  }
-  return processedDocs;
-};
-
 Doxray.prototype.parse = function( src, merge ) {
   var parsed = [];
   // For consistency let's always use an Array, even if the user passed
@@ -128,6 +89,45 @@ Doxray.prototype.parseOneFile = function( src ) {
     convertedDocs = require('./utils.js').joinDocsAndCode( docs, code, src );
   }
   return convertedDocs;
+};
+
+Doxray.prototype.postParseProcessing = function( parsed ) {
+  var processedDocs = {
+      patterns: parsed
+  };
+  if ( typeof this.processors !== 'undefined' ) {
+    this.processors.forEach(function( processor ){
+      processedDocs = processor( processedDocs );
+    });
+  }
+  return processedDocs;
+};
+
+Doxray.prototype.writeJSON = function( convertedDocs, dest, callback ) {
+  var fs = require('fs');
+  var convertedDocsAsString = JSON.stringify( convertedDocs.patterns, null, this.jsonWhiteSpace );
+  fs.writeFile( dest, convertedDocsAsString, function( err ) {
+    if ( err ) {
+      throw err;
+    }
+    console.log( dest, 'was created.' );
+    if ( typeof callback === 'undefined' ) return;
+    callback();
+  });
+};
+
+Doxray.prototype.writeJS = function( convertedDocs, dest, callback ) {
+  var fs = require('fs');
+  var stringify = require('./utils.js').stringify;
+  var convertedDocsAsString = stringify( convertedDocs, 'Doxray', this.jsonWhiteSpace );
+  fs.writeFile( dest, convertedDocsAsString, 'utf-8', function( err ) {
+    if ( err ) {
+      throw err;
+    }
+    console.log( dest, 'was created.' );
+    if ( typeof callback === 'undefined' ) return;
+    callback();
+  });
 };
 
 module.exports = Doxray;

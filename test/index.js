@@ -17,6 +17,7 @@ console.log('The purpose of Doxray is to parse text files and convert special Do
 describe('doxray.js, core methods', function() {
 
   describe('run()', function() {
+
     it('should parse the requested file into an array of pattern objects', function() {
       var docs;
       var file = 'test/run-test.js';
@@ -56,9 +57,11 @@ describe('doxray.js, core methods', function() {
         Error
       );
     });
+
   });
 
   describe('parse()', function() {
+
     it('should parse the file given it into an array of structured objects if the first argument is a string', function() {
       assert.deepEqual(
         doxray.parse( 'test/test.css' ),
@@ -97,9 +100,11 @@ describe('doxray.js, core methods', function() {
         doxray.parseGotWrongType
       );
     });
+
   });
 
   describe('parseOneFile()', function() {
+
     it('should parse a file into an array of structured objects', function() {
       assert.deepEqual(
         doxray.parseOneFile( 'test/test.css' ),
@@ -117,9 +122,11 @@ describe('doxray.js, core methods', function() {
         []
       );
     });
+
   });
 
   describe('postParseProcessing()', function() {
+
     it('should send the parsed data through an array of processing functions', function() {
       doxray.processors = [
         function( parsed ) {
@@ -140,6 +147,7 @@ describe('doxray.js, core methods', function() {
     });
 
     describe('processors/slugify', function() {
+
       it('should slugify the label property in each pattern', function() {
         function run() {
           var parsed = doxray.postParseProcessing(
@@ -157,6 +165,7 @@ describe('doxray.js, core methods', function() {
           'comment-one comment-two specialcharacters first-header second-header undefined'
         );
       });
+
     });
 
     describe('processors/color-palette', function() {
@@ -175,9 +184,11 @@ describe('doxray.js, core methods', function() {
           ]
         );
       });
+
     });
 
     describe('getByProperty()', function() {
+
       it('passing one argument should return an array of patterns with the presence of a specific property', function() {
         function run() {
           var parsed = doxray.postParseProcessing(
@@ -197,7 +208,9 @@ describe('doxray.js, core methods', function() {
         }
         assert.equal( run(), 1 );
       });
+
     });
+
   });
 
   describe('writeJSON()', function() {
@@ -229,6 +242,7 @@ describe('doxray.js, core methods', function() {
 describe('index.js, a simple alias that creates an instance of Doxray() for you', function() {
 
   describe('var doxray = require("doxray")', function() {
+
     it('should parse the requested file into an array of pattern objects (this is a duplicate of the test used for the run() method)', function() {
       var doxray = require('../index');
       var docs;
@@ -244,6 +258,7 @@ describe('index.js, a simple alias that creates an instance of Doxray() for you'
         );
       });
     });
+
   });
 
 });
@@ -251,6 +266,7 @@ describe('index.js, a simple alias that creates an instance of Doxray() for you'
 describe('utils.js', function() {
 
   describe('parseOutDocs()', function() {
+
     it('should build an array of structured objects from the contents of a file', function() {
       assert.deepEqual(
         require('../utils.js').parseOutDocs(
@@ -267,9 +283,11 @@ describe('utils.js', function() {
         []
       );
     });
+
   });
 
   describe('parseOutCode()', function() {
+
     it('should build an array of text blocks that come after each Doxray comment', function() {
       assert.deepEqual(
         require('../utils.js').parseOutCode(
@@ -279,9 +297,11 @@ describe('utils.js', function() {
         [ '.test{\n    content:\"Hello\";\n}' ]
       );
     });
+
   });
 
   describe('joinDocsAndCode()', function() {
+
     it('should merge an array of converted Doxray comments with an array of the text that follows each comment', function() {
       var docs = [ { prop1: 'Comment one' } ];
       var code = [ '.test{\n    content:\"Hello\";\n}' ];
@@ -295,27 +315,33 @@ describe('utils.js', function() {
         }]
       );
     });
+
   });
 
   describe('getCommentType()', function() {
+
     it('should return the correct comment type based on the file extension', function() {
       assert.equal( require('../utils.js').getCommentType('test.css'), 'css' );
       assert.equal( require('../utils.js').getCommentType('test.less'), 'css' );
       assert.equal( require('../utils.js').getCommentType('test.less'), 'css' );
       assert.equal( require('../utils.js').getCommentType('test.html'), 'html' );
     });
+
   });
 
   describe('getFileContents()', function() {
+
     it('should return the contents of a file, trimming everything before the first doc comment', function() {
       assert.equal(
         require('../utils.js').getFileContents( 'test/test.css', doxray.regex.css ),
         '/* doxray\n    prop1: Comment one\n*/\n'
       );
     });
+
   });
 
   describe('removeDoxrayCommentTokens()', function() {
+
     it('should remove the opening and closing comments from a doc comment', function() {
       assert.equal(
         require('../utils.js').removeDoxrayCommentTokens(
@@ -325,9 +351,11 @@ describe('utils.js', function() {
         '    prop1: Comment one\n\n'
       );
     });
+
   });
 
   describe('convertYaml()', function() {
+
     it('should convert a yaml string into an object', function() {
       var yamlString = 'prop1: Comment one';
       assert.deepEqual( require('../utils.js').convertYaml( yamlString ), { prop1: 'Comment one' } );
@@ -345,6 +373,7 @@ describe('utils.js', function() {
         'Error converting comment #1 to YAML. Please check for formatting errors.'
       );
     });
+
   });
 
 });
