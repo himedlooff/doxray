@@ -8,6 +8,7 @@ chai.use( require('chai-fs') );
 
 // TODO: save temp files to a temp directory and set flag for deleting them in case you want to review them manually.
 // TODO: make a function to create yaml errors so we can test the error strings here.
+// TODO: write missing tests for util methods
 
 console.log('The purpose of Doxray is to parse text files and convert special Doxray comments into structured objects that can be used to generate pattern libraries.');
 
