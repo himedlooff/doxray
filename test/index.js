@@ -83,15 +83,17 @@ describe('doxray.js, core methods', function() {
   describe('postParseProcessing()', function() {
 
     it('should send the parsed data through an array of processing functions', function() {
-      doxray.processors = [
-        function( parsed ) {
-          parsed.patterns = [];
-          parsed.customData = 'my custom data';
-          return parsed;
-        }
-      ];
       assert.deepEqual(
-        doxray.postParseProcessing( doxray.parse( ['test/test.css'] ) ),
+        doxray.postParseProcessing(
+          doxray.parse( ['test/test.css'] ),
+          [
+            function( parsed ) {
+              parsed.patterns = [];
+              parsed.customData = 'my custom data';
+              return parsed;
+            }
+          ]
+        ),
         {
           patterns: [],
           customData: 'my custom data'
@@ -106,7 +108,8 @@ describe('doxray.js, core methods', function() {
       it('should slugify the label property in each pattern', function() {
         function run() {
           var parsed = doxray.postParseProcessing(
-                doxray.parse( ['test/slugify-test.css', 'test/test.css'], false )
+                doxray.parse( ['test/slugify-test.css', 'test/test.css'], false ),
+                doxray.processors
               );
           return parsed.patterns[0].slug + ' ' +
                  parsed.patterns[1].slug + ' ' +
@@ -128,7 +131,8 @@ describe('doxray.js, core methods', function() {
       it('should replace the colorPalette property with an array of key value pairs', function() {
         function run() {
           var parsed = doxray.postParseProcessing(
-                doxray.parse( ['test/color-palette-test.scss'] )
+                doxray.parse( ['test/color-palette-test.scss'] ),
+                doxray.processors
               );
           return [ parsed.patterns[0].colorPalette, parsed.patterns[1].colorPalette ];
         }
@@ -148,7 +152,8 @@ describe('doxray.js, core methods', function() {
       it('passing one argument should return an array of patterns with the presence of a specific property', function() {
         function run() {
           var parsed = doxray.postParseProcessing(
-                doxray.parse( ['test/slugify-test.css', 'test/test.css'], false )
+                doxray.parse( ['test/slugify-test.css', 'test/test.css'], false ),
+                doxray.processors
               );
           return parsed.getByProperty( 'label' ).length;
         }
@@ -158,7 +163,8 @@ describe('doxray.js, core methods', function() {
       it('passing two arguments should return an array of patterns with a specific property that matches a specific value', function() {
         function run() {
           var parsed = doxray.postParseProcessing(
-                doxray.parse( ['test/slugify-test.css', 'test/test.css'], false )
+                doxray.parse( ['test/slugify-test.css', 'test/test.css'], false ),
+                doxray.processors
               );
           return parsed.getByProperty( 'label', 'comment one' ).length;
         }

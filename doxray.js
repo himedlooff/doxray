@@ -41,18 +41,20 @@ Doxray.prototype.logMessages = {
    ========================================================================== */
 
 Doxray.prototype.run = function( src, options, callback ) {
-  var parsed, processed;
+  var parsed;
   src = require('./utils.js').handleSrc( src );
   options = require('./utils.js').handleOptions( options );
   parsed = this.parse( src, options.merge );
-  processed = this.postParseProcessing( parsed );
+  if ( options.processors ) {
+    parsed = this.postParseProcessing( parsed, options.processors );
+  }
   if ( options.jsonFile ) {
-    this.writeJSON( processed, options.jsonFile, callback );
+    this.writeJSON( parsed, options.jsonFile, callback );
   }
   if ( options.jsFile ) {
-    this.writeJS( processed, options.jsFile, callback );
+    this.writeJS( parsed, options.jsFile, callback );
   }
-  return processed;
+  return parsed;
 };
 
 Doxray.prototype.parse = function( src, merge ) {
@@ -75,15 +77,13 @@ Doxray.prototype.parse = function( src, merge ) {
   return parsed;
 };
 
-Doxray.prototype.postParseProcessing = function( parsed ) {
+Doxray.prototype.postParseProcessing = function( parsed, processors ) {
   var processedDocs = {
       patterns: parsed
   };
-  if ( typeof this.processors !== 'undefined' ) {
-    this.processors.forEach(function( processor ){
-      processedDocs = processor( processedDocs );
-    });
-  }
+  processors.forEach(function( processor ){
+    processedDocs = processor( processedDocs );
+  });
   return processedDocs;
 };
 

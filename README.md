@@ -43,36 +43,27 @@ _styles.less:_
 
 ```js
 var doxray = require('dox-ray');
-var docs = doxray('styles.less');
+var docs = doxray(['styles.less']);
 ```
 
 _In the above example, `docs` is equal to the following:_
 
 ```js
-{
-  files: [
-    [{
-      docs: {
-        label: "Button",
-        markup: "<button class=\"btn\">Button</button>,"
-        notes: [ "Don't use anchor elements as buttons unless they actually link to another page." ]
-      },
-      code: [
-        {
-          filename: "styles.less",
-          type: ".less",
-          code: ".btn {\nfont-size: unit(14px / 16px, em);\n}"
-        }
-      ]
-    }]
-  ]
-}
+[
+  {
+    "label": "Button",
+    "markup": "<button class=\"btn\">Button</button>,"
+    "notes": [ "Don't use anchor elements as buttons unless they actually link to another page." ],
+    "filename": "styles.less",
+    "less": ".btn {\nfont-size: unit(14px / 16px, em);\n}"
+  }
+]
 ```
 
 ##### You can also save it to a JS or JSON file
 
 ```js
-var docs = doxray('styles.less', {
+var docs = doxray(['styles.less'], {
   jsFile: 'styles.js',
   jsonFile: 'styles.json'
 });
@@ -82,93 +73,46 @@ _styles.js:_
 
 ```js
 Doxray = {
-  files: [
-    [{
-      docs: {
-        label: "Button",
-        markup: "<button class=\"btn\">Button</button>",
-        notes: [ "Don't use anchor elements as buttons unless they actually link to another page." ]
-      },
-      code: [
-        {
-          filename: "styles.less",
-          type: ".less",
-          code: ".btn {\nfont-size: unit(14px / 16px, em);\n}"
+  "patterns": [
+    {
+      "label": "Button",
+      "markup": "<button class=\"btn\">Button</button>,"
+      "notes": [ "Don't use anchor elements as buttons unless they actually link to another page." ],
+      "filename": "styles.less",
+      "less": ".btn {\nfont-size: unit(14px / 16px, em);\n}"
+    }
+  ],
+  "getByProperty": function ( property, value ) {
+    return this.patterns.filter(
+      this.utils.hasProperty( property, value )
+    );
+  },
+  "utils": {
+    "hasProperty": function ( property, value ) {
+      return function( pattern ) {
+        if ( typeof value === 'undefined' ) {
+          return pattern[ property ];
+        } else {
+          return pattern[ property ] && pattern[ property ].toLowerCase() === value.toLowerCase();
         }
-      ]
-    }]
-  ]
+      }
+    }
+  }
 }
 ```
 
 _styles.json:_
 
 ```json
-{
-  "files": [
-    [{
-      "docs": {
-        "name": "Button",
-        "markup": "<button class=\"btn\">Button</button>",
-        "notes": [ "Don't use anchor elements as buttons unless they actually link to another page." ]
-      },
-      "code": [
-        {
-          "filename": "styles.less",
-          "type": ".less",
-          "code": ".btn {\nfont-size: unit(14px / 16px, em);\n}"
-        }
-      ]
-    }]
-  ]
-}
-```
-
-##### Merging
-
-With Dox-ray you can parse a compiled CSS file and a bunch of Less source files
-all at once. Dox-ray will automatically try to match the comments from the
-compiled CSS to the comments from the Less files. This is handy when you want
-access to both the Less and CSS from the same object. If you want you can
-disable this feature with `merge: false` in the options.
-
-To utilize this feature pass an array to Dox-ray, making sure that the first
-item is the compiled CSS file.
-
-```js
-var docs = doxray(['styles.css', 'styles.less'], {
-  jsonFile: 'styles.json'
-});
-```
-
-_styles.json:_  
-Notice how the `code` property now has a code object for both the CSS and Less
-files.
-
-```json
-{
-  "files": [
-    [{
-      "docs": {
-        "name": "Button",
-        "markup": "<button class=\"btn\">Button</button>",
-        "notes": [ "Don't use anchor elements as buttons unless they actually link to another page." ]
-      },
-      "code": [
-        {
-          "filename": "styles.css",
-          "type": ".css",
-          "code": ".btn {\nfont-size: 0.875em;\n}"
-        },
-        {
-          "filename": "styles.less",
-          "type": ".less",
-          "code": ".btn {\nfont-size: unit(14px / 16px, em);\n}"
-        }
-      ]
-    }]
-  ]
-}
+[
+  {
+    "label": "Button",
+    "markup": "<button class=\"btn\">Button</button>,"
+    "notes": [ "Don't use anchor elements as buttons unless they actually link to another page." ],
+    "filename": "styles.less",
+    "less": ".btn {\nfont-size: unit(14px / 16px, em);\n}"
+  }
+]
 ```
 
 ### Dox-ray comment formatting
@@ -196,58 +140,25 @@ See https://github.com/himedlooff/dox-ray/blob/master/doxray.js#L144-L155
 
 #### YAML structure
 
-There are two YAML structures that will help you get the most out of Dox-ray.
-Using them will allow you to take advantage of the Slugify and Color Palette
-processors.
+You can structure the YAML within the Dox-ray comments however you want but
+there are a few top level property names that are reserved. They are:
 
-The first supported structure is to add properties directly to the Dox-ray
-comment:
+- filename
+- (any file type you want to parse, for example css, less, md, js, html, etc)
 
-```css
-/* doxray
-    label: Button
-    markup: <button class="btn">Button</button>
-*/
-```
+The built-in Dox-ray processors will also add the following extra top level
+properties:
 
-Which will parse to this:
+- colorPalette
+- label
 
-```js
-{
-  label: "Button",
-  markup: "<button class=\"btn\">Button</button>"
-}
-```
-
-The second supported structure is to create a list and then add properties to
-each item:
-
-```css
-/* doxray
-    - label: Button
-      markup: <button class="btn">Button</button>
-    - label: Secondary Button
-      markup: <button class="btn btn__secondary">Secondary Button</button>
-*/
-```
-
-Which will parse to this:
+You can disable these properties from getting generated by disabling the
+processors before running Dox-ray. For example
 
 ```js
-[
-  {
-    label: "Button",
-    markup: "<button class=\"btn\">Button</button>"
-  },
-  {
-    label: "Secondary Button",
-    markup: "<button class=\"btn btn__secondary\">Secondary Button</button>"
-  }
-]
+var doxray = require('dox-ray');
+var docs = doxray(['styles.less'], { processors: [] });
 ```
-
-If these structures don't suit your needs you can use whatever works best. Just
-be aware that the processors won't work.
 
 ### Processors
 
@@ -274,54 +185,6 @@ Will automatically parse to this:
 {
   label: "Primary Button",
   slug: "primary-button"
-}
-```
-
-#### Filemap and Slugmap
-
-Dox-ray creates maps so that you can grab data by filename or by slug.
-
-For example:
-
-_styles.less:_
-
-```scss
-/* doxray
-    label: Pattern 1
-    description: The first pattern
-*/
-...
-```
-
-```js
-var doxray = require('dox-ray');
-var docs = doxray('styles.less');
-var styles = docs.getFile('styles.less');
-var pattern1 = docs.getSlug('pattern-1');
-```
-
-```js
-// var styles =
-[{
-  docs: {
-    label: "Pattern 1",
-    description: "The first pattern"
-  },
-  code: [
-    {
-      filename: "styles.less",
-      type: ".less",
-      code: "..."
-    }
-  ]
-}]
-```
-
-```js
-// var pattern1 =
-{
-  label: "Pattern 1",
-  description: "The first pattern"
 }
 ```
 

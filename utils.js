@@ -22,6 +22,9 @@ utils.handleOptions = function( options ) {
   if ( typeof options.merge === 'undefined' ) {
     options.merge = true;
   }
+  if ( typeof options.processors === 'undefined' ) {
+    options.processors = require('./doxray.js').prototype.processors;
+  }
   return options;
 };
 
