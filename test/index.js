@@ -214,7 +214,7 @@ describe('doxray.js, core methods', function() {
   });
 
   describe('writeJSON()', function() {
-    it('should create a .json file', function() {
+    it('should write a .json file', function() {
       var file = 'test/test.json';
       if ( fs.existsSync( file ) ) {
         fs.unlinkSync( file );
@@ -226,7 +226,7 @@ describe('doxray.js, core methods', function() {
   });
 
   describe('writeJS()', function() {
-    it('should create a .js file', function() {
+    it('should write a .js file', function() {
       var file = 'test/test.js';
       if ( fs.existsSync( file ) ) {
         fs.unlinkSync( file );
