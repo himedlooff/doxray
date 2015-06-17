@@ -30,6 +30,8 @@ Doxray.prototype.processors = [
 
 Doxray.prototype.jsonWhiteSpace = 2;
 
+Doxray.prototype.logging = false;
+
 Doxray.prototype.logMessages = {
   wrongType: 'Doxray expected a String or an Array as the first argument.',
   noDoxrayCommentsFound: 'Doxray did not find any Doxray comments in this file.'
@@ -110,10 +112,10 @@ Doxray.prototype.writeJSON = function( convertedDocs, dest, callback ) {
     if ( err ) {
       throw err;
     }
-    console.log( dest, 'was created.' );
+    if ( this.logging ) console.log( dest, 'was created.' );
     if ( typeof callback === 'undefined' ) return;
     callback();
-  });
+  }.bind( this ));
 };
 
 Doxray.prototype.writeJS = function( convertedDocs, dest, callback ) {
@@ -124,10 +126,10 @@ Doxray.prototype.writeJS = function( convertedDocs, dest, callback ) {
     if ( err ) {
       throw err;
     }
-    console.log( dest, 'was created.' );
+    if ( this.logging ) console.log( dest, 'was created.' );
     if ( typeof callback === 'undefined' ) return;
     callback();
-  });
+  }.bind( this ));
 };
 
 module.exports = Doxray;
