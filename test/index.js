@@ -169,6 +169,7 @@ describe('doxray.js, core methods', function() {
     });
 
     describe('processors/color-palette', function() {
+
       it('should replace the colorPalette property with an array of key value pairs', function() {
         function run() {
           var parsed = doxray.postParseProcessing(
@@ -214,6 +215,7 @@ describe('doxray.js, core methods', function() {
   });
 
   describe('writeJSON()', function() {
+
     it('should write a .json file', function() {
       var file = 'test/test.json';
       if ( fs.existsSync( file ) ) {
@@ -223,9 +225,11 @@ describe('doxray.js, core methods', function() {
         assert.isFile( file );
       });
     });
+
   });
 
   describe('writeJS()', function() {
+
     it('should write a .js file', function() {
       var file = 'test/test.js';
       if ( fs.existsSync( file ) ) {
@@ -235,6 +239,7 @@ describe('doxray.js, core methods', function() {
         assert.isFile( file );
       });
     });
+
   });
 
 });
