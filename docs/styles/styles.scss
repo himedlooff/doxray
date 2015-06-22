@@ -45,9 +45,13 @@ label:
     z-index: 1;
 }
 
-/**********************
- *  Generic patterns  *
- **********************/
+
+/* doxray
+label:
+    .doxray-icon-file
+markup: |
+    <i class="doxray-icon-file"></i>
+*/
 
 .doxray-icon-file {
     &:before {
@@ -61,6 +65,14 @@ label:
     }
 }
 
+
+/* doxray
+label:
+    .doxray-icon-pattern
+markup: |
+    <i class="doxray-icon-pattern"></i>
+*/
+
 .doxray-icon-pattern {
     &:before {
         content: "⁋";
@@ -73,9 +85,15 @@ label:
     }
 }
 
-/***********************
- *  Table of contents  *
- ***********************/
+
+/* doxray
+label:
+    .doxray-toc_masthead
+markup: |
+    <h1 class="doxray-toc_masthead">
+        Masthead
+    </h1>
+*/
 
 .doxray-toc_masthead {
     margin: 0;
@@ -87,11 +105,23 @@ label:
     text-align: center;
 }
 
+
+/* doxray
+label:
+    .doxray-toc_body
+*/
+
 .doxray-toc_body {
     position: relative;
     padding: $doxray-margin-large;
     box-shadow: 0 0 2px $doxray-color-shadow;
 }
+
+
+/* doxray
+label:
+    .doxray-toc_collapsed-view-btn
+*/
 
 .doxray-toc_collapsed-view-btn {
     position: absolute;
@@ -100,6 +130,12 @@ label:
     font-family: $doxray-font-family-default;
     font-size: 12px;
 }
+
+
+/* doxray
+label:
+    .doxray-toc_file-list
+*/
 
 .doxray-toc_file-list {
     display: -webkit-box;
@@ -114,6 +150,12 @@ label:
     padding: 0;
     list-style-type: none;
 }
+
+
+/* doxray
+label:
+    .doxray-toc_file-list
+*/
 
 .doxray-toc_file-list-item {
     width: 200px;
@@ -134,9 +176,18 @@ label:
     }
 }
 
-/*****************
- *  Header link  *
- *****************/
+
+/* doxray
+label:
+    .doxray-header-link
+markup: |
+    <a class="doxray-header-link" href="#0">
+        <i class="doxray-icon-file"></i>
+        <span class="doxray-header-link_info">
+            filename.ext
+        </span>
+    </a>
+*/
 
 .doxray-header-link {
     &,
@@ -161,16 +212,11 @@ label:
     }
 }
 
-.doxray-header-link__file {
-    margin-left: -20px;
-    margin-bottom: 20px;
-}
 
-.doxray-header-link__toc {
-    position: fixed;
-    left: 0;
-    bottom: 0;
-}
+/* doxray
+label:
+    .doxray-header-link_info
+*/
 
 .doxray-header-link_info {
     margin-left: .75em;
@@ -178,9 +224,38 @@ label:
     font-size: $doxray-font-size-sm;
 }
 
-/**********
- *  Link  *
- **********/
+
+/* doxray
+label:
+    .doxray-header-link__file
+*/
+
+.doxray-header-link__file {
+    margin-left: -20px;
+    margin-bottom: 20px;
+}
+
+
+/* doxray
+label:
+    .doxray-header-link__toc
+*/
+
+.doxray-header-link__toc {
+    position: fixed;
+    left: 0;
+    bottom: 0;
+}
+
+
+/* doxray
+label:
+    .doxray-link
+markup: |
+    <a class="doxray-link" href="#0">
+        filename.ext
+    </a>
+*/
 
 .doxray-link {
     &,
@@ -208,6 +283,16 @@ label:
     }
 }
 
+
+/* doxray
+label:
+    .doxray-link__file
+markup: |
+    <a class="doxray-link doxray-link__file" href="#0">
+        filename.ext
+    </a>
+*/
+
 .doxray-link__file {
     &,
     &:link,
@@ -228,6 +313,16 @@ label:
     }
 }
 
+
+/* doxray
+label:
+    .doxray-link__pattern-header
+markup: |
+    <a class="doxray-link doxray-link__pattern-header" href="#0">
+        Pattern header
+    </a>
+*/
+
 .doxray-link__pattern-header {
     &,
     &:link,
@@ -236,6 +331,16 @@ label:
         font-weight: $doxray-font-weight-demi;
     }
 }
+
+
+/* doxray
+label:
+    .doxray-link__pattern
+markup: |
+    <a class="doxray-link doxray-link__pattern" href="#0">
+        Pattern label
+    </a>
+*/
 
 .doxray-link__pattern {
     &,
@@ -252,6 +357,20 @@ label:
     }
 }
 
+
+/* doxray
+label:
+    .doxray-link-hr
+markup: |
+    <a class="doxray-link doxray-link__pattern" href="#0">
+        Pattern label
+    </a>
+    <hr class="doxray-link-hr">
+    <a class="doxray-link doxray-link__pattern" href="#0">
+        Pattern label
+    </a>
+*/
+
 .doxray-link-hr {
     display: block;
     height: 1px;
@@ -260,9 +379,11 @@ label:
     background: $doxray-color-dirty-white;
 }
 
-/**************
- *  The doc  *
- **************/
+
+/* doxray
+label:
+    .doxray-doc
+*/
 
 .doxray-doc {
     padding: $doxray-margin-large;
@@ -272,15 +393,35 @@ label:
     border-top: 1px solid $doxray-color-dirtier-white;
 }
 
+
+/* doxray
+label:
+    .doxray-doc-label
+markup: |
+    <h1 class="doxray-doc-label">
+        <a class="doxray-doc-label_link" href="#0">
+            Label
+        </a>
+    </h1>
+*/
+
 .doxray-doc-label {
     margin: 0 0 $doxray-margin;
     font-size: $doxray-font-size-lg;
     font-weight: $doxray-font-weight-demi;
 }
 
-.doxray-doc-label__header {
-    font-size: $doxray-font-size-xlg;
-}
+
+/* doxray
+label:
+    .doxray-doc-label_link
+markup: |
+    <h1 class="doxray-doc-label">
+        <a class="doxray-doc-label_link" href="#0">
+            Doc Label Link
+        </a>
+    </h1>
+*/
 
 .doxray-doc-label_link {
     &,
@@ -295,6 +436,30 @@ label:
     }
 }
 
+
+/* doxray
+label:
+    .doxray-doc-label__header
+markup: |
+    <h1 class="doxray-doc-label doxray-doc-label__header">
+        <a class="doxray-doc-label_link" href="#0">
+            Header label
+        </a>
+    </h1>
+*/
+
+.doxray-doc-label__header {
+    font-size: $doxray-font-size-xlg;
+}
+
+
+/* doxray
+label:
+    .doxray-doc-tag
+markup: |
+    <small class="doxray-doc-tag">Tag</small>
+*/
+
 .doxray-doc-tag {
     display: inline-block;
     margin: 0 0 0 .5em;
@@ -307,6 +472,16 @@ label:
     color: $doxray-color-gray;
 }
 
+
+/* doxray
+label:
+    .doxray-doc-description
+markup: |
+    <div class="doxray-doc-description">
+        <p>A description</p>
+    </div>
+*/
+
 .doxray-doc-description {
     max-width: 50em;
     margin: $doxray-margin 0;
@@ -315,11 +490,24 @@ label:
     font-weight: $doxray-font-weight-normal;
 }
 
+
+/* doxray
+label:
+    .doxray-doc-note
+notes:
+    - >
+        a note, poo
+markup: |
+    <div class="doxray-doc-note">
+        <p>A description</p>
+    </div>
+*/
+
 .doxray-doc-note {
     position: relative;
     max-width: 50em;
     margin: $doxray-margin 0;
-    padding-left: 1em;
+    padding-left: 1.3em;
     font-family: $doxray-font-family-default;
     font-size: $doxray-font-size-md;
     font-weight: $doxray-font-weight-normal;
