@@ -11,7 +11,7 @@ var watch =  require('gulp-watch');
 gulp.task('default', ['dox-ray']);
 
 gulp.task('watch', function() {
-    var sassWatcher = gulp.watch(['styles/*.less'], ['less', 'dox-ray']);
+    var lessWatcher = gulp.watch(['styles/*.less'], ['less', 'dox-ray']);
     lessWatcher.on('change', logChange);
 });
 
