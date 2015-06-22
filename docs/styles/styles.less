@@ -1,4 +1,4 @@
-@import "_variables.scss";
+@import "variables.less";
 
 /* doxray
 header:
@@ -30,18 +30,18 @@ label:
     top: 0;
     bottom: 0;
     left: 0;
-    width: $doxray-nav-width;
+    width: @doxray-nav-width;
     padding: 0 0 60px 20px;
-    background: $doxray-color-paper-white;
+    background: @doxray-color-paper-white;
     overflow-y: auto;
     z-index: 0;
 }
 
 .doxray_patterns {
     position: relative;
-    margin-left: $doxray-nav-width;
-    background: $doxray-color-clean-white;
-    box-shadow: 0 0 4px $doxray-color-shadow;
+    margin-left: @doxray-nav-width;
+    background: @doxray-color-clean-white;
+    box-shadow: 0 0 4px @doxray-color-shadow;
     z-index: 1;
 }
 
@@ -56,8 +56,8 @@ markup: |
 .doxray-icon-file {
     &:before {
         content: "ƒ";
-        font-family: $doxray-font-family-default;
-        font-weight: $doxray-font-weight-normal;
+        font-family: @doxray-font-family-default;
+        font-weight: @doxray-font-weight-normal;
     }
 
     &:after {
@@ -76,8 +76,8 @@ markup: |
 .doxray-icon-pattern {
     &:before {
         content: "⁋";
-        font-family: $doxray-font-family-default;
-        font-weight: $doxray-font-weight-normal;
+        font-family: @doxray-font-family-default;
+        font-weight: @doxray-font-weight-normal;
     }
 
     &:after {
@@ -97,11 +97,11 @@ markup: |
 
 .doxray-toc_masthead {
     margin: 0;
-    padding: $doxray-margin-large;
-    background: $doxray-color-paper-white;
-    font-family: $doxray-font-family-default;
-    font-size: $doxray-font-size-xlg;
-    font-weight: $doxray-font-weight-light;
+    padding: @doxray-margin-large;
+    background: @doxray-color-paper-white;
+    font-family: @doxray-font-family-default;
+    font-size: @doxray-font-size-xlg;
+    font-weight: @doxray-font-weight-light;
     text-align: center;
 }
 
@@ -113,8 +113,8 @@ label:
 
 .doxray-toc_body {
     position: relative;
-    padding: $doxray-margin-large;
-    box-shadow: 0 0 2px $doxray-color-shadow;
+    padding: @doxray-margin-large;
+    box-shadow: 0 0 2px @doxray-color-shadow;
 }
 
 
@@ -125,9 +125,9 @@ label:
 
 .doxray-toc_collapsed-view-btn {
     position: absolute;
-    bottom: $doxray-margin-large / 3;
-    left: $doxray-margin-large;
-    font-family: $doxray-font-family-default;
+    bottom: @doxray-margin-large / 3;
+    left: @doxray-margin-large;
+    font-family: @doxray-font-family-default;
     font-size: 12px;
 }
 
@@ -195,19 +195,19 @@ markup: |
     &:visited {
         box-sizing: border-box;
         display: block;
-        width: $doxray-nav-width;
+        width: @doxray-nav-width;
         min-height: 40px;
         padding: 0 20px;
-        background: $doxray-color-dirty-white;
-        color: $doxray-color-gray;
-        font-size: $doxray-font-size-md;
+        background: @doxray-color-dirty-white;
+        color: @doxray-color-gray;
+        font-size: @doxray-font-size-md;
         line-height: 38px;
         text-decoration: none;
     }
 
     &:hover,
     &:focus {
-        background: $doxray-color-dirtier-white;
+        background: @doxray-color-dirtier-white;
         outline: 0;
     }
 }
@@ -220,8 +220,8 @@ label:
 
 .doxray-header-link_info {
     margin-left: .75em;
-    font-family: $doxray-font-family-default;
-    font-size: $doxray-font-size-sm;
+    font-family: @doxray-font-family-default;
+    font-size: @doxray-font-size-sm;
 }
 
 
@@ -267,15 +267,15 @@ markup: |
         padding: .5em .75em;
         border: 0;
         background: transparent;
-        font-family: $doxray-font-family-default;
-        font-size: $doxray-font-size-sm;
-        color: $doxray-color-gray;
+        font-family: @doxray-font-family-default;
+        font-size: @doxray-font-size-sm;
+        color: @doxray-color-gray;
         text-decoration: none;
     }
 
     &:hover,
     &:focus {
-        background: $doxray-color-dirty-white;
+        background: @doxray-color-dirty-white;
     }
 
     &:focus {
@@ -298,14 +298,14 @@ markup: |
     &:link,
     &:visited {
         margin: 0 0 .5em;
-        background: $doxray-color-dirty-white;
-        font-family: $doxray-font-family-code;
-        font-size: $doxray-font-size-sm;
+        background: @doxray-color-dirty-white;
+        font-family: @doxray-font-family-code;
+        font-size: @doxray-font-size-sm;
     }
 
     &:hover,
     &:focus {
-        background: $doxray-color-dirtier-white;
+        background: @doxray-color-dirtier-white;
     }
 
     .doxray-icon-file {
@@ -327,8 +327,8 @@ markup: |
     &,
     &:link,
     &:visited {
-        font-size: $doxray-font-size-sm;
-        font-weight: $doxray-font-weight-demi;
+        font-size: @doxray-font-size-sm;
+        font-weight: @doxray-font-weight-demi;
     }
 }
 
@@ -376,7 +376,7 @@ markup: |
     height: 1px;
     margin: 20px 0 20px -20px;
     border: 0;
-    background: $doxray-color-dirty-white;
+    background: @doxray-color-dirty-white;
 }
 
 
@@ -386,11 +386,11 @@ label:
 */
 
 .doxray-doc {
-    padding: $doxray-margin-large;
+    padding: @doxray-margin-large;
 }
 
 .doxray-doc + .doxray-doc {
-    border-top: 1px solid $doxray-color-dirtier-white;
+    border-top: 1px solid @doxray-color-dirtier-white;
 }
 
 
@@ -406,9 +406,9 @@ markup: |
 */
 
 .doxray-doc-label {
-    margin: 0 0 $doxray-margin;
-    font-size: $doxray-font-size-lg;
-    font-weight: $doxray-font-weight-demi;
+    margin: 0 0 @doxray-margin;
+    font-size: @doxray-font-size-lg;
+    font-weight: @doxray-font-weight-demi;
 }
 
 
@@ -429,8 +429,8 @@ markup: |
     &:visited,
     &:hover,
     &:focus {
-        color: $doxray-color-gray;
-        font-family: $doxray-font-family-default;
+        color: @doxray-color-gray;
+        font-family: @doxray-font-family-default;
         text-decoration: none;
         outline: 0;
     }
@@ -449,7 +449,7 @@ markup: |
 */
 
 .doxray-doc-label__header {
-    font-size: $doxray-font-size-xlg;
+    font-size: @doxray-font-size-xlg;
 }
 
 
@@ -464,12 +464,12 @@ markup: |
     display: inline-block;
     margin: 0 0 0 .5em;
     padding: .2em .8em;
-    border-radius: $doxray-font-size-sm;
-    font-family: $doxray-font-family-default;
-    font-size: $doxray-font-size-sm;
-    font-weight: $doxray-font-weight-normal;
-    background: $doxray-color-dirtier-white;
-    color: $doxray-color-gray;
+    border-radius: @doxray-font-size-sm;
+    font-family: @doxray-font-family-default;
+    font-size: @doxray-font-size-sm;
+    font-weight: @doxray-font-weight-normal;
+    background: @doxray-color-dirtier-white;
+    color: @doxray-color-gray;
 }
 
 
@@ -484,10 +484,10 @@ markup: |
 
 .doxray-doc-description {
     max-width: 50em;
-    margin: $doxray-margin 0;
-    font-family: $doxray-font-family-default;
-    font-size: $doxray-font-size-lg - 4px;
-    font-weight: $doxray-font-weight-normal;
+    margin: @doxray-margin 0;
+    font-family: @doxray-font-family-default;
+    font-size: @doxray-font-size-lg - 4px;
+    font-weight: @doxray-font-weight-normal;
 }
 
 
@@ -506,11 +506,11 @@ markup: |
 .doxray-doc-note {
     position: relative;
     max-width: 50em;
-    margin: $doxray-margin 0;
+    margin: @doxray-margin 0;
     padding-left: 1.3em;
-    font-family: $doxray-font-family-default;
-    font-size: $doxray-font-size-md;
-    font-weight: $doxray-font-weight-normal;
+    font-family: @doxray-font-family-default;
+    font-size: @doxray-font-size-md;
+    font-weight: @doxray-font-weight-normal;
 
     &:before {
         content: "●";
@@ -518,23 +518,23 @@ markup: |
         left: 0;
         display: inline-block;
         margin-right: .25em;
-        color: $doxray-color-dirtier-white;
+        color: @doxray-color-dirtier-white;
     }
 }
 
 .doxray-doc-description,
 .doxray-doc-note {
     p {
-        margin: $doxray-margin 0 0;
+        margin: @doxray-margin 0 0;
     }
 
     code {
         display: inline-block;
         padding: 2px 5px;
         border-radius: 3px;
-        background: $doxray-color-dirty-white;
-        color: $doxray-color-gray;
-        font-family: $doxray-font-family-code;
+        background: @doxray-color-dirty-white;
+        color: @doxray-color-gray;
+        font-family: @doxray-font-family-code;
         font-size: .8em;
     }
 }
@@ -546,16 +546,16 @@ markup: |
     &:focus,
     &:hover,
     &:visited {
-        margin: $doxray-margin 0;
-        font-size: $doxray-font-size-md;
-        color: $doxray-color-blue;
+        margin: @doxray-margin 0;
+        font-size: @doxray-font-size-md;
+        color: @doxray-color-blue;
         text-decoration: none;
     }
 }
 
 .doxray-doc-markup {
-    margin: ($doxray-margin-large / 2) ($doxray-margin-large / 2 * -1);
-    box-shadow: 0 0 6px $doxray-color-shadow;
+    margin: (@doxray-margin-large / 2) (@doxray-margin-large / 2 * -1);
+    box-shadow: 0 0 6px @doxray-color-shadow;
     overflow: hidden;
 
     &:after {
@@ -567,7 +567,7 @@ markup: |
 
 .doxray-doc-markup_rendered {
     display: inline-block;
-    padding: $doxray-margin-large;
+    padding: @doxray-margin-large;
     margin-right: -3.75px;
 }
 
@@ -582,23 +582,23 @@ markup: |
 .doxray-doc-markup-theme_label {
     position: absolute;
     top: 2.5em;
-    font-family: $doxray-font-family-default;
-    font-size: $doxray-font-size-sm;
+    font-family: @doxray-font-family-default;
+    font-size: @doxray-font-size-sm;
     line-height: 1;
     text-transform: capitalize;
 }
 
 .doxray-doc-code {
     position: relative;
-    margin: $doxray-margin 0 0;
+    margin: @doxray-margin 0 0;
 }
 
 .doxray-doc-code_text {
     display: block;
     margin: 0;
-    padding: $doxray-margin-large / 2;
-    background: $doxray-color-dirty-white;
-    font-size: $doxray-font-size-md;
+    padding: @doxray-margin-large / 2;
+    background: @doxray-color-dirty-white;
+    font-size: @doxray-font-size-md;
     line-height: 1.5;
 }
 
@@ -622,9 +622,9 @@ markup: |
         width: 100%;
         padding: .5em .75em;
         border: 0;
-        background: $doxray-color-dirtier-white;
-        color: $doxray-color-gray;
-        font-size: $doxray-font-size-sm;
+        background: @doxray-color-dirtier-white;
+        color: @doxray-color-gray;
+        font-size: @doxray-font-size-sm;
         line-height: 1;
         text-align: center;
         text-decoration: none;
@@ -634,7 +634,7 @@ markup: |
 
     &:hover,
     &:focus {
-        background: darken($doxray-color-dirtier-white, 2%);
+        background: darken(@doxray-color-dirtier-white, 2%);
     }
 
     &:before {
@@ -668,13 +668,13 @@ markup: |
     width: 100%;
     margin-top: 4px;
     padding: 8px 10px 10px;
-    border: 1px solid $doxray-color-dirtier-white;
+    border: 1px solid @doxray-color-dirtier-white;
     border-radius: 0;
-    background: $doxray-color-clean-white;
-    color: $doxray-color-shadow;
-    font-family: $doxray-font-family-default;
+    background: @doxray-color-clean-white;
+    color: @doxray-color-shadow;
+    font-family: @doxray-font-family-default;
     font-size: 14px;
-    font-weight: $doxray-font-weight-normal;
+    font-weight: @doxray-font-weight-normal;
 
     &:focus {
         outline: 0;
@@ -690,7 +690,7 @@ markup: |
     &:focus {
         width: 150px;
         z-index: 2;
-        border-color: $doxray-color-gray;
-        box-shadow: 0 0 4px $doxray-color-shadow;
+        border-color: @doxray-color-gray;
+        box-shadow: 0 0 4px @doxray-color-shadow;
     }
 }
