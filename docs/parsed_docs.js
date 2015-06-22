@@ -221,19 +221,112 @@ var Doxray = {
     {
       "label": ".doxray-doc-description",
       "markup": "<div class=\"doxray-doc-description\">\n    <p>A description</p>\n</div>\n",
-      "less": ".doxray-doc-description {\n    max-width: 50em;\n    margin: @doxray-margin 0;\n    font-family: @doxray-font-family-default;\n    font-size: @doxray-font-size-lg - 4px;\n    font-weight: @doxray-font-weight-normal;\n}",
+      "less": ".doxray-doc-description {\n    max-width: 50em;\n    margin: @doxray-margin 0;\n    font-family: @doxray-font-family-default;\n    font-size: @doxray-font-size-lg - 4px;\n    font-weight: @doxray-font-weight-normal;\n\n    p {\n        margin: @doxray-margin 0 0;\n    }\n\n    code {\n        display: inline-block;\n        padding: 2px 5px;\n        border-radius: 3px;\n        background: @doxray-color-dirty-white;\n        color: @doxray-color-gray;\n        font-family: @doxray-font-family-code;\n        font-size: .8em;\n    }\n}",
       "filename": "styles.less",
       "slug": "doxray-doc-description"
     },
     {
       "label": ".doxray-doc-note",
-      "notes": [
-        "a note, poo\n"
-      ],
-      "markup": "<div class=\"doxray-doc-note\">\n    <p>A description</p>\n</div>\n",
-      "less": ".doxray-doc-note {\n    position: relative;\n    max-width: 50em;\n    margin: @doxray-margin 0;\n    padding-left: 1.3em;\n    font-family: @doxray-font-family-default;\n    font-size: @doxray-font-size-md;\n    font-weight: @doxray-font-weight-normal;\n\n    &:before {\n        content: \"●\";\n        position: absolute;\n        left: 0;\n        display: inline-block;\n        margin-right: .25em;\n        color: @doxray-color-dirtier-white;\n    }\n}\n\n.doxray-doc-description,\n.doxray-doc-note {\n    p {\n        margin: @doxray-margin 0 0;\n    }\n\n    code {\n        display: inline-block;\n        padding: 2px 5px;\n        border-radius: 3px;\n        background: @doxray-color-dirty-white;\n        color: @doxray-color-gray;\n        font-family: @doxray-font-family-code;\n        font-size: .8em;\n    }\n}\n\n.doxray-doc-reference {\n    &,\n    &:active,\n    &:link,\n    &:focus,\n    &:hover,\n    &:visited {\n        margin: @doxray-margin 0;\n        font-size: @doxray-font-size-md;\n        color: @doxray-color-blue;\n        text-decoration: none;\n    }\n}\n\n.doxray-doc-markup {\n    margin: (@doxray-margin-large / 2) (@doxray-margin-large / 2 * -1);\n    box-shadow: 0 0 6px @doxray-color-shadow;\n    overflow: hidden;\n\n    &:after {\n        display: table;\n        clear: both;\n        content: \"\";\n    }\n}\n\n.doxray-doc-markup_rendered {\n    display: inline-block;\n    padding: @doxray-margin-large;\n    margin-right: -3.75px;\n}\n\n.doxray-doc-markup_rendered__block {\n    display: block;\n}\n\n.doxray-doc-markup-theme {\n    position: relative;\n}\n\n.doxray-doc-markup-theme_label {\n    position: absolute;\n    top: 2.5em;\n    font-family: @doxray-font-family-default;\n    font-size: @doxray-font-size-sm;\n    line-height: 1;\n    text-transform: capitalize;\n}\n\n.doxray-doc-code {\n    position: relative;\n    margin: @doxray-margin 0 0;\n}\n\n.doxray-doc-code_text {\n    display: block;\n    margin: 0;\n    padding: @doxray-margin-large / 2;\n    background: @doxray-color-dirty-white;\n    font-size: @doxray-font-size-md;\n    line-height: 1.5;\n}\n\n.doxray-doc-code-expander {\n    position: relative;\n}\n\n.doxray-doc-code-expander_body {\n    height: 160px;\n    overflow: hidden;\n}\n\n.doxray-doc-code-expander_btn {\n    &,\n    &:active,\n    &:link,\n    &:focus,\n    &:hover,\n    &:visited {\n        display: block;\n        width: 100%;\n        padding: .5em .75em;\n        border: 0;\n        background: @doxray-color-dirtier-white;\n        color: @doxray-color-gray;\n        font-size: @doxray-font-size-sm;\n        line-height: 1;\n        text-align: center;\n        text-decoration: none;\n        outline: 0;\n        cursor: pointer;\n    }\n\n    &:hover,\n    &:focus {\n        background: darken(@doxray-color-dirtier-white, 2%);\n    }\n\n    &:before {\n        content: \"⇣\";\n    }\n\n    &__flipped:before {\n        content: \"⇡\";\n    }\n}\n\n/*******************\n *  Color palette  *\n *******************/\n\n.doxray-doc-palette {\n    width: 96px;\n    display: inline-block;\n    margin-top: 16px;\n}\n\n.doxray-doc-palette_color {\n    display: block;\n    height: 96px;\n}\n\n.doxray-doc-palette_input {\n    position: relative;\n    z-index: 1;\n    box-sizing: border-box;\n    width: 100%;\n    margin-top: 4px;\n    padding: 8px 10px 10px;\n    border: 1px solid @doxray-color-dirtier-white;\n    border-radius: 0;\n    background: @doxray-color-clean-white;\n    color: @doxray-color-shadow;\n    font-family: @doxray-font-family-default;\n    font-size: 14px;\n    font-weight: @doxray-font-weight-normal;\n\n    &:focus {\n        outline: 0;\n    }\n}\n\n.doxray-doc-palette_input + .doxray-doc-palette_input {\n    margin-top: -1px;\n}\n\n.doxray-doc-palette_input {\n    &:hover,\n    &:focus {\n        width: 150px;\n        z-index: 2;\n        border-color: @doxray-color-gray;\n        box-shadow: 0 0 4px @doxray-color-shadow;\n    }\n}",
+      "markup": "<div class=\"doxray-doc-note\">\n    <p>A note</p>\n</div>\n",
+      "less": ".doxray-doc-note {\n    position: relative;\n    max-width: 50em;\n    margin: @doxray-margin 0;\n    padding-left: 1.3em;\n    font-family: @doxray-font-family-default;\n    font-size: @doxray-font-size-md;\n    font-weight: @doxray-font-weight-normal;\n\n    &:before {\n        content: \"●\";\n        position: absolute;\n        left: 0;\n        display: inline-block;\n        margin-right: .25em;\n        color: @doxray-color-dirtier-white;\n    }\n\n    p {\n        margin: @doxray-margin 0 0;\n    }\n\n    code {\n        display: inline-block;\n        padding: 2px 5px;\n        border-radius: 3px;\n        background: @doxray-color-dirty-white;\n        color: @doxray-color-gray;\n        font-family: @doxray-font-family-code;\n        font-size: .8em;\n    }\n}",
       "filename": "styles.less",
       "slug": "doxray-doc-note"
+    },
+    {
+      "label": ".doxray-doc-reference",
+      "markup": "<a class=\"doxray-doc-reference\" href=\"#0\" target=\"_blank\">\n    A reference link\n</a>\n",
+      "less": ".doxray-doc-reference {\n    &,\n    &:active,\n    &:link,\n    &:focus,\n    &:hover,\n    &:visited {\n        margin: @doxray-margin 0;\n        font-family: @doxray-font-family-default;\n        font-size: @doxray-font-size-md;\n        color: @doxray-color-blue;\n        text-decoration: none;\n    }\n}",
+      "filename": "styles.less",
+      "slug": "doxray-doc-reference"
+    },
+    {
+      "label": ".doxray-doc-markup",
+      "description": "Contains both the rendered and raw markup.\n",
+      "markup": "<div class=\"doxray-doc-markup\">\n    <div class=\"doxray-doc-markup_rendered\">\n        Markup is rendered here\n    </div>\n</div>\n",
+      "less": ".doxray-doc-markup {\n    margin: (@doxray-margin-large / 2) (@doxray-margin-large / 2 * -1);\n    box-shadow: 0 0 6px @doxray-color-shadow;\n    overflow: hidden;\n\n    &:after {\n        display: table;\n        clear: both;\n        content: \"\";\n    }\n}",
+      "filename": "styles.less",
+      "slug": "doxray-doc-markup"
+    },
+    {
+      "label": ".doxray-doc-markup_rendered",
+      "description": "Contains both the rendered markup.\n",
+      "notes": [
+        "By default this container uses `display: inline-block;`. This is beneficial when using themes, since they will stack horizontally instead of vertically.\n"
+      ],
+      "markup": "<div class=\"doxray-doc-markup\">\n    <div class=\"doxray-doc-markup_rendered\">\n        Markup is rendered here\n    </div>\n</div>\n",
+      "less": ".doxray-doc-markup_rendered {\n    display: inline-block;\n    padding: @doxray-margin-large;\n    margin-right: -3.75px;\n}",
+      "filename": "styles.less",
+      "slug": "doxray-doc-markup_rendered"
+    },
+    {
+      "label": ".doxray-doc-markup_rendered__block",
+      "notes": [
+        "Converts this container to `display: block;`, allowing space for wider patterns.\n"
+      ],
+      "markup": "<div class=\"doxray-doc-markup\">\n    <div class=\"doxray-doc-markup_rendered doxray-doc-markup_rendered__block\">\n        Markup is rendered here\n    </div>\n</div>\n",
+      "less": ".doxray-doc-markup_rendered__block {\n    display: block;\n}",
+      "filename": "styles.less",
+      "slug": "doxray-doc-markup_rendered__block"
+    },
+    {
+      "label": ".doxray-doc-markup-theme",
+      "less": ".doxray-doc-markup-theme {\n    position: relative;\n}",
+      "filename": "styles.less",
+      "slug": "doxray-doc-markup-theme"
+    },
+    {
+      "label": ".doxray-doc-markup-theme_label",
+      "less": ".doxray-doc-markup-theme_label {\n    position: absolute;\n    top: 2.5em;\n    font-family: @doxray-font-family-default;\n    font-size: @doxray-font-size-sm;\n    line-height: 1;\n    text-transform: capitalize;\n}",
+      "filename": "styles.less",
+      "slug": "doxray-doc-markup-theme_label"
+    },
+    {
+      "label": ".doxray-doc-code",
+      "less": ".doxray-doc-code {\n    position: relative;\n    margin: @doxray-margin 0 0;\n}",
+      "filename": "styles.less",
+      "slug": "doxray-doc-code"
+    },
+    {
+      "label": ".doxray-doc-code_text",
+      "less": ".doxray-doc-code_text {\n    display: block;\n    margin: 0;\n    padding: @doxray-margin-large / 2;\n    background: @doxray-color-dirty-white;\n    font-size: @doxray-font-size-md;\n    line-height: 1.5;\n}",
+      "filename": "styles.less",
+      "slug": "doxray-doc-code_text"
+    },
+    {
+      "label": ".doxray-doc-code-expander",
+      "less": ".doxray-doc-code-expander {\n    position: relative;\n}",
+      "filename": "styles.less",
+      "slug": "doxray-doc-code-expander"
+    },
+    {
+      "label": ".doxray-doc-code-expander_body",
+      "less": ".doxray-doc-code-expander_body {\n    height: 160px;\n    overflow: hidden;\n}",
+      "filename": "styles.less",
+      "slug": "doxray-doc-code-expander_body"
+    },
+    {
+      "label": ".doxray-doc-code-expander_btn",
+      "less": ".doxray-doc-code-expander_btn {\n    &,\n    &:active,\n    &:link,\n    &:focus,\n    &:hover,\n    &:visited {\n        display: block;\n        width: 100%;\n        padding: .5em .75em;\n        border: 0;\n        background: @doxray-color-dirtier-white;\n        color: @doxray-color-gray;\n        font-size: @doxray-font-size-sm;\n        line-height: 1;\n        text-align: center;\n        text-decoration: none;\n        outline: 0;\n        cursor: pointer;\n    }\n\n    &:hover,\n    &:focus {\n        background: darken(@doxray-color-dirtier-white, 2%);\n    }\n\n    &:before {\n        content: \"⇣\";\n    }\n\n    &__flipped:before {\n        content: \"⇡\";\n    }\n}",
+      "filename": "styles.less",
+      "slug": "doxray-doc-code-expander_btn"
+    },
+    {
+      "label": ".doxray-doc-color-palette",
+      "less": ".doxray-doc-palette {\n    width: 96px;\n    display: inline-block;\n    margin-top: 16px;\n}",
+      "filename": "styles.less",
+      "slug": "doxray-doc-color-palette"
+    },
+    {
+      "label": ".doxray-doc-color-palette_color",
+      "less": ".doxray-doc-palette_color {\n    display: block;\n    height: 96px;\n}",
+      "filename": "styles.less",
+      "slug": "doxray-doc-color-palette_color"
+    },
+    {
+      "label": ".doxray-doc-color-palette_input",
+      "less": ".doxray-doc-palette_input {\n    position: relative;\n    z-index: 1;\n    box-sizing: border-box;\n    width: 100%;\n    margin-top: 4px;\n    padding: 8px 10px 10px;\n    border: 1px solid @doxray-color-dirtier-white;\n    border-radius: 0;\n    background: @doxray-color-clean-white;\n    color: @doxray-color-shadow;\n    font-family: @doxray-font-family-default;\n    font-size: 14px;\n    font-weight: @doxray-font-weight-normal;\n\n    &:hover,\n    &:focus {\n        width: 150px;\n        z-index: 2;\n        border-color: @doxray-color-gray;\n        box-shadow: 0 0 4px @doxray-color-shadow;\n    }\n\n    &:focus {\n        outline: 0;\n    }\n\n    & + & {\n        margin-top: -1px;\n    }\n}",
+      "filename": "styles.less",
+      "slug": "doxray-doc-color-palette_input"
     }
   ],
   "getByProperty": function ( property, value ) {

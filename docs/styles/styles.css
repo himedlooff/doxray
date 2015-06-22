@@ -413,15 +413,24 @@ markup: |
   font-size: 26px;
   font-weight: 400;
 }
+.doxray-doc-description p {
+  margin: 18px 0 0;
+}
+.doxray-doc-description code {
+  display: inline-block;
+  padding: 2px 5px;
+  border-radius: 3px;
+  background: #f8f8f8;
+  color: #474646;
+  font-family: "Lucida Sans Typewriter", "Lucida Console", monaco, "Bitstream Vera Sans Mono", monospace;
+  font-size: .8em;
+}
 /* doxray
 label:
     .doxray-doc-note
-notes:
-    - >
-        a note, poo
 markup: |
     <div class="doxray-doc-note">
-        <p>A description</p>
+        <p>A note</p>
     </div>
 */
 .doxray-doc-note {
@@ -441,11 +450,9 @@ markup: |
   margin-right: .25em;
   color: #f0f0f0;
 }
-.doxray-doc-description p,
 .doxray-doc-note p {
   margin: 18px 0 0;
 }
-.doxray-doc-description code,
 .doxray-doc-note code {
   display: inline-block;
   padding: 2px 5px;
@@ -455,6 +462,14 @@ markup: |
   font-family: "Lucida Sans Typewriter", "Lucida Console", monaco, "Bitstream Vera Sans Mono", monospace;
   font-size: .8em;
 }
+/* doxray
+label:
+    .doxray-doc-reference
+markup: |
+    <a class="doxray-doc-reference" href="#0" target="_blank">
+        A reference link
+    </a>
+*/
 .doxray-doc-reference,
 .doxray-doc-reference:active,
 .doxray-doc-reference:link,
@@ -462,10 +477,23 @@ markup: |
 .doxray-doc-reference:hover,
 .doxray-doc-reference:visited {
   margin: 18px 0;
+  font-family: "Open Sans", "Segoe UI", "Helvetica Neue", Helvetica, Arial;
   font-size: 18px;
   color: #5b7489;
   text-decoration: none;
 }
+/* doxray
+label:
+    .doxray-doc-markup
+description: >
+    Contains both the rendered and raw markup.
+markup: |
+    <div class="doxray-doc-markup">
+        <div class="doxray-doc-markup_rendered">
+            Markup is rendered here
+        </div>
+    </div>
+*/
 .doxray-doc-markup {
   margin: 36px -36px;
   box-shadow: 0 0 6px #6e6c6c;
@@ -476,17 +504,56 @@ markup: |
   clear: both;
   content: "";
 }
+/* doxray
+label:
+    .doxray-doc-markup_rendered
+description: >
+    Contains both the rendered markup.
+notes:
+    - >
+        By default this container uses `display: inline-block;`. This is
+        beneficial when using themes, since they will stack horizontally instead
+        of vertically.
+markup: |
+    <div class="doxray-doc-markup">
+        <div class="doxray-doc-markup_rendered">
+            Markup is rendered here
+        </div>
+    </div>
+*/
 .doxray-doc-markup_rendered {
   display: inline-block;
   padding: 72px;
   margin-right: -3.75px;
 }
+/* doxray
+label:
+    .doxray-doc-markup_rendered__block
+notes:
+    - >
+        Converts this container to `display: block;`, allowing space for wider
+        patterns.
+markup: |
+    <div class="doxray-doc-markup">
+        <div class="doxray-doc-markup_rendered doxray-doc-markup_rendered__block">
+            Markup is rendered here
+        </div>
+    </div>
+*/
 .doxray-doc-markup_rendered__block {
   display: block;
 }
+/* doxray
+label:
+    .doxray-doc-markup-theme
+*/
 .doxray-doc-markup-theme {
   position: relative;
 }
+/* doxray
+label:
+    .doxray-doc-markup-theme_label
+*/
 .doxray-doc-markup-theme_label {
   position: absolute;
   top: 2.5em;
@@ -495,10 +562,18 @@ markup: |
   line-height: 1;
   text-transform: capitalize;
 }
+/* doxray
+label:
+    .doxray-doc-code
+*/
 .doxray-doc-code {
   position: relative;
   margin: 18px 0 0;
 }
+/* doxray
+label:
+    .doxray-doc-code_text
+*/
 .doxray-doc-code_text {
   display: block;
   margin: 0;
@@ -507,13 +582,25 @@ markup: |
   font-size: 18px;
   line-height: 1.5;
 }
+/* doxray
+label:
+    .doxray-doc-code-expander
+*/
 .doxray-doc-code-expander {
   position: relative;
 }
+/* doxray
+label:
+    .doxray-doc-code-expander_body
+*/
 .doxray-doc-code-expander_body {
   height: 160px;
   overflow: hidden;
 }
+/* doxray
+label:
+    .doxray-doc-code-expander_btn
+*/
 .doxray-doc-code-expander_btn,
 .doxray-doc-code-expander_btn:active,
 .doxray-doc-code-expander_btn:link,
@@ -543,18 +630,27 @@ markup: |
 .doxray-doc-code-expander_btn__flipped:before {
   content: "⇡";
 }
-/*******************
- *  Color palette  *
- *******************/
+/* doxray
+label:
+    .doxray-doc-color-palette
+*/
 .doxray-doc-palette {
   width: 96px;
   display: inline-block;
   margin-top: 16px;
 }
+/* doxray
+label:
+    .doxray-doc-color-palette_color
+*/
 .doxray-doc-palette_color {
   display: block;
   height: 96px;
 }
+/* doxray
+label:
+    .doxray-doc-color-palette_input
+*/
 .doxray-doc-palette_input {
   position: relative;
   z-index: 1;
@@ -570,16 +666,16 @@ markup: |
   font-size: 14px;
   font-weight: 400;
 }
-.doxray-doc-palette_input:focus {
-  outline: 0;
-}
-.doxray-doc-palette_input + .doxray-doc-palette_input {
-  margin-top: -1px;
-}
 .doxray-doc-palette_input:hover,
 .doxray-doc-palette_input:focus {
   width: 150px;
   z-index: 2;
   border-color: #474646;
   box-shadow: 0 0 4px #6e6c6c;
+}
+.doxray-doc-palette_input:focus {
+  outline: 0;
+}
+.doxray-doc-palette_input + .doxray-doc-palette_input {
+  margin-top: -1px;
 }
