@@ -36,7 +36,7 @@ gulp.task('dox-ray', ['less'], function() {
             'styles/doxray-variables.less',
             'styles/doxray-docs.less'
         ], {
-        jsFile: 'parsed_docs.js',
+        jsFile: 'doxray-parsed-data.js',
         logging: true
     });
 });
