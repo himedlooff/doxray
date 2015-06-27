@@ -28,11 +28,12 @@ _styles.less:_
 
 ```css
 /* doxray
-    label: Button
-    markup: <button class="btn">Button</button>
-    notes:
-      - "Don't use anchor elements as buttons unless they actually link to
-         another page."
+label: Button
+markup: <button class="btn">Button</button>
+notes:
+  - >
+    Don't use anchor elements as buttons unless they actually link to
+    another page."
 */
 .btn {
     font-size: unit(14px / 16px, em);
@@ -123,8 +124,8 @@ line.
 
 ```html
 <!-- doxray
-    label: my pattern
-    description: this is how you structure my pattern
+label: my pattern
+description: this is how you structure my pattern
 -->
 ```
 
@@ -175,7 +176,7 @@ For example, this comment:
 
 ```css
 /* doxray
-    label: Primary Button
+label: Primary Button
 */
 ```
 
@@ -200,7 +201,7 @@ For example, this comment:
 
 ```scss
 /* doxray
-    colorPalette: less
+colorPalette: less
 */
 @white: #fff;
 @black: #000;

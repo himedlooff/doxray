@@ -2,6 +2,15 @@ All notable changes to this project will be documented in this file.
 I follow the [Semantic Versioning 2.0.0](http://semver.org/) format.
 
 
+## 0.6.0 - 2015-06-27
+
+### Breaking changes
+- Ports the `simple-schema` branch to `master`. The schema has been simplified.
+  Dox-ray returns one array of pattern objects instead of an array of doc/code
+  pairs. Each pattern object has reserved properties like `filename` and common
+  file extensions like `less`, `scss`, and `css`.
+
+
 ## 0.5.2 - 2015-06-06
 
 ### Fixed
