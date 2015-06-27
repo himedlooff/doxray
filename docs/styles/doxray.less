@@ -1,16 +1,19 @@
-@import "variables.less";
+@import "doxray-variables.less";
+@import "doxray-docs.less";
 
 /* doxray
 header:
     true
 label:
-    Styles
-*/
-
-
-/* doxray
-label:
     .doxray
+description:
+    The namespace which all Dox-ray classes should be prepended with.
+notes:
+    - >
+        All Dox-ray classes must be namespaced with `doxray` in order to
+        avoid accidentally overriding the users' stylesheet.
+    - >
+        This class must be added to the `<body>` tag.
 */
 
 .doxray {
@@ -20,30 +23,13 @@ label:
 
 
 /* doxray
+header:
+    true
 label:
-    .doxray_nav
+    The rest of the patterns
+description:
+    To be documented
 */
-
-.doxray-docs_nav {
-    box-sizing: border-box;
-    position: fixed;
-    top: 0;
-    bottom: 0;
-    left: 0;
-    width: @doxray-nav-width;
-    padding: 0 0 60px 20px;
-    background: @doxray-color-paper-white;
-    overflow-y: auto;
-    z-index: 0;
-}
-
-.doxray-docs_patterns {
-    position: relative;
-    margin-left: @doxray-nav-width;
-    background: @doxray-color-clean-white;
-    box-shadow: 0 0 4px @doxray-color-shadow;
-    z-index: 1;
-}
 
 
 /* doxray

@@ -16,7 +16,7 @@ gulp.task('watch', function() {
 });
 
 gulp.task('less', function() {
-    return gulp.src('styles/styles.less')
+    return gulp.src('styles/doxray.less')
     .pipe(less({
         paths: [ path.join(__dirname, 'styles') ]
     }))
@@ -31,7 +31,11 @@ gulp.task('less', function() {
 });
 
 gulp.task('dox-ray', ['less'], function() {
-    doxray(['styles/variables.less', 'styles/styles.less'], {
+    doxray([
+            'styles/doxray.less',
+            'styles/doxray-variables.less',
+            'styles/doxray-docs.less'
+        ], {
         jsFile: 'parsed_docs.js',
         logging: true
     });

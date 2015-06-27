@@ -29,19 +29,11 @@ label:
 header:
     true
 label:
-    Styles
+    .doxray-docs
 */
 /* doxray
 label:
-    .doxray
-*/
-.doxray {
-  margin: 0;
-  padding: 0;
-}
-/* doxray
-label:
-    .doxray_nav
+    .doxray-docs_nav
 */
 .doxray-docs_nav {
   box-sizing: border-box;
@@ -55,6 +47,10 @@ label:
   overflow-y: auto;
   z-index: 0;
 }
+/* doxray
+label:
+    .doxray-docs_patterns
+*/
 .doxray-docs_patterns {
   position: relative;
   margin-left: 220px;
@@ -62,6 +58,32 @@ label:
   box-shadow: 0 0 4px #6e6c6c;
   z-index: 1;
 }
+/* doxray
+header:
+    true
+label:
+    .doxray
+description:
+    The namespace which all Dox-ray classes should be prepended with.
+notes:
+    - >
+        All Dox-ray classes must be namespaced with `doxray` in order to
+        avoid accidentally overriding the users' stylesheet.
+    - >
+        This class must be added to the `<body>` tag.
+*/
+.doxray {
+  margin: 0;
+  padding: 0;
+}
+/* doxray
+header:
+    true
+label:
+    The rest of the patterns
+description:
+    To be documented
+*/
 /* doxray
 label:
     .doxray-icon-file

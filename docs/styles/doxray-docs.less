@@ -1,0 +1,42 @@
+@import "doxray-variables.less";
+
+
+/* doxray
+header:
+    true
+label:
+    .doxray-docs
+*/
+
+
+/* doxray
+label:
+    .doxray-docs_nav
+*/
+
+.doxray-docs_nav {
+    box-sizing: border-box;
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    width: @doxray-nav-width;
+    padding: 0 0 60px 20px;
+    background: @doxray-color-paper-white;
+    overflow-y: auto;
+    z-index: 0;
+}
+
+
+/* doxray
+label:
+    .doxray-docs_patterns
+*/
+
+.doxray-docs_patterns {
+    position: relative;
+    margin-left: @doxray-nav-width;
+    background: @doxray-color-clean-white;
+    box-shadow: 0 0 4px @doxray-color-shadow;
+    z-index: 1;
+}
