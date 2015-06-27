@@ -1,11 +1,8 @@
 var autoprefixer = require('gulp-autoprefixer');
-var concat = require('gulp-concat');
 var doxray = require('../index.js');
 var gulp =   require('gulp');
 var less =   require('gulp-less');
 var path =   require('path');
-var rename = require('gulp-rename');
-var uglify = require('gulp-uglify');
 var watch =  require('gulp-watch');
 
 gulp.task('default', ['dox-ray']);
