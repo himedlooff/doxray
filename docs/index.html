@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <title>Dox-ray</title>
-    <script type="text/x-handlebars-template" id="doxray_toc-template">
-        <main class="doxray_toc doxray-toc" id="doxray_toc">
+    <script type="text/x-handlebars-template" id="doxray-toc-template">
+        <main class="doxray-toc" id="doxray-toc">
             <h1 class="doxray-toc_masthead">
                 Pattern Library
             </h1>
@@ -37,7 +37,7 @@
             </div>
         </main>
     </script>
-    <script type="text/x-handlebars-template" id="doxray_patterns-template-raw">
+    <script type="text/x-handlebars-template" id="doxray-docs_patterns-template-raw">
         {{#each this}}{{#unless this.docs.eof}}
             <section id="{{this.slug}}">
                 {{#if this.label}}
@@ -50,8 +50,8 @@
             </section>
         {{/unless}}{{/each}}
     </script>
-    <script type="text/x-handlebars-template" id="doxray_nav-template">
-        <nav class="doxray_nav" id="doxray_nav">
+    <script type="text/x-handlebars-template" id="doxray-docs_nav-template">
+        <nav class="doxray-docs_nav" id="doxray-docs_nav">
             <a class="doxray-header-link doxray-header-link__file" href="?file={{this.0.filename}}">
                 <i class="doxray-icon-file"></i>
                 <span class="doxray-header-link_info">
@@ -80,8 +80,8 @@
             </a>
         </nav>
     </script>
-    <script type="text/x-handlebars-template" id="doxray_patterns-template">
-        <main class="doxray_patterns" id="doxray_patterns">
+    <script type="text/x-handlebars-template" id="doxray-docs_patterns-template">
+        <main class="doxray-docs_patterns" id="doxray-docs_patterns">
             {{#each this}}{{#unless this.eof}}
                 <section class="doxray-doc{{#if this.header}} doxray-doc__header{{/if}}" id="{{this.slug}}">
                     {{#if this.label}}

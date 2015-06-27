@@ -109,20 +109,20 @@ this.PatternLibrary.toggleCode = function(e) {
 this.PatternLibrary.makeContentHTML = function() {
     this.content = this.doxray.files[getParameterByName('file')];
     if (this.layout === 'raw') {
-        this.contentTemplate = Handlebars.compile($('#doxray_patterns-template-raw').html());
+        this.contentTemplate = Handlebars.compile($('#doxray-docs_patterns-template-raw').html());
     } else {
-        this.contentTemplate = Handlebars.compile($('#doxray_patterns-template').html());
+        this.contentTemplate = Handlebars.compile($('#doxray-docs_patterns-template').html());
     }
     return this.contentTemplate(this.content);
 };
 
 this.PatternLibrary.makeNavHTML = function() {
-    this.navTemplate = Handlebars.compile($('#doxray_nav-template').html());
+    this.navTemplate = Handlebars.compile($('#doxray-docs_nav-template').html());
     return this.navTemplate(this.content);
 };
 
 this.PatternLibrary.makeTocHTML = function() {
-    this.tocTemplate = Handlebars.compile($('#doxray_toc-template').html());
+    this.tocTemplate = Handlebars.compile($('#doxray-toc-template').html());
     return this.tocTemplate(this.doxray.files);
 };
 

@@ -75,7 +75,7 @@ var Doxray = {
     },
     {
       "label": ".doxray_nav",
-      "less": ".doxray_nav {\n    box-sizing: border-box;\n    position: fixed;\n    top: 0;\n    bottom: 0;\n    left: 0;\n    width: @doxray-nav-width;\n    padding: 0 0 60px 20px;\n    background: @doxray-color-paper-white;\n    overflow-y: auto;\n    z-index: 0;\n}\n\n.doxray_patterns {\n    position: relative;\n    margin-left: @doxray-nav-width;\n    background: @doxray-color-clean-white;\n    box-shadow: 0 0 4px @doxray-color-shadow;\n    z-index: 1;\n}",
+      "less": ".doxray-docs_nav {\n    box-sizing: border-box;\n    position: fixed;\n    top: 0;\n    bottom: 0;\n    left: 0;\n    width: @doxray-nav-width;\n    padding: 0 0 60px 20px;\n    background: @doxray-color-paper-white;\n    overflow-y: auto;\n    z-index: 0;\n}\n\n.doxray-docs_patterns {\n    position: relative;\n    margin-left: @doxray-nav-width;\n    background: @doxray-color-clean-white;\n    box-shadow: 0 0 4px @doxray-color-shadow;\n    z-index: 1;\n}",
       "filename": "styles.less",
       "slug": "doxray_nav"
     },
