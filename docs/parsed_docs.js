@@ -37,13 +37,13 @@ var Doxray = {
     {
       "label": ".doxray-toc_masthead",
       "markup": "<h1 class=\"doxray-toc_masthead\">\n    Masthead\n</h1>\n",
-      "less": ".doxray-toc_masthead {\n    margin: 0;\n    padding: @doxray-margin-large;\n    background: @doxray-color-paper-white;\n    font-family: @doxray-font-family-default;\n    font-size: @doxray-font-size-xlg;\n    font-weight: @doxray-font-weight-light;\n    text-align: center;\n}",
+      "less": ".doxray-toc_masthead {\n    margin: 0;\n    padding: @doxray-margin-large;\n    border-bottom: 1px solid @doxray-color-dirtier-white;\n    background: @doxray-color-paper-white;\n    font-family: @doxray-font-family-default;\n    font-size: @doxray-font-size-xlg;\n    font-weight: @doxray-font-weight-light;\n}",
       "filename": "doxray.less",
       "slug": "doxray-toc_masthead"
     },
     {
       "label": ".doxray-toc_body",
-      "less": ".doxray-toc_body {\n    position: relative;\n    padding: @doxray-margin-large;\n    box-shadow: 0 0 2px @doxray-color-shadow;\n}",
+      "less": ".doxray-toc_body {\n    position: relative;\n    padding: @doxray-margin-large;\n}",
       "filename": "doxray.less",
       "slug": "doxray-toc_body"
     },

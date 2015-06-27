@@ -123,11 +123,11 @@ markup: |
 .doxray-toc_masthead {
   margin: 0;
   padding: 72px;
+  border-bottom: 1px solid #f0f0f0;
   background: #fdfdfd;
   font-family: "Open Sans", "Segoe UI", "Helvetica Neue", Helvetica, Arial;
   font-size: 42px;
   font-weight: 300;
-  text-align: center;
 }
 /* doxray
 label:
@@ -136,7 +136,6 @@ label:
 .doxray-toc_body {
   position: relative;
   padding: 72px;
-  box-shadow: 0 0 2px #6e6c6c;
 }
 /* doxray
 label:
