@@ -1,9 +1,9 @@
-var autoprefixer = require('gulp-autoprefixer');
-var doxray = require('../index.js');
-var gulp =   require('gulp');
-var less =   require('gulp-less');
-var path =   require('path');
-var watch =  require('gulp-watch');
+var autoprefixer =  require('gulp-autoprefixer');
+var doxray =        require('../index.js');
+var gulp =          require('gulp');
+var less =          require('gulp-less');
+var path =          require('path');
+var watch =         require('gulp-watch');
 
 gulp.task('default', ['dox-ray']);
 
