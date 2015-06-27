@@ -8,8 +8,7 @@ var watch =  require('gulp-watch');
 gulp.task('default', ['dox-ray']);
 
 gulp.task('watch', function() {
-    var lessWatcher = gulp.watch(['styles/*.less'], ['less', 'dox-ray']);
-    lessWatcher.on('change', logChange);
+    gulp.watch(['styles/*.less'], ['less', 'dox-ray']);
 });
 
 gulp.task('less', function() {
@@ -37,7 +36,3 @@ gulp.task('dox-ray', ['less'], function() {
         logging: true
     });
 });
-
-function logChange(event) {
-    console.log('File ' + event.path + ' was ' + event.type + ', running tasks...');
-}
