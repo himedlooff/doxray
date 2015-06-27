@@ -135,6 +135,10 @@ label:
     margin: 0;
     padding: 0;
     list-style-type: none;
+
+    &__docs-nav {
+        padding: 20px;
+    }
 }
 
 
@@ -144,93 +148,22 @@ label:
 */
 
 .doxray-toc_file-list-item {
-    width: 200px;
-    min-width: 200px;
+    width: 220px;
+    min-width: 220px;
     margin: 0 1em 4em 0;
 
     &.is-collapsed {
         margin-bottom: 1em;
     }
 
-    &.is-collapsed .doxray-link__file {
-        margin-bottom: 0;
-    }
-
-    &.is-collapsed .doxray-link__pattern-header,
-    &.is-collapsed .doxray-link__pattern {
+    &.is-collapsed .doxray-link {
         display: none;
     }
-}
 
-
-/* doxray
-label:
-    .doxray-header-link
-markup: |
-    <a class="doxray-header-link" href="#0">
-        <i class="doxray-icon-file"></i>
-        <span class="doxray-header-link_info">
-            filename.ext
-        </span>
-    </a>
-*/
-
-.doxray-header-link {
-    &,
-    &:link,
-    &:visited {
-        box-sizing: border-box;
+    &.is-collapsed .doxray-link__file {
         display: block;
-        width: @doxray-nav-width;
-        min-height: 40px;
-        padding: 0 20px;
-        background: @doxray-color-dirty-white;
-        color: @doxray-color-gray;
-        font-size: @doxray-font-size-md;
-        line-height: 38px;
-        text-decoration: none;
+        margin-bottom: 0;
     }
-
-    &:hover,
-    &:focus {
-        background: @doxray-color-dirtier-white;
-        outline: 0;
-    }
-}
-
-
-/* doxray
-label:
-    .doxray-header-link_info
-*/
-
-.doxray-header-link_info {
-    margin-left: .75em;
-    font-family: @doxray-font-family-default;
-    font-size: @doxray-font-size-sm;
-}
-
-
-/* doxray
-label:
-    .doxray-header-link__file
-*/
-
-.doxray-header-link__file {
-    margin-left: -20px;
-    margin-bottom: 20px;
-}
-
-
-/* doxray
-label:
-    .doxray-header-link__toc
-*/
-
-.doxray-header-link__toc {
-    position: fixed;
-    left: 0;
-    bottom: 0;
 }
 
 
@@ -239,7 +172,7 @@ label:
     .doxray-link
 markup: |
     <a class="doxray-link" href="#0">
-        filename.ext
+        A simple blocky link
     </a>
 */
 
@@ -250,7 +183,7 @@ markup: |
         position: relative;
         display: block;
         margin: 0;
-        padding: .5em .75em;
+        padding: 6px 12px;
         border: 0;
         background: transparent;
         font-family: @doxray-font-family-default;
@@ -284,63 +217,30 @@ markup: |
     &:link,
     &:visited {
         margin: 0 0 .5em;
+        padding-top: 8px;
+        padding-bottom: 8px;
         background: @doxray-color-dirty-white;
         font-family: @doxray-font-family-code;
-        font-size: @doxray-font-size-sm;
     }
 
     &:hover,
     &:focus {
         background: @doxray-color-dirtier-white;
     }
-
-    .doxray-icon-file {
-        opacity: .75;
-    }
 }
 
 
 /* doxray
 label:
-    .doxray-link__pattern-header
+    .doxray-link__header
 markup: |
-    <a class="doxray-link doxray-link__pattern-header" href="#0">
-        Pattern header
+    <a class="doxray-link doxray-link__header" href="#0">
+        Header link
     </a>
 */
 
-.doxray-link__pattern-header {
-    &,
-    &:link,
-    &:visited {
-        font-size: @doxray-font-size-sm;
-        font-weight: @doxray-font-weight-demi;
-    }
-}
-
-
-/* doxray
-label:
-    .doxray-link__pattern
-markup: |
-    <a class="doxray-link doxray-link__pattern" href="#0">
-        Pattern label
-    </a>
-*/
-
-.doxray-link__pattern {
-    &,
-    &:link,
-    &:visited {
-        padding: .5em .75em .5em 1.85em;
-    }
-
-    .doxray-icon-pattern {
-        position: absolute;
-        left: .75em;
-        width: 1.75em;
-        opacity: .15;
-    }
+.doxray-link__header {
+    font-weight: @doxray-font-weight-demi;
 }
 
 
@@ -348,21 +248,21 @@ markup: |
 label:
     .doxray-link-hr
 markup: |
-    <a class="doxray-link doxray-link__pattern" href="#0">
-        Pattern label
+    <a class="doxray-link" href="#0">
+        A simple blocky link
     </a>
     <hr class="doxray-link-hr">
-    <a class="doxray-link doxray-link__pattern" href="#0">
-        Pattern label
+    <a class="doxray-link" href="#0">
+        A simple blocky link
     </a>
 */
 
 .doxray-link-hr {
     display: block;
     height: 1px;
-    margin: 20px 0 20px -20px;
+    margin: 20px 10px;
     border: 0;
-    background: @doxray-color-dirty-white;
+    background: @doxray-color-dirtier-white;
 }
 
 

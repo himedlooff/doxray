@@ -17,16 +17,15 @@
                     {{#each this}}
                     <li class="doxray-toc_file-list-item">
                         <a class="doxray-link doxray-link__file" href="?file={{@key}}">
-                            <i class="doxray-icon-file"></i> {{@key}}
+                            {{@key}}
                         </a>
                         {{#each this}}
                             {{#if this.header}}
-                                <a class="doxray-link doxray-link__pattern-header" href="?file={{@../key}}#{{this.slug}}">
+                                <a class="doxray-link doxray-link__header" href="?file={{@../key}}#{{this.slug}}">
                                     {{this.label}}
                                 </a>
                             {{else}}
-                                <a class="doxray-link doxray-link__pattern" href="?file={{@../key}}#{{this.slug}}">
-                                    <i class="doxray-icon-pattern"></i>
+                                <a class="doxray-link" href="?file={{@../key}}#{{this.slug}}">
                                     {{this.label}}
                                 </a>
                             {{/if}}
@@ -52,32 +51,29 @@
     </script>
     <script type="text/x-handlebars-template" id="doxray-docs_nav-template">
         <nav class="doxray-docs_nav" id="doxray-docs_nav">
-            <a class="doxray-header-link doxray-header-link__file" href="?file={{this.0.filename}}">
-                <i class="doxray-icon-file"></i>
-                <span class="doxray-header-link_info">
-                    {{this.0.filename}}
-                </span>
-            </a>
-            {{#each this}}
-                {{#if this.header}}
-                    <a class="doxray-link doxray-link__pattern-header" href="?file={{../../this.0.filename}}#{{this.slug}}">
-                        {{this.label}}
+            <ul class="doxray-toc_file-list doxray-toc_file-list__docs-nav">
+                <li class="doxray-toc_file-list-item">
+                    <a class="doxray-link doxray-link__file" href="?file={{this.0.filename}}">
+                        {{this.0.filename}}
                     </a>
-                {{else}}
-                    <a class="doxray-link doxray-link__pattern" href="?file={{../../this.0.filename}}#{{this.slug}}">
-                        <i class="doxray-icon-pattern"></i>
-                        {{this.label}}
+                    {{#each this}}
+                        {{#if this.header}}
+                            <a class="doxray-link doxray-link__header" href="?file={{../../this.0.filename}}#{{this.slug}}">
+                                {{this.label}}
+                            </a>
+                        {{else}}
+                            <a class="doxray-link" href="?file={{../../this.0.filename}}#{{this.slug}}">
+                                {{this.label}}
+                            </a>
+                        {{/if}}
+                    {{/each}}
+                    <hr class="doxray-link-hr">
+                    <a class="doxray-link doxray-link__docs-nav" href="?file={{this.0.filename}}&raw=true">Raw view</a>
+                    <a class="doxray-link doxray-link__docs-nav" href="index.html">
+                        Back to all patterns
                     </a>
-                {{/if}}
-            {{/each}}
-            <hr class="doxray-link-hr">
-            <a class="doxray-link" href="?file={{this.0.filename}}&raw=true">Raw view</a>
-            <a class="doxray-header-link doxray-header-link__toc js-toggle-all-patterns" href="index.html">
-                <i class="doxray-icon-pattern"></i>
-                <span class="doxray-header-link_info">
-                    All patterns
-                </span>
-            </a>
+                </li>
+            </ul>
         </nav>
     </script>
     <script type="text/x-handlebars-template" id="doxray-docs_patterns-template">
