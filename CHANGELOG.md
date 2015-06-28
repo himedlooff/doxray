@@ -2,6 +2,13 @@ All notable changes to this project will be documented in this file.
 I follow the [Semantic Versioning 2.0.0](http://semver.org/) format.
 
 
+## 0.6.1 - 2015-06-27
+
+### Added
+- For some reason `utils.js` isn't getting downloaded with `npm install dox-ray`.
+  Maybe adding an empty `.npmignore` file will fix this? Let's find out.
+
+
 ## 0.6.0 - 2015-06-27
 
 ### Breaking changes
