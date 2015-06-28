@@ -8,6 +8,7 @@ ehthumbs.db
 Thumbs.db
 
 node_modules/
+npm-debug.log
 
 test/run-test.js
 test/run-test.json
