@@ -1,5 +1,8 @@
 # Doxray
 
+_This project has changed from "dox-ray" to "doxray"._
+_There's no need to ever use the dash._
+
 Doxray is a node module that can parse special code comments and return
 an array of objects containing document/code pairs. Comments are written in YAML
 and parsed into structured objects. The YAML structure is up to you. You define
