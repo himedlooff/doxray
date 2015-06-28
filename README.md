@@ -10,6 +10,8 @@ the documentation properties that's right for your code. Doxray can also
 write to a JS or JSON file which you can use to build completely client-side
 documentation sites that won't slow down your task runner.
 
+You can find a Doxray template at <https://github.com/himedlooff/doxray-template>.
+
 Note that this project is currently in Beta.
 
 
