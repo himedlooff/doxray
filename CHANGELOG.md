@@ -5,7 +5,7 @@ I follow the [Semantic Versioning 2.0.0](http://semver.org/) format.
 ## 0.6.1 - 2015-06-27
 
 ### Added
-- For some reason `utils.js` isn't getting downloaded with `npm install dox-ray`.
+- For some reason `utils.js` isn't getting downloaded with `npm install doxray`.
   Maybe adding an empty `.npmignore` file will fix this? Let's find out.
 
 
@@ -13,7 +13,7 @@ I follow the [Semantic Versioning 2.0.0](http://semver.org/) format.
 
 ### Breaking changes
 - Ports the `simple-schema` branch to `master`. The schema has been simplified.
-  Dox-ray returns one array of pattern objects instead of an array of doc/code
+  Doxray returns one array of pattern objects instead of an array of doc/code
   pairs. Each pattern object has reserved properties like `filename` and common
   file extensions like `less`, `scss`, and `css`.
 
