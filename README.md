@@ -82,7 +82,7 @@ Doxray = {
   "patterns": [
     {
       "label": "Button",
-      "markup": "<button class=\"btn\">Button</button>,"
+      "markup": "<button class=\"btn\">Button</button>",
       "notes": [ "Don't use anchor elements as buttons unless they actually link to another page." ],
       "filename": "styles.less",
       "less": ".btn {\nfont-size: unit(14px / 16px, em);\n}"
@@ -113,7 +113,7 @@ _styles.json:_
 [
   {
     "label": "Button",
-    "markup": "<button class=\"btn\">Button</button>,"
+    "markup": "<button class=\"btn\">Button</button>",
     "notes": [ "Don't use anchor elements as buttons unless they actually link to another page." ],
     "filename": "styles.less",
     "less": ".btn {\nfont-size: unit(14px / 16px, em);\n}"
