@@ -20,8 +20,8 @@ module.exports = function( doxrayObject ) {
       } else {
         return pattern[ property ] && pattern[ property ].toLowerCase() === value.toLowerCase();
       }
-    }
-  }
+    };
+  };
 
   // Always return doxrayObject.
   return doxrayObject;
