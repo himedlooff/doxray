@@ -96,7 +96,7 @@ Doxray.prototype.writeJSON = function( convertedDocs, dest, callback ) {
     }
     if ( this.logging ) console.log( dest, 'was created.' );
     if ( typeof callback === 'undefined' ) return;
-    callback();
+    callback( convertedDocs );
   }.bind( this ));
 };
 
@@ -110,7 +110,7 @@ Doxray.prototype.writeJS = function( convertedDocs, dest, callback ) {
     }
     if ( this.logging ) console.log( dest, 'was created.' );
     if ( typeof callback === 'undefined' ) return;
-    callback();
+    callback( convertedDocs );
   }.bind( this ));
 };
 
