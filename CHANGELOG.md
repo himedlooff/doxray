@@ -2,6 +2,12 @@ All notable changes to this project will be documented in this file.
 I follow the [Semantic Versioning 2.0.0](http://semver.org/) format.
 
 
+## 0.7.2 - 2019-06-05
+
+### Fixed
+- Fixed vulnerable dependencies.
+
+
 ## 0.7.1 - 2018-03-02
 
 ### Added
