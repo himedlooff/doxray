@@ -2,7 +2,7 @@ All notable changes to this project will be documented in this file.
 I follow the [Semantic Versioning 2.0.0](http://semver.org/) format.
 
 
-## 0.8.0 - 2019-09-17
+## 0.8.1 - 2019-09-17
 
 ### Added
 - Added support for overriding the default regex patterns with the `options` object.
