@@ -17,15 +17,12 @@ utils.handleOptions = function( options ) {
   if ( typeof options !== 'object' ) {
     options = {};
   }
-  options.jsFile = options.jsFile;
-  options.jsonFile = options.jsonFile;
-  if ( typeof options.merge === 'undefined' ) {
-    options.merge = true;
-  }
-  if ( typeof options.processors === 'undefined' ) {
-    options.processors = require('./doxray.js').prototype.processors;
-  }
-  return options;
+  return {
+    jsFile: options.jsFile,
+    jsonFile: options.jsonFile,
+    processors: options.processors || require('./doxray.js').prototype.processors,
+    regex: options.regex || require('./doxray.js').prototype.regex
+  };
 };
 
 // The following function was referenced from:

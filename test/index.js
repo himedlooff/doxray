@@ -3,6 +3,7 @@ var chai = require('chai');
 var assert = chai.assert;
 var Doxray = require('../doxray');
 var doxray = new Doxray();
+var doxrayDefaultOptions = require('../utils.js').handleOptions();
 
 chai.use( require('chai-fs') );
 
@@ -56,13 +57,58 @@ describe('doxray.js, core methods', function() {
       );
     });
 
+    it('should respect custom regex patterns in options', function () {
+      var options = {
+        regex: {
+          css: {
+            opening: /^\/\*\s*@docs[^\n]*\n/m,
+            closing: /\*\//,
+            comment: /^\/\*\s*@docs[^*]*\*+(?:[^/*][^*]*\*+)*\//gm
+          }
+        }
+      };
+      var docs = doxray.run('test/custom-comment-regex-test.css', options);
+      assert.deepEqual(
+        docs.patterns[0].prop1,
+        'Comment one'
+      );
+    });
+
+    it('should respect custom processors in options', function () {
+      var options = {
+        processors: [
+          function( doxrayObject ) {
+            // Use the label property of each pattern to create a slug property.
+            doxrayObject.patterns.forEach(function( pattern ){
+              if ( pattern.label ) {
+                pattern.slug = 'slug-' + pattern.label
+                  .toLowerCase()
+                  .replace( / /g, '-' )
+                  .replace( /[^\w-]+/g, '' );
+              }
+            });
+            // Always return doxrayObject.
+            return doxrayObject;
+          }
+        ]
+      };
+      var docs = doxray.run('test/slugify-test.css', options);
+      assert.deepEqual(
+        docs.patterns[0].slug,
+        'slug-comment-one'
+      );
+
+      // We need to refresh the Doxray object because we deleted the processors.
+      doxray = new Doxray();
+    });
+
   });
 
   describe('parse()', function() {
 
     it('should parse an array of files into an array of structured objects', function() {
       assert.deepEqual(
-        doxray.parse( ['test/test.css'] ),
+        doxray.parse( ['test/test.css'], doxrayDefaultOptions ),
         [{
           prop1: 'Comment one',
           filename: 'test.css',
@@ -73,7 +119,7 @@ describe('doxray.js, core methods', function() {
 
     it('should return an empty array if no Doxray comments are found', function() {
       assert.deepEqual(
-        doxray.parse( ['test/empty-file.css'] ),
+        doxray.parse( ['test/empty-file.css'], doxrayDefaultOptions ),
         []
       );
     });
@@ -85,7 +131,7 @@ describe('doxray.js, core methods', function() {
     it('should send the parsed data through an array of processing functions', function() {
       assert.deepEqual(
         doxray.postParseProcessing(
-          doxray.parse( ['test/test.css'] ),
+          doxray.parse( ['test/test.css'], doxrayDefaultOptions ),
           [
             function( parsed ) {
               parsed.patterns = [];
@@ -108,7 +154,7 @@ describe('doxray.js, core methods', function() {
       it('should slugify the label property in each pattern', function() {
         function run() {
           var parsed = doxray.postParseProcessing(
-                doxray.parse( ['test/slugify-test.css', 'test/test.css'], false ),
+                doxray.parse( ['test/slugify-test.css', 'test/test.css'], doxrayDefaultOptions ),
                 doxray.processors
               );
           return parsed.patterns[0].slug + ' ' +
@@ -131,7 +177,7 @@ describe('doxray.js, core methods', function() {
       it('should replace the colorPalette property with an array of key value pairs', function() {
         function run() {
           var parsed = doxray.postParseProcessing(
-                doxray.parse( ['test/color-palette-test.scss'] ),
+                doxray.parse( ['test/color-palette-test.scss'], doxrayDefaultOptions ),
                 doxray.processors
               );
           return [ parsed.patterns[0].colorPalette, parsed.patterns[1].colorPalette ];
@@ -152,7 +198,7 @@ describe('doxray.js, core methods', function() {
       it('passing one argument should return an array of patterns with the presence of a specific property', function() {
         function run() {
           var parsed = doxray.postParseProcessing(
-                doxray.parse( ['test/slugify-test.css', 'test/test.css'], false ),
+                doxray.parse( ['test/slugify-test.css', 'test/test.css'], doxrayDefaultOptions ),
                 doxray.processors
               );
           return parsed.getByProperty( 'label' ).length;
@@ -163,7 +209,7 @@ describe('doxray.js, core methods', function() {
       it('passing two arguments should return an array of patterns with a specific property that matches a specific value', function() {
         function run() {
           var parsed = doxray.postParseProcessing(
-                doxray.parse( ['test/slugify-test.css', 'test/test.css'], false ),
+                doxray.parse( ['test/slugify-test.css', 'test/test.css'], doxrayDefaultOptions ),
                 doxray.processors
               );
           return parsed.getByProperty( 'label', 'comment one' ).length;
@@ -230,6 +276,32 @@ describe('index.js, a simple alias that creates an instance of Doxray() for you'
 });
 
 describe('utils.js', function() {
+
+  describe('handleOptions()', function () {
+
+    it('should return an options object', function () {
+      var options = {
+        regex: {
+          css: {
+            opening: /^\/\*\s*@docs[^\n]*\n/m,
+            closing: /\*\//,
+            comment: /^\/\*\s*@docs[^*]*\*+(?:[^/*][^*]*\*+)*\//gm
+          }
+        }
+      };
+      var transformedOptions = require('../utils.js').handleOptions(options);
+      assert.deepEqual(
+        transformedOptions,
+        {
+          jsFile: undefined,
+          jsonFile: undefined,
+          processors: doxray.processors,
+          regex: options.regex
+        }
+      );
+    });
+
+  });
 
   describe('parseOutDocs()', function() {
 
@@ -343,130 +415,3 @@ describe('utils.js', function() {
   });
 
 });
-
-// describe('mergeParsedSources()', function() {
-//   it('merges two objects if their docs are identical', function() {
-//     assert.deepEqual(
-//       doxray.parse( [ 'test/test.css', 'test/test.less' ], true ),
-//       [
-//         [
-//           {
-//             docs: { prop1: 'Comment one' },
-//             code: [
-//               {
-//                 filename: 'test.css',
-//                 type: '.css',
-//                 code: ''
-//               },
-//               {
-//                 filename: 'test.less',
-//                 type: '.less',
-//                 code: ''
-//               }
-//             ]
-//           },
-//         ]
-//       ]
-//     );
-//     assert.deepEqual(
-//       doxray.mergeParsedSources(
-//         [
-//           [
-//             {
-//               docs: { name: 'pattern one' },
-//               code: [
-//                 { code: 'test.css code', filename: 'test.css' }
-//               ]
-//             },
-//             {
-//               docs: { name: 'pattern two' },
-//               code: [
-//                 { code: 'test.css code', filename: 'test.css' }
-//               ]
-//             }
-//           ],
-//           [
-//             {
-//               docs: { name: 'pattern one' },
-//               code: [
-//                 { code: 'test.less code', filename: 'test.less' }
-//               ]
-//             },
-//             {
-//               docs: { name: 'pattern two' },
-//               code: [
-//                 { code: 'test.less code', filename: 'test.less' }
-//               ]
-//             }
-//           ]
-//         ]
-//       ),
-//       [
-//         {
-//           docs: { name: 'pattern one' },
-//           code: [
-//             { code: 'test.css code', filename: 'test.css' },
-//             { code: 'test.less code', filename: 'test.less' }
-//           ]
-//         },
-//         {
-//           docs: { name: 'pattern two' },
-//           code: [
-//             { code: 'test.css code', filename: 'test.css' },
-//             { code: 'test.less code', filename: 'test.less' }
-//           ]
-//         }
-//       ]
-//     );
-//   });
-
-//   it('when attempting to merge two', function() {
-//     assert.deepEqual(
-//       doxray.mergeParsedSources(
-//         [
-//           [
-//             {
-//               docs: { name: 'pattern name' },
-//               code: [
-//                 { code: 'test.css code', filename: 'test.css' },
-//                 { code: 'test.less code', filename: 'test.less' }
-//               ]
-//             }
-//           ],
-//           [
-//             {
-//               docs: { name: 'a different pattern name' },
-//               code: [
-//                 { code: 'test.less code', filename: 'test.less' }
-//               ]
-//             }
-//           ]
-//         ]
-//       ),
-//       [
-//         {
-//           docs: { name: 'pattern name' },
-//           code: [
-//             { code: 'test.css code', filename: 'test.css' },
-//             { code: 'test.less code', filename: 'test.less' }
-//           ]
-//         },
-//         {
-//           docs: { name: 'a different pattern name' },
-//           code: [
-//             { code: 'test.less code', filename: 'test.less' }
-//           ]
-//         }
-//       ]
-//     );
-//   });
-// });
-
-// from "describes run()"
-// it('merge', function() {
-//   var docs = doxray.run( [ 'test/test.css', 'test/test.less' ], { merge: true } );
-//   assert.deepEqual(
-//     docs.patterns[0].prop1,
-//     'Comment one'
-//   );
-// });

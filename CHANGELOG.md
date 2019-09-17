@@ -2,6 +2,19 @@ All notable changes to this project will be documented in this file.
 I follow the [Semantic Versioning 2.0.0](http://semver.org/) format.
 
 
+## 0.8.0 - 2019-09-17
+
+### Added
+- Added support for overriding the default regex patterns with the `options` object.
+
+### Changed
+- Changed the way options are merged in `utils.js/handleOptions`.
+- Changed the signature for the `Doxray.run` function from `function( src, merge )` to `function( src, options )`
+
+### Removed
+- Removed references to a non-functional `merge` feature.
+
+
 ## 0.7.3 - 2019-09-12
 
 ### Fixed
