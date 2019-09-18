@@ -2,7 +2,7 @@ All notable changes to this project will be documented in this file.
 I follow the [Semantic Versioning 2.0.0](http://semver.org/) format.
 
 
-## Unreleased
+## 0.8.2 - 2019-09-18
 
 ### Added
 - Added support for an ignore comment for cases where you only want to document some classes in your code;
