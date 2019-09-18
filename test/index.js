@@ -25,6 +25,10 @@ describe('doxray.js, core methods', function() {
           docs.patterns[0].prop1,
           'Comment one'
         );
+        assert.deepEqual(
+          docs.patterns[1].prop1,
+          'Comment two'
+        );
       });
     });
 
@@ -112,7 +116,12 @@ describe('doxray.js, core methods', function() {
         [{
           prop1: 'Comment one',
           filename: 'test.css',
-          css: ''
+          css: '.test1 {\n    color: red;\n}'
+        },
+        {
+          prop1: 'Comment two',
+          filename: 'test.css',
+          css: '.test2 {\n    color: green;\n}'
         }]
       );
     });
@@ -326,10 +335,20 @@ describe('utils.js', function() {
 
   describe('parseOutCode()', function() {
 
-    it('should build an array of text blocks that come after each Doxray comment', function() {
+    it('should build an array of text blocks that come after each Doxray comment', function () {
       assert.deepEqual(
         require('../utils.js').parseOutCode(
           '/* doxray\n    prop1: Comment one\n*/\n.test{\n    content:\"Hello\";\n}',
+          doxray.regex.css
+        ),
+        [ '.test{\n    content:\"Hello\";\n}' ]
+      );
+    });
+
+    it('should ignore anything after and including the doxray ignore comment', function () {
+      assert.deepEqual(
+        require('../utils.js').parseOutCode(
+          '/* doxray\n    prop1: Comment one\n*/\n.test{\n    content:\"Hello\";\n}\n\n/* ignore-doxray */\n.unrelated-class{}',
           doxray.regex.css
         ),
         [ '.test{\n    content:\"Hello\";\n}' ]
@@ -371,8 +390,8 @@ describe('utils.js', function() {
 
     it('should return the contents of a file, trimming everything before the first doc comment', function() {
       assert.equal(
-        require('../utils.js').getFileContents( 'test/test.css', doxray.regex.css ),
-        '/* doxray\n    prop1: Comment one\n*/\n'
+        require('../utils.js').getFileContents( 'test/trim-test.css', doxray.regex.css ),
+        '/* doxray\n    prop1: Comment one\n*/\n\n.test1 {\n    color: red;\n}\n'
       );
     });
 

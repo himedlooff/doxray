@@ -2,6 +2,12 @@ All notable changes to this project will be documented in this file.
 I follow the [Semantic Versioning 2.0.0](http://semver.org/) format.
 
 
+## Unreleased
+
+### Added
+- Added support for an ignore comment for cases where you only want to document some classes in your code;
+closes https://github.com/himedlooff/doxray/issues/7
+
 ## 0.8.1 - 2019-09-17
 
 ### Added
