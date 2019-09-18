@@ -66,7 +66,7 @@ _In the above example, `docs` is equal to the following:_
 ]
 ```
 
-##### You can also save it to a JS or JSON file
+##### You can also save it to a JS or JSON file using the second argument to pass options
 
 ```js
 var docs = doxray(['styles.less'], {
@@ -141,8 +141,23 @@ description: this is how you structure my pattern
 | CSS/JS | `/* */` |
 | HTML | `<!-- -->` |
 
-You can easily add more by extending `Doxray.prototype.regex`.
-See https://github.com/himedlooff/doxray/blob/master/doxray.js#L144-L155
+You can easily add more by updating by passing in a regex key to the options argument using the format seen in
+https://github.com/himedlooff/doxray/blob/master/doxray.js#L12-L25
+
+```js
+var docs = doxray(['styles.less'], {
+  jsFile: 'styles.js',
+  jsonFile: 'styles.json',
+  regex: {
+    css: {
+      opening: /^\/\*\s*@docs[^\n]*\n/m,
+      closing: /\*\//,
+      comment: /^\/\*\s*@docs[^*]*\*+(?:[^/*][^*]*\*+)*\//gm,
+      ignore: /^\/\*\s*@ignore-docs[\s\S]*/gm
+    }
+  }
+});
+```
 
 #### YAML structure
 
