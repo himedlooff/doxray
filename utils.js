@@ -81,9 +81,7 @@ utils.parseOutCode = function( fileContents, regex ) {
   // Removes the first item in the array since it will always be empty.
   code.shift();
   // Clean each item in the array.
-  code.forEach(function( item, index ){
-    code[ index ] = code[ index ].trim();
-  });
+  code = code.map((item) => item.replace(regex.ignore, '').trim());
   return code;
 };
 

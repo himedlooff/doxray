@@ -3,3 +3,19 @@
 /* doxray
     prop1: Comment one
 */
+
+.test1 {
+    color: red;
+}
+
+/* ignore-doxray */
+
+/* Another comment */
+
+/* doxray
+    prop1: Comment two
+*/
+
+.test2 {
+    color: green;
+}
