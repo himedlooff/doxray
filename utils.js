@@ -85,7 +85,7 @@ utils.parseOutCode = function( fileContents, regex ) {
   return code;
 };
 
-utils.removeDoxrayCommentTokens = function ( item, regex ) {
+utils.removeDoxrayCommentTokens = function( item, regex ) {
   // Remove the opening and closing comments.
   return item.replace( regex.opening, '' ).replace( regex.closing, '' );
 };
