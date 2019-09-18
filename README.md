@@ -159,6 +159,27 @@ var docs = doxray(['styles.less'], {
 });
 ```
 
+##### The `ignore-doxray` comment can be used to indicate the end of a code pattern
+
+This is helpful in cases where not every piece of code is documented; for example:
+
+```css
+/* doxray
+    name: button, duh
+*/
+.btn { ... }
+
+/* end-doxray */
+
+/* Some other code you don't want to document */
+...
+
+/* doxray
+    name: a different button or thing you want to document
+*/
+.btn__different { ... }
+```
+
 #### YAML structure
 
 You can structure the YAML within the Doxray comments however you want but
