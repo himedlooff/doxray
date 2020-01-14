@@ -62,12 +62,13 @@ Doxray.prototype.run = function( src, options, callback ) {
 Doxray.prototype.parse = function( src, options ) {
   var parsed = [];
   src.forEach(function( singleSrc ) {
-    var fileContents, docs, code, convertedDocs, ext;
+    var fileContents, docs, code, convertedDocs, ext, regex;
     // Get the file extension for src so we know which regex to use.
     ext = require('./utils.js').getCommentType( singleSrc );
-    fileContents = require('./utils.js').getFileContents( singleSrc, options.regex[ ext ] );
-    docs = require('./utils.js').parseOutDocs( fileContents, options.regex[ ext ] );
-    code = require('./utils.js').parseOutCode( fileContents, options.regex[ ext ] );
+    regex = options.regex[ ext ] || options.regex.css;
+    fileContents = require('./utils.js').getFileContents( singleSrc, regex );
+    docs = require('./utils.js').parseOutDocs( fileContents, regex );
+    code = require('./utils.js').parseOutCode( fileContents, regex );
     if ( docs.length === 0 ) {
       convertedDocs = [];
     } else {

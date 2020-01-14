@@ -103,17 +103,6 @@ utils.getFileContents = function( src, regex ) {
 utils.getCommentType = function( src ) {
   var path = require('path');
   var ext = path.extname( src ).substring( 1 );
-  switch ( ext ) {
-    case 'css':
-    case 'less':
-      ext = 'css';
-      break;
-    case 'html':
-      ext = 'html';
-      break;
-    default:
-      ext = 'css';
-  }
   return ext;
 };
 
