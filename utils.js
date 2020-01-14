@@ -14,14 +14,20 @@ utils.handleSrc = function( src ) {
 };
 
 utils.handleOptions = function( options ) {
+  var regexMerge = Object.assign( {}, require('./doxray.js').prototype.regex );
   if ( typeof options !== 'object' ) {
     options = {};
+  }
+  if (options.regex) {
+    Object.keys(options.regex).forEach( function( language ) {
+      regexMerge[ language ] = options.regex[ language ];
+    });
   }
   return {
     jsFile: options.jsFile,
     jsonFile: options.jsonFile,
     processors: options.processors || require('./doxray.js').prototype.processors,
-    regex: options.regex || require('./doxray.js').prototype.regex
+    regex: regexMerge
   };
 };
 

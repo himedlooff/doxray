@@ -61,9 +61,15 @@ describe('doxray.js, core methods', function() {
       );
     });
 
-    it('should respect custom regex patterns in options', function () {
+    it('should respect custom regex patterns in options while retaining defaults', function () {
       var options = {
         regex: {
+          html: {
+            opening: /^<!--\s*doxray[^\n]*\n/m,
+            closing: /-->/,
+            comment: /^<!--\s*doxray(?:[^-]|[\r\n]|-[^-])*-->/gm,
+            ignore: /^<!--\s*ignore-doxray[\s\S]*/gm
+          },
           css: {
             opening: /^\/\*\s*@docs[^\n]*\n/m,
             closing: /\*\//,
@@ -291,6 +297,12 @@ describe('utils.js', function() {
     it('should return an options object', function () {
       var options = {
         regex: {
+          html: {
+            opening: /^<!--\s*doxray[^\n]*\n/m,
+            closing: /-->/,
+            comment: /^<!--\s*doxray(?:[^-]|[\r\n]|-[^-])*-->/gm,
+            ignore: /^<!--\s*ignore-doxray[\s\S]*/gm
+          },
           css: {
             opening: /^\/\*\s*@docs[^\n]*\n/m,
             closing: /\*\//,
@@ -379,8 +391,8 @@ describe('utils.js', function() {
 
     it('should return the correct comment type based on the file extension', function() {
       assert.equal( require('../utils.js').getCommentType('test.css'), 'css' );
-      assert.equal( require('../utils.js').getCommentType('test.less'), 'css' );
-      assert.equal( require('../utils.js').getCommentType('test.less'), 'css' );
+      assert.equal( require('../utils.js').getCommentType('test.less'), 'less' );
+      assert.equal( require('../utils.js').getCommentType('test.njk'), 'njk' );
       assert.equal( require('../utils.js').getCommentType('test.html'), 'html' );
     });
 

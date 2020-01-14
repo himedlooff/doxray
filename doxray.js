@@ -65,6 +65,7 @@ Doxray.prototype.parse = function( src, options ) {
     var fileContents, docs, code, convertedDocs, ext, regex;
     // Get the file extension for src so we know which regex to use.
     ext = require('./utils.js').getCommentType( singleSrc );
+    // get the regex for that extension, or fallback to CSS regex.
     regex = options.regex[ ext ] || options.regex.css;
     fileContents = require('./utils.js').getFileContents( singleSrc, regex );
     docs = require('./utils.js').parseOutDocs( fileContents, regex );
