@@ -79,7 +79,7 @@ describe('doxray.js, core methods', function() {
       var html = doxray.run('test/test.html', options);
       assert.deepEqual(
         html.patterns[0].label,
-        'heading one'
+        'heading ---- one'
       );
     });
 
