@@ -2,11 +2,19 @@ All notable changes to this project will be documented in this file.
 I follow the [Semantic Versioning 2.0.0](http://semver.org/) format.
 
 
+## 0.9.0 - 2020-01-15
+
+### Changed
+- Merge regex options with regex defaults
+- Use file extension for selecting regex, or fallback to CSS when no regex
+
+
 ## 0.8.2 - 2019-09-18
 
 ### Added
 - Added support for an ignore comment for cases where you only want to document some classes in your code;
 closes https://github.com/himedlooff/doxray/issues/7
+
 
 ## 0.8.1 - 2019-09-17
 
