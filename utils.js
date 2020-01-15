@@ -19,7 +19,7 @@ utils.handleOptions = function( options ) {
     options = {};
   }
   if (options.regex) {
-    Object.keys(options.regex).forEach( function( language ) {
+    Object.keys( options.regex ).forEach( function( language ) {
       regexMerge[ language ] = options.regex[ language ];
     });
   }

@@ -306,10 +306,10 @@ describe('utils.js', function() {
       var expected =  {
         regex: {
           html: {
-            opening: /^<!--\s*doxray[^\n]*\n/m,
+            opening: /<!--\s*doxray[^\n]*\n/m,
             closing: /-->/,
-            comment: /^<!--\s*doxray(?:[^-]|[\r\n]|-[^-])*-->/gm,
-            ignore: /^<!--\s*ignore-doxray[\s\S]*/gm
+            comment: /<!--\s*doxray(?:[^-]|[\r\n]|-[^-]|--[^>])*-->/gm,
+            ignore: /<!--\s*ignore-doxray[\s\S]*/gm
           },
           css: {
             opening: /^\/\*\s*@docs[^\n]*\n/m,
