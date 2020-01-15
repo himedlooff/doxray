@@ -14,14 +14,20 @@ utils.handleSrc = function( src ) {
 };
 
 utils.handleOptions = function( options ) {
+  var regexMerge = Object.assign( {}, require('./doxray.js').prototype.regex );
   if ( typeof options !== 'object' ) {
     options = {};
+  }
+  if (options.regex) {
+    Object.keys(options.regex).forEach( function( language ) {
+      regexMerge[ language ] = options.regex[ language ];
+    });
   }
   return {
     jsFile: options.jsFile,
     jsonFile: options.jsonFile,
     processors: options.processors || require('./doxray.js').prototype.processors,
-    regex: options.regex || require('./doxray.js').prototype.regex
+    regex: regexMerge
   };
 };
 
@@ -103,17 +109,6 @@ utils.getFileContents = function( src, regex ) {
 utils.getCommentType = function( src ) {
   var path = require('path');
   var ext = path.extname( src ).substring( 1 );
-  switch ( ext ) {
-    case 'css':
-    case 'less':
-      ext = 'css';
-      break;
-    case 'html':
-      ext = 'html';
-      break;
-    default:
-      ext = 'css';
-  }
   return ext;
 };
 

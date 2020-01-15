@@ -61,7 +61,7 @@ describe('doxray.js, core methods', function() {
       );
     });
 
-    it('should respect custom regex patterns in options', function () {
+    it('should respect custom regex patterns in options while retaining defaults', function () {
       var options = {
         regex: {
           css: {
@@ -71,10 +71,15 @@ describe('doxray.js, core methods', function() {
           }
         }
       };
-      var docs = doxray.run('test/custom-comment-regex-test.css', options);
+      var css = doxray.run('test/custom-comment-regex-test.css', options);
       assert.deepEqual(
-        docs.patterns[0].prop1,
+        css.patterns[0].prop1,
         'Comment one'
+      );
+      var html = doxray.run('test/test.html', options);
+      assert.deepEqual(
+        html.patterns[0].label,
+        'heading one'
       );
     });
 
@@ -298,6 +303,21 @@ describe('utils.js', function() {
           }
         }
       };
+      var expected =  {
+        regex: {
+          html: {
+            opening: /^<!--\s*doxray[^\n]*\n/m,
+            closing: /-->/,
+            comment: /^<!--\s*doxray(?:[^-]|[\r\n]|-[^-])*-->/gm,
+            ignore: /^<!--\s*ignore-doxray[\s\S]*/gm
+          },
+          css: {
+            opening: /^\/\*\s*@docs[^\n]*\n/m,
+            closing: /\*\//,
+            comment: /^\/\*\s*@docs[^*]*\*+(?:[^/*][^*]*\*+)*\//gm
+          }
+        }
+      }
       var transformedOptions = require('../utils.js').handleOptions(options);
       assert.deepEqual(
         transformedOptions,
@@ -305,7 +325,7 @@ describe('utils.js', function() {
           jsFile: undefined,
           jsonFile: undefined,
           processors: doxray.processors,
-          regex: options.regex
+          regex: expected.regex
         }
       );
     });
@@ -379,8 +399,8 @@ describe('utils.js', function() {
 
     it('should return the correct comment type based on the file extension', function() {
       assert.equal( require('../utils.js').getCommentType('test.css'), 'css' );
-      assert.equal( require('../utils.js').getCommentType('test.less'), 'css' );
-      assert.equal( require('../utils.js').getCommentType('test.less'), 'css' );
+      assert.equal( require('../utils.js').getCommentType('test.less'), 'less' );
+      assert.equal( require('../utils.js').getCommentType('test.njk'), 'njk' );
       assert.equal( require('../utils.js').getCommentType('test.html'), 'html' );
     });
 
