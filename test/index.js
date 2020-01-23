@@ -79,7 +79,7 @@ describe('doxray.js, core methods', function() {
       var html = doxray.run('test/test.html', options);
       assert.deepEqual(
         html.patterns[0].label,
-        'heading one'
+        'heading ---- one'
       );
     });
 
@@ -306,10 +306,10 @@ describe('utils.js', function() {
       var expected =  {
         regex: {
           html: {
-            opening: /^<!--\s*doxray[^\n]*\n/m,
+            opening: /<!--\s*doxray[^\n]*\n/m,
             closing: /-->/,
-            comment: /^<!--\s*doxray(?:[^-]|[\r\n]|-[^-])*-->/gm,
-            ignore: /^<!--\s*ignore-doxray[\s\S]*/gm
+            comment: /<!--\s*doxray(?:[^-]|[\r\n]|-[^-]|--[^>])*-->/gm,
+            ignore: /<!--\s*ignore-doxray[\s\S]*/gm
           },
           css: {
             opening: /^\/\*\s*@docs[^\n]*\n/m,

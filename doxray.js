@@ -11,16 +11,16 @@ var Doxray = function() {};
 
 Doxray.prototype.regex = {
   html: {
-    opening: /^<!--\s*doxray[^\n]*\n/m,
+    opening: /<!--\s*doxray[^\n]*\n/m,
     closing: /-->/,
-    comment: /^<!--\s*doxray(?:[^-]|[\r\n]|-[^-])*-->/gm,
-    ignore: /^<!--\s*ignore-doxray[\s\S]*/gm
+    comment: /<!--\s*doxray(?:[^-]|[\r\n]|-[^-]|--[^>])*-->/gm,
+    ignore: /<!--\s*ignore-doxray[\s\S]*/gm
   },
   css: {
-    opening: /^\/\*\s*doxray[^\n]*\n/m,
+    opening: /\/\*\s*doxray[^\n]*\n/m,
     closing: /\*\//,
-    comment: /^\/\*\s*doxray[^*]*\*+(?:[^/*][^*]*\*+)*\//gm,
-    ignore: /^\/\*\s*ignore-doxray[\s\S]*/gm
+    comment: /\/\*\s*doxray[^*]*\*+(?:[^/*][^*]*\*+)*\//gm,
+    ignore: /\/\*\s*ignore-doxray[\s\S]*/gm
   }
 };
 
