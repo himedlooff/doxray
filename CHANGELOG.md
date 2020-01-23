@@ -2,6 +2,12 @@ All notable changes to this project will be documented in this file.
 I follow the [Semantic Versioning 2.0.0](http://semver.org/) format.
 
 
+## 0.10.0 - 2020-01-23
+
+### Changed
+- More flexible default regex which is not forced to start at the beginning of a line
+
+
 ## 0.9.0 - 2020-01-15
 
 ### Changed
