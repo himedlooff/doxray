@@ -2,6 +2,12 @@ All notable changes to this project will be documented in this file.
 I follow the [Semantic Versioning 2.0.0](http://semver.org/) format.
 
 
+## 0.10.1 - 2021-01-04
+
+### Fixed
+- Pinned js-yaml to 3.13.1
+
+
 ## 0.10.0 - 2020-01-23
 
 ### Changed
