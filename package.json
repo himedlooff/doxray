@@ -11,7 +11,7 @@
     "url": "https://github.com/himedlooff"
   },
   "engines": {
-    "node": ">=0.10.0"
+    "node": ">=20"
   },
   "scripts": {
     "test": "mocha"
@@ -27,13 +27,12 @@
     "doxray"
   ],
   "dependencies": {
-    "deep-equal": "~0.2.1",
-    "glob": "~5.0.5",
-    "js-yaml": "3.13.1"
+    "glob": "^13.0.0",
+    "js-yaml": "^4.1.1"
   },
   "devDependencies": {
-    "chai": "~1.9.2",
-    "chai-fs": "~0.1.0",
+    "chai": "^1.9.2",
+    "chai-fs": "^0.1.0",
     "mocha": "^6.1.4"
   }
 }
