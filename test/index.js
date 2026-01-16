@@ -5,8 +5,6 @@ var Doxray = require('../doxray');
 var doxray = new Doxray();
 var doxrayDefaultOptions = require('../utils.js').handleOptions();
 
-chai.use( require('chai-fs') );
-
 // TODO: save temp files to a temp directory and set flag for deleting them in case you want to review them manually.
 // TODO: make a function to create yaml errors so we can test the error strings here.
 // TODO: write missing tests for util methods
@@ -39,7 +37,7 @@ describe('doxray.js, core methods', function() {
         fs.unlinkSync( file );
       }
       docs = doxray.run( 'test/test.css', { jsonFile: file }, function() {
-        assert.isFile( file );
+        assert.isTrue( fs.statSync( file ).isFile() );
       });
     });
 
@@ -50,7 +48,7 @@ describe('doxray.js, core methods', function() {
         fs.unlinkSync( file );
       }
       docs = doxray.run( 'test/test.css', { jsFile: file }, function() {
-        assert.isFile( file );
+        assert.isTrue( fs.statSync( file ).isFile() );
       });
     });
 
@@ -243,7 +241,7 @@ describe('doxray.js, core methods', function() {
         fs.unlinkSync( file );
       }
       doxray.writeJSON( { patterns: [] }, file, function() {
-        assert.isFile( file );
+        assert.isTrue( fs.statSync( file ).isFile() );
       });
     });
 
@@ -257,7 +255,7 @@ describe('doxray.js, core methods', function() {
         fs.unlinkSync( file );
       }
       doxray.writeJS( {}, file, function() {
-        assert.isFile( file );
+        assert.isTrue( fs.statSync( file ).isFile() );
       });
     });
 
@@ -277,7 +275,7 @@ describe('index.js, a simple alias that creates an instance of Doxray() for you'
         fs.unlinkSync( file );
       }
       docs = doxray( 'test/test.css', { jsFile: file }, function() {
-        assert.isFile( file );
+        assert.isTrue( fs.statSync( file ).isFile() );
         assert.deepEqual(
           docs.patterns[0].prop1,
           'Comment one'

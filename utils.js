@@ -117,7 +117,7 @@ utils.convertYaml = function( yamlString, index ) {
   yaml = require('js-yaml');
   // Try converting the doc to YAML and warn if it fails.
   try {
-    convertedYaml = yaml.safeLoad( yamlString );
+    convertedYaml = yaml.load( yamlString );
   } catch ( err ) {
     yamlError = 'Error converting comment # to YAML. Please check for formatting errors.';
     if ( index !== undefined ) {
