@@ -2,6 +2,12 @@ All notable changes to this project will be documented in this file.
 I follow the [Semantic Versioning 2.0.0](http://semver.org/) format.
 
 
+## 0.11.0 - 2026-01-16
+
+### Chore
+- Upgrades dependencies
+
+
 ## 0.10.1 - 2021-01-04
 
 ### Fixed
